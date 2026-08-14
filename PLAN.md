@@ -298,7 +298,7 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 21 | Déclenchement de l'analyse + notification de fin | Scénario | ✅ fait | 19, 20, 12 |
 | 22 | Ré-analyse d'un scénario modifié | Scénario | ✅ fait | 21 |
 | 23 | Rattachement scénario ↔ campagne (ordre des chapitres) | Scénario | ✅ fait | 18, 19 |
-| 24 | Pages d'ingestion (portage `ingestion-scenario.html`) | Scénario | ❌ à faire | 9, 19, 20, 21, 22 |
+| 24 | Pages d'ingestion (portage `ingestion-scenario.html`) | Scénario | ✅ fait (valide tsc/next build uniquement, jamais teste en navigateur) | 9, 19, 20, 21, 22 |
 | 25 | Création de personnage (gap comblé par hypothèse) | Fiche perso | ✅ fait | 18 |
 | 26 | Outils déterministes du moteur de règles (dégâts, objets, conditions, sorts, CA) | Fiche perso | ✅ fait (29 tests, tous verts) | — |
 | 27 | API fiche : lecture élargie + actions joueur (montée de niveau) | Fiche perso | ✅ fait | 25 |

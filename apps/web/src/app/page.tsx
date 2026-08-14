@@ -24,7 +24,10 @@ export default async function Home() {
         <>
           <div className="section-head">
             <h1>Mes campagnes</h1>
-            <NewCampaignForm />
+            <div className="flex gap-8">
+              <a className="btn ghost small" href="/scenarios/new">+ Importer un scénario</a>
+              <NewCampaignForm />
+            </div>
           </div>
 
           <div className="card-grid">
@@ -36,7 +39,9 @@ export default async function Home() {
                 </p>
                 {c.parties.map((p) => (
                   <div key={p.partyId} className="flex between" style={{ marginTop: 8 }}>
-                    <span className="muted" style={{ fontSize: ".82rem" }}>{p.scenario.title}</span>
+                    <a href={`/scenarios/${p.scenario.id}`} className="muted" style={{ fontSize: ".82rem" }}>
+                      {p.scenario.title}
+                    </a>
                     <span className={`badge ${p.status === "ACTIVE" ? "status-ok" : "tag"}`}>
                       {STATUS_LABEL[p.status] ?? p.status}
                     </span>
