@@ -5,7 +5,32 @@ import { z } from "zod";
 // serveur, jamais généré/inventé par le modèle. Les futurs outils (moteur de règles [Q32b],
 // mise à jour de fiche perso [Q31b]) suivent la même forme : schéma zod strict + execute()
 // pur côté serveur, aucune place laissée à l'improvisation du LLM sur le résultat.
-const formulaPattern = /^(\d+)d(\d+)([+-]\d+)?$/;
+export const DICE_FORMULA_PATTERN = /^(\d+)d(\d+)([+-]\d+)?$/;
+
+export interface DiceRollResult {
+  formula: string;
+  rolls: number[];
+  modifier: number;
+  total: number;
+}
+
+// Extrait en fonction pure (même découplage que characterSheetLogic.ts) : utilisable aussi bien
+// par le tool MJ-IA ci-dessous que par la commande /roll tapée directement par un joueur
+// (étape 37, hors LLM — [Q32c]) sans dépendre du call-shape d'un tool `ai`.
+export function rollDice(formula: string): DiceRollResult {
+  const match = formula.match(DICE_FORMULA_PATTERN);
+  if (!match) throw new Error(`Formule de dé invalide : ${formula}`);
+
+  const [, countStr, facesStr, modifierStr] = match;
+  const count = Number(countStr);
+  const faces = Number(facesStr);
+  const modifier = modifierStr ? Number(modifierStr) : 0;
+
+  const rolls = Array.from({ length: count }, () => 1 + Math.floor(Math.random() * faces));
+  const total = rolls.reduce((sum, r) => sum + r, 0) + modifier;
+
+  return { formula, rolls, modifier, total };
+}
 
 export const rollDiceTool = tool({
   description:
@@ -13,20 +38,7 @@ export const rollDiceTool = tool({
   inputSchema: z.object({
     formula: z
       .string()
-      .regex(formulaPattern, "Format attendu : NdM ou NdM+K (ex: 1d20, 2d6+1)"),
+      .regex(DICE_FORMULA_PATTERN, "Format attendu : NdM ou NdM+K (ex: 1d20, 2d6+1)"),
   }),
-  execute: async ({ formula }) => {
-    const match = formula.match(formulaPattern);
-    if (!match) throw new Error(`Formule de dé invalide : ${formula}`);
-
-    const [, countStr, facesStr, modifierStr] = match;
-    const count = Number(countStr);
-    const faces = Number(facesStr);
-    const modifier = modifierStr ? Number(modifierStr) : 0;
-
-    const rolls = Array.from({ length: count }, () => 1 + Math.floor(Math.random() * faces));
-    const total = rolls.reduce((sum, r) => sum + r, 0) + modifier;
-
-    return { formula, rolls, modifier, total };
-  },
+  execute: async ({ formula }) => rollDice(formula),
 });

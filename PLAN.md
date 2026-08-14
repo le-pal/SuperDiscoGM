@@ -311,7 +311,7 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 34 | Détection de transition de phase (outil `advance_phase`) | Mémoire & contexte | ✅ fait | 30 |
 | 35 | Moteur de tour MJ côté serveur (persistance + génération streamée) | Écran de partie | ✅ fait (pas encore testé contre un LLM qui tourne) | 11, 12, 26, 30, 31, 34, 21 |
 | 36 | Party split — repère système + reveal | Écran de partie | ✅ fait (migration Postgres reelle pas encore appliquee, Docker indisponible) | 35 |
-| 37 | Actions structurées joueur (`/roll`, raccourcis) | Écran de partie | ❌ à faire | 35 |
+| 37 | Actions structurées joueur (`/roll`, raccourcis) | Écran de partie | ✅ fait (/roll ; raccourcis sort/objet = UI cliquable, reporte a l'etape 41) | 35 |
 | 38 | Historique paginé (scroll infini) | Écran de partie | ❌ à faire | 10 |
 | 39 | Indicateur de présence câblé côté UI | Écran de partie | ❌ à faire | 12 |
 | 40 | Ambiance dynamique par lieu (hypothèse) | Écran de partie | ❌ à faire | 34, 12 |

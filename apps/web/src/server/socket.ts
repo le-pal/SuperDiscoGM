@@ -1,7 +1,15 @@
 import type { Server as HttpServer } from "node:http";
 import { Server as SocketIOServer, type Socket } from "socket.io";
+import { prisma } from "@superdiscogm/db";
+import { rollDice } from "@superdiscogm/llm";
 import { getUserByToken, SESSION_COOKIE } from "./session";
 import { persistPlayerMessage, runMjTurn, announcePartySplitIfNeeded } from "./turnEngine";
+
+// Action structurée clé [Q27] : /roll <formule>, ex "/roll 1d20+3". Jet non sollicité par le
+// MJ — libre au MJ-IA de l'ignorer ou d'en tenir compte selon le contexte [Q32c]. Les autres
+// raccourcis évoqués par Q27 (sélection de sort/objet) sont des contrôles cliquables, donc
+// portés par l'écran de partie (étape 41) plutôt que par ce parsing texte.
+const ROLL_COMMAND_PATTERN = /^\/roll\s+(\S+)\s*$/i;
 
 // Événements du chat de partie. La confidentialité d'un message "party split" [Q26]
 // est appliquée ICI, côté serveur, en n'émettant que vers les rooms des destinataires
@@ -96,8 +104,28 @@ export function createSocketServer(httpServer: HttpServer): SocketIOServer {
     // 35), jamais relayés depuis un payload client (authorType/authorUserId y seraient
     // spoofables). authorUserId vient toujours de la session vérifiée au handshake, jamais du payload.
     socket.on("chat:message", async (payload: Pick<ChatMessagePayload, "partyId" | "content" | "visibleToUserIds">) => {
-      const { partyId, content } = payload;
+      const { partyId } = payload;
+      let content = payload.content;
       if (typeof content !== "string" || content.trim().length === 0) return;
+
+      const rollMatch = content.trim().match(ROLL_COMMAND_PATTERN);
+      if (rollMatch) {
+        let roll;
+        try {
+          roll = rollDice(rollMatch[1]);
+        } catch {
+          socket.emit("chat:error", { message: `Formule de dé invalide : "${rollMatch[1]}" (attendu NdM ou NdM+K, ex: 1d20, 2d6+1).` });
+          return;
+        }
+        await prisma.diceRoll.create({
+          // Cast ciblé même raison que characterSheet.ts : Prisma exige InputJsonValue (union
+          // stricte) pour les colonnes Json, notre DiceRollResult typé le satisfait à l'exécution.
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          data: { partyId, rolledByUserId: userId, formula: roll.formula, result: roll as any, requestedByMj: false },
+        });
+        const modifierText = roll.modifier ? (roll.modifier > 0 ? ` +${roll.modifier}` : ` ${roll.modifier}`) : "";
+        content = `🎲 ${roll.formula} → [${roll.rolls.join(", ")}]${modifierText} = ${roll.total}`;
+      }
 
       // L'auteur doit toujours pouvoir relire son propre message — un aparté qui l'exclurait de
       // sa propre conversation privée serait un bug, pas une fonctionnalité de confidentialité.

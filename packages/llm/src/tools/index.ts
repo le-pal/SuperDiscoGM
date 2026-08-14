@@ -1,4 +1,5 @@
-import { rollDiceTool } from "./dice";
+import { rollDiceTool, rollDice } from "./dice";
+export type { DiceRollResult } from "./dice";
 import {
   applyDamageTool,
   healTool,
@@ -39,6 +40,7 @@ export function buildGameTools(params: { campaignId: string; partyId: string }) 
 
 export {
   rollDiceTool,
+  rollDice,
   applyDamageTool,
   healTool,
   addItemTool,

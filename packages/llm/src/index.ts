@@ -28,4 +28,5 @@ export async function getConfiguredModel(): Promise<LanguageModel> {
   return resolveModel(settings.activeProvider, settings.activeModel);
 }
 
-export { gameTools, buildGameTools, rollDiceTool, createLookupEntityHistoryTool, createAdvancePhaseTool } from "./tools";
+export { gameTools, buildGameTools, rollDiceTool, rollDice, createLookupEntityHistoryTool, createAdvancePhaseTool } from "./tools";
+export type { DiceRollResult } from "./tools";
