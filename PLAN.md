@@ -281,7 +281,7 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 9 | Design system + layout partagé (AppShell/TopNav/Avatar) | Fondations | fait | — |
 | 10 | Garde de rôle côté serveur (requireUser/requireRole) | Fondations | fait | — |
 | 11 | Durcir l'auth Socket.IO (cookie de session, pas de userId client) | Fondations | fait | — |
-| 12 | Client Socket.IO (provider + hooks join/leave/presence) | Fondations | à faire | 9, 11 |
+| 12 | Client Socket.IO (provider + hooks join/leave/presence) | Fondations | fait | 9, 11 |
 | 13 | Gestion utilisateurs & rôles (API Admin) | Admin | à faire | 10 |
 | 14 | Envoi d'invitation (API, Super utilisateur) | Admin | à faire | 10, 18 |
 | 15 | Réglages globaux (prompt système, modèle, budget — API Admin) | Admin | à faire | 10 |
