@@ -9,6 +9,7 @@ import {
   consumeSpellSlotTool,
   updateAcTool,
 } from "./characterSheet";
+import { createLookupEntityHistoryTool } from "./entityHistory";
 
 // Registre central des outils déterministes exposés au MJ-IA — même pattern pour tous
 // (schéma zod strict + execute() pur côté serveur), aucune place laissée à l'improvisation du LLM.
@@ -24,4 +25,21 @@ export const gameTools = {
   update_ac: updateAcTool,
 };
 
-export { rollDiceTool, applyDamageTool, healTool, addItemTool, removeItemTool, addConditionTool, removeConditionTool, consumeSpellSlotTool, updateAcTool };
+// lookup_entity_history est scopé campagne (voir entityHistory.ts) donc absent de gameTools
+// (context-free) — le moteur de tour (étape 35) le lie via buildGameTools(campaignId).
+export function buildGameTools(campaignId: string) {
+  return { ...gameTools, lookup_entity_history: createLookupEntityHistoryTool(campaignId) };
+}
+
+export {
+  rollDiceTool,
+  applyDamageTool,
+  healTool,
+  addItemTool,
+  removeItemTool,
+  addConditionTool,
+  removeConditionTool,
+  consumeSpellSlotTool,
+  updateAcTool,
+  createLookupEntityHistoryTool,
+};
