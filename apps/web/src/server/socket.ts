@@ -99,6 +99,19 @@ export function createSocketServer(httpServer: HttpServer): SocketIOServer {
       });
     });
 
+    // Indicateur de présence du tableau de bord [Q49][Q49b] : lecture ponctuelle (ack, pas de
+    // flux poussé dédié) de qui est connecté sur une liste de parties, SANS rejoindre ces rooms —
+    // rejoindre marquerait à tort le visiteur du dashboard comme "présent" dans une partie qu'il
+    // ne fait que survoler depuis la liste.
+    socket.on("dashboard:presence", (partyIds: unknown, ack: unknown) => {
+      if (!Array.isArray(partyIds) || typeof ack !== "function") return;
+      const result: Record<string, string[]> = {};
+      for (const partyId of partyIds) {
+        if (typeof partyId === "string") result[partyId] = partyPresenceRoom(io, partyId);
+      }
+      (ack as (result: Record<string, string[]>) => void)(result);
+    });
+
     // Seuls les messages JOUEUR entrent par ce canal client — le MJ-IA et les repères SYSTEM
     // (transition de phase...) sont émis directement par le moteur de tour (turnEngine.ts, étape
     // 35), jamais relayés depuis un payload client (authorType/authorUserId y seraient

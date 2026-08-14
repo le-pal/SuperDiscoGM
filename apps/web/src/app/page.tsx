@@ -1,38 +1,65 @@
-import { prisma } from "@superdiscogm/db";
 import { requireUser } from "@/server/authz";
 import { AppShell } from "@/components/AppShell";
-import { LogoutButton } from "./logout-button";
+import { getDashboardData } from "@/server/dashboard";
+import { hasRole } from "@/lib/roles";
+import { NewCampaignForm } from "./new-campaign-form";
+import { MyPartiesGrid } from "./my-parties-grid";
 
-// Page d'accueil minimale — sert de "hello world" bout en bout : Docker -> Postgres -> Prisma ->
-// Next.js -> auth -> design system. À remplacer par le vrai tableau de bord (étapes 42-44 du
-// PLAN.md, portage de maquette/dashboard.html).
-// force-dynamic : la page dépend de la DB au runtime, DATABASE_URL n'existe pas au moment du
-// build (injectée seulement au démarrage du conteneur) — pas de pré-rendu statique possible ici.
+// Portage de maquette/dashboard.html (étapes 43-44 du PLAN.md) — "mes campagnes" (Super
+// utilisateur+, gestion [Q05]) + "mes parties" (tout le monde, sans action de gestion pour un
+// simple Utilisateur, cf doc/partie/spec.md §Tableau de bord).
+// force-dynamic : dépend de la DB au runtime (participations/campagnes de l'utilisateur courant).
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  // Vérification authoritative ici, jamais seulement dans proxy.ts (cf src/proxy.ts).
-  const user = await requireUser();
+const STATUS_LABEL: Record<string, string> = { ACTIVE: "En direct", PAUSED: "En pause", ENDED: "Terminée" };
 
-  const settings = await prisma.globalSettings.findUnique({ where: { id: 1 } });
+export default async function Home() {
+  const user = await requireUser();
+  const { myParties, managedCampaigns } = await getDashboardData(user);
+  const isSuperUser = hasRole(user, "SUPER_USER");
 
   return (
-    <AppShell user={user}>
-      <div className="mockup-banner">
-        🚧 Tableau de bord pas encore porté (étapes 42-44 du PLAN.md) — cette page ne sert que de vérification bout en bout.
-      </div>
-      <h1>SuperDiscoGM</h1>
-      {settings ? (
-        <p>
-          ✅ Connecté à la base de données — fournisseur LLM actif :{" "}
-          <strong>
-            {settings.activeProvider}/{settings.activeModel}
-          </strong>
-        </p>
-      ) : (
-        <p>⚠️ Connecté à la base, mais aucun réglage global (GlobalSettings) trouvé — as-tu lancé le seed ?</p>
+    <AppShell user={user} wide>
+      {isSuperUser && managedCampaigns && (
+        <>
+          <div className="section-head">
+            <h1>Mes campagnes</h1>
+            <NewCampaignForm />
+          </div>
+
+          <div className="card-grid">
+            {managedCampaigns.map((c) => (
+              <div key={c.id} className="card">
+                <h3>{c.name}</h3>
+                <p className="muted" style={{ fontSize: ".85rem" }}>
+                  {c.parties.length} partie{c.parties.length > 1 ? "s" : ""}
+                </p>
+                {c.parties.map((p) => (
+                  <div key={p.partyId} className="flex between" style={{ marginTop: 8 }}>
+                    <span className="muted" style={{ fontSize: ".82rem" }}>{p.scenario.title}</span>
+                    <span className={`badge ${p.status === "ACTIVE" ? "status-ok" : "tag"}`}>
+                      {STATUS_LABEL[p.status] ?? p.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ))}
+            {managedCampaigns.length === 0 && (
+              <div
+                className="card"
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", borderStyle: "dashed", color: "var(--text-muted)", minHeight: 150 }}
+              >
+                Aucune campagne pour l&apos;instant — « + Nouvelle campagne » ci-dessus.
+              </div>
+            )}
+          </div>
+        </>
       )}
-      <LogoutButton />
+
+      <div className="section" style={{ marginTop: isSuperUser ? 36 : 0 }}>
+        <div className="section-head">{isSuperUser ? <h2>Mes parties</h2> : <h1>Mes parties</h1>}</div>
+        <MyPartiesGrid parties={myParties} />
+      </div>
     </AppShell>
   );
 }

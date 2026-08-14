@@ -313,12 +313,12 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 36 | Party split — repère système + reveal | Écran de partie | ✅ fait (migration Postgres reelle pas encore appliquee, Docker indisponible) | 35 |
 | 37 | Actions structurées joueur (`/roll`, raccourcis) | Écran de partie | ✅ fait (/roll ; raccourcis sort/objet = UI cliquable, reporte a l'etape 41) | 35 |
 | 38 | Historique paginé (scroll infini) | Écran de partie | ✅ fait (API ; consommation cote UI = etape 41) | 10 |
-| 39 | Indicateur de présence câblé côté UI | Écran de partie | ❌ à faire | 12 |
+| 39 | Indicateur de présence câblé côté UI | Écran de partie | ✅ fait (dashboard ; ecran de partie = etape 41) | 12 |
 | 40 | Ambiance dynamique par lieu (hypothèse) | Écran de partie | ❌ à faire | 34, 12 |
 | 41 | Page écran de partie (portage complet) | Écran de partie | ❌ à faire | 9, 35, 36, 37, 38, 39, 40 |
 | 42 | API Parties (lancer/reprendre/rejoindre/bascule rôle) | Dashboard | ✅ fait | 18, 23, 10 |
-| 43 | Agrégation dashboard | Dashboard | ❌ à faire | 42, 39 |
-| 44 | Page `/` (portage `dashboard.html`) | Dashboard | ❌ à faire | 9, 42, 43 |
+| 43 | Agrégation dashboard | Dashboard | ✅ fait | 42, 39 |
+| 44 | Page `/` (portage `dashboard.html`) | Dashboard | ✅ fait (valide tsc/next build uniquement, jamais teste en navigateur) | 9, 42, 43 |
 | 45 | API + page profil (couleur avatar) | Profil | ✅ fait (valide tsc/next build uniquement, jamais teste dans un navigateur - Docker/dev server indisponibles) | 9, 10 |
 | 46 | Bloc-notes privé (API + onglet sidebar) | Bloc-notes | ✅ fait (API ; onglet sidebar reporte a l'etape 41) | 41, 10 |
 | 47 | Mise en place Vitest + tests unitaires/intégration ciblés | Tests | ✅ fait (infra + 29 tests moteur de regles/des, commit 842dee4 ; tests d'integration DB pour turnContext/turnEngine reportes, besoin d'un Postgres joignable) | 26, 30 |

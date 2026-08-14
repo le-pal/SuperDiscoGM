@@ -4,6 +4,7 @@ import { TopNav } from "./TopNav";
 import { RoleBadge } from "./RoleBadge";
 import { Avatar } from "./Avatar";
 import { SocketProvider } from "./SocketProvider";
+import { LogoutButton } from "./LogoutButton";
 
 interface AppShellProps {
   user: User;
@@ -24,6 +25,7 @@ export function AppShell({ user, wide = false, children }: AppShellProps) {
           <div className="flex center gap-8">
             <RoleBadge role={user.role} />
             <Avatar name={user.name} color={user.avatarColor} size="sm" />
+            <LogoutButton />
           </div>
         </div>
         <div className={wide ? "page wide" : "page"}>{children}</div>
