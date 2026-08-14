@@ -1,12 +1,12 @@
 // Schéma de données SuperDiscoGM — traduit les décisions actées dans /doc (voir chaque commentaire [Qxx]).
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ---------- Utilisateurs & rôles ----------
@@ -354,5 +354,9 @@ model Summary {
   content    String
   updatedAt  DateTime     @updatedAt
 
-  @@unique([level, campaignId, partyId, scenarioId])
+  // Pas de @@unique ici : partyId/scenarioId sont nullables selon le niveau, et NULL n'est
+  // jamais égal à NULL dans une contrainte unique SQL — une contrainte composite laisserait
+  // passer plusieurs résumés CAMPAIGN pour la même campagne. La déduplication est faite
+  // applicativement (findFirst + create/update) dans apps/worker/src/workers/summaries.ts.
+  @@index([level, campaignId])
 }

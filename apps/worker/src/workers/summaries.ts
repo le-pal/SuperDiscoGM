@@ -21,16 +21,15 @@ export async function processSummaryConsolidation(job: Job<SummaryConsolidationJ
   const content = `Résumé ${level} — à générer (job placeholder).`;
   // -----------------------------------------------------------------------------
 
-  await prisma.summary.upsert({
-    where: {
-      level_campaignId_partyId_scenarioId: {
-        level,
-        campaignId,
-        partyId: partyId ?? null,
-        scenarioId: scenarioId ?? null,
-      },
-    },
-    create: { level, campaignId, partyId, scenarioId, content },
-    update: { content },
+  // findFirst + create/update plutôt qu'un upsert sur clé composite : partyId/scenarioId sont
+  // nullables selon le niveau, et NULL n'est pas fiable comme critère d'unicité SQL (voir schema.prisma).
+  const existing = await prisma.summary.findFirst({
+    where: { level, campaignId, partyId: partyId ?? null, scenarioId: scenarioId ?? null },
   });
+
+  if (existing) {
+    await prisma.summary.update({ where: { id: existing.id }, data: { content } });
+  } else {
+    await prisma.summary.create({ data: { level, campaignId, partyId, scenarioId, content } });
+  }
 }

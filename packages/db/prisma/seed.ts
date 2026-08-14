@@ -9,7 +9,7 @@ async function main() {
       id: 1,
       systemPrompt: "Tu es le Maître du Jeu. (placeholder — voir doc/admin/spec.md)",
       activeProvider: "ollama",
-      activeModel: "qwen3:8b",
+      activeModel: "qwen3.5:9b",
     },
     update: {},
   });
