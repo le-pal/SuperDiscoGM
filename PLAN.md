@@ -282,17 +282,17 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 10 | Garde de rôle côté serveur (requireUser/requireRole) | Fondations | fait | — |
 | 11 | Durcir l'auth Socket.IO (cookie de session, pas de userId client) | Fondations | fait | — |
 | 12 | Client Socket.IO (provider + hooks join/leave/presence) | Fondations | fait | 9, 11 |
-| 13 | Gestion utilisateurs & rôles (API Admin) | Admin | à faire | 10 |
+| 13 | Gestion utilisateurs & rôles (API Admin) | Admin | fait | 10 |
 | 14 | Envoi d'invitation (API, Super utilisateur) | Admin | à faire | 10, 18 |
-| 15 | Réglages globaux (prompt système, modèle, budget — API Admin) | Admin | à faire | 10 |
-| 16 | Bibliothèque de personas MJ + résolution par spécificité | Admin | à faire | 10 |
+| 15 | Réglages globaux (prompt système, modèle, budget — API Admin) | Admin | fait | 10 |
+| 16 | Bibliothèque de personas MJ + résolution par spécificité | Admin | fait | 10 |
 | 17 | Page `/admin` (portage) | Admin | à faire | 9, 13, 14, 15, 16 |
-| 18 | API Campagnes (create/list/get) | Scénario | à faire | 10 |
-| 19 | API Scénarios (create texte + upload fichier) | Scénario | à faire | 10 |
+| 18 | API Campagnes (create/list/get) | Scénario | fait | 10 |
+| 19 | API Scénarios (create texte + upload fichier) | Scénario | fait (extraction texte = etape 20, separee) | 10 |
 | 20 | Extraction de texte des fichiers uploadés (pdf/docx/md) | Scénario | à faire | 19 |
 | 21 | Déclenchement de l'analyse + notification de fin | Scénario | à faire | 19, 20, 12 |
 | 22 | Ré-analyse d'un scénario modifié | Scénario | à faire | 21 |
-| 23 | Rattachement scénario ↔ campagne (ordre des chapitres) | Scénario | à faire | 18, 19 |
+| 23 | Rattachement scénario ↔ campagne (ordre des chapitres) | Scénario | fait | 18, 19 |
 | 24 | Pages d'ingestion (portage `ingestion-scenario.html`) | Scénario | à faire | 9, 19, 20, 21, 22 |
 | 25 | Création de personnage (gap comblé par hypothèse) | Fiche perso | à faire | 18 |
 | 26 | Outils déterministes du moteur de règles (dégâts, objets, conditions, sorts, CA) | Fiche perso | à faire | — |
