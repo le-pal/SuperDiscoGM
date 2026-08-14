@@ -320,7 +320,7 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 43 | Agrégation dashboard | Dashboard | ❌ à faire | 42, 39 |
 | 44 | Page `/` (portage `dashboard.html`) | Dashboard | ❌ à faire | 9, 42, 43 |
 | 45 | API + page profil (couleur avatar) | Profil | ❌ à faire | 9, 10 |
-| 46 | Bloc-notes privé (API + onglet sidebar) | Bloc-notes | ❌ à faire | 41, 10 |
+| 46 | Bloc-notes privé (API + onglet sidebar) | Bloc-notes | ✅ fait (API ; onglet sidebar reporte a l'etape 41) | 41, 10 |
 | 47 | Mise en place Vitest + tests unitaires/intégration ciblés | Tests | ❌ à faire | 26, 30 |
 | 48 | Suivi de budget/coût API (UsageLog) | Infra | ❌ à faire | 35, 17 |
 | 49 | Sauvegarde `pg_dump` planifiée | Infra | ❌ à faire | — |
