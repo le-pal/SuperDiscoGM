@@ -96,6 +96,7 @@ model Scenario {
   phases    Phase[]
   campaigns CampaignScenario[]
   parties   Party[]
+  summaries Summary[]
 }
 
 // Fichier uploadé (PDF/docx/markdown) [Q13] — stocké en base pour l'instant, pas de stockage objet en V1.
@@ -348,6 +349,10 @@ model Summary {
   campaign   Campaign     @relation(fields: [campaignId], references: [id])
   partyId    String? // requis si level = SESSION
   party      Party?       @relation(fields: [partyId], references: [id])
+  scenarioId String? // requis si level = ARC (un résumé d'arc par scénario de la campagne)
+  scenario   Scenario?    @relation(fields: [scenarioId], references: [id])
   content    String
   updatedAt  DateTime     @updatedAt
+
+  @@unique([level, campaignId, partyId, scenarioId])
 }

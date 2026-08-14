@@ -9,7 +9,7 @@ Ce dossier est le point d'entrée de la spécification fonctionnelle. Elle est r
 | **Admin** | Rôles & permissions, prompt système, persona MJ, budget API | [admin/spec.md](admin/spec.md) | [admin/questions.md](admin/questions.md) |
 | **Scénario** | Campagne/Scénario/Session, pipeline d'ingestion, mémoire & contexte | [scenario/spec.md](scenario/spec.md) | [scenario/questions.md](scenario/questions.md) |
 | **Partie** | Écran de jeu, temps réel, fiche de personnage, dés & règles | [partie/spec.md](partie/spec.md) | [partie/questions.md](partie/questions.md) |
-| **Technique** | Stack, fournisseurs LLM, authentification, RGPD, hébergement | [technique/spec.md](technique/spec.md) | [technique/questions.md](technique/questions.md) |
+| **Technique** | Stack, fournisseurs LLM, authentification, RGPD, hébergement — [architecture.md](technique/architecture.md) | [technique/spec.md](technique/spec.md) | [technique/questions.md](technique/questions.md) |
 | **Roadmap** | V1 → V4 | [roadmap.md](roadmap.md) | (questions V2-V4 réparties par lot concerné) |
 
 **Convention** : chaque question a un identifiant global unique (`Q01`, `Q02`, ...) même réparti sur plusieurs fichiers, pour ne jamais avoir de collision. Statut `[ ]` ouverte · `[x]` tranchée. Chaque décision tranchée est reportée dans le `spec.md` du lot correspondant, référencée `[Qxx]`.
