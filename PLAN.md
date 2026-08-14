@@ -299,9 +299,9 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 22 | Ré-analyse d'un scénario modifié | Scénario | ✅ fait | 21 |
 | 23 | Rattachement scénario ↔ campagne (ordre des chapitres) | Scénario | ✅ fait | 18, 19 |
 | 24 | Pages d'ingestion (portage `ingestion-scenario.html`) | Scénario | ❌ à faire | 9, 19, 20, 21, 22 |
-| 25 | Création de personnage (gap comblé par hypothèse) | Fiche perso | ❌ à faire | 18 |
-| 26 | Outils déterministes du moteur de règles (dégâts, objets, conditions, sorts, CA) | Fiche perso | ✅ fait (tests en cours par agent parallele) | — |
-| 27 | API fiche : lecture élargie + actions joueur (montée de niveau) | Fiche perso | ❌ à faire | 25 |
+| 25 | Création de personnage (gap comblé par hypothèse) | Fiche perso | ✅ fait | 18 |
+| 26 | Outils déterministes du moteur de règles (dégâts, objets, conditions, sorts, CA) | Fiche perso | ✅ fait (29 tests, tous verts) | — |
+| 27 | API fiche : lecture élargie + actions joueur (montée de niveau) | Fiche perso | ✅ fait | 25 |
 | 28 | Page fiche de personnage (portage) | Fiche perso | ❌ à faire | 9, 27 |
 | 29 | Panneau fiche condensée (sidebar écran de partie) | Fiche perso | ❌ à faire | 27 |
 | 30 | Assemblage du contexte de tour (5 blocs, troncature Q19) | Mémoire & contexte | ❌ à faire | 16, 26 |
