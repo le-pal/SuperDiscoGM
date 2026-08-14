@@ -1,7 +1,7 @@
 import type { Server as HttpServer } from "node:http";
 import { Server as SocketIOServer, type Socket } from "socket.io";
 import { getUserByToken, SESSION_COOKIE } from "./session";
-import { persistPlayerMessage, runMjTurn } from "./turnEngine";
+import { persistPlayerMessage, runMjTurn, announcePartySplitIfNeeded } from "./turnEngine";
 
 // Événements du chat de partie. La confidentialité d'un message "party split" [Q26]
 // est appliquée ICI, côté serveur, en n'émettant que vers les rooms des destinataires
@@ -96,8 +96,15 @@ export function createSocketServer(httpServer: HttpServer): SocketIOServer {
     // 35), jamais relayés depuis un payload client (authorType/authorUserId y seraient
     // spoofables). authorUserId vient toujours de la session vérifiée au handshake, jamais du payload.
     socket.on("chat:message", async (payload: Pick<ChatMessagePayload, "partyId" | "content" | "visibleToUserIds">) => {
-      const { partyId, content, visibleToUserIds } = payload;
+      const { partyId, content } = payload;
       if (typeof content !== "string" || content.trim().length === 0) return;
+
+      // L'auteur doit toujours pouvoir relire son propre message — un aparté qui l'exclurait de
+      // sa propre conversation privée serait un bug, pas une fonctionnalité de confidentialité.
+      const visibleToUserIds =
+        payload.visibleToUserIds && payload.visibleToUserIds.length > 0
+          ? [...new Set([...payload.visibleToUserIds, userId])]
+          : undefined;
 
       const saved = await persistPlayerMessage({ partyId, authorUserId: userId, content, visibleToUserIds });
       const outgoing: ChatMessagePayload = {
@@ -110,13 +117,14 @@ export function createSocketServer(httpServer: HttpServer): SocketIOServer {
         createdAt: saved.createdAt,
       };
 
-      if (!visibleToUserIds || visibleToUserIds.length === 0) {
+      if (!visibleToUserIds) {
         io.to(partyRoom(partyId)).emit("chat:message", outgoing);
       } else {
         // Aparté privé [Q26] : émission ciblée, pas de broadcast à la table.
         for (const uid of visibleToUserIds) {
           io.to(userRoom(uid)).emit("chat:message", outgoing);
         }
+        await announcePartySplitIfNeeded(io, partyId, visibleToUserIds);
       }
 
       runMjTurn(io, partyId, saved.id, visibleToUserIds ?? []).catch((err) => {

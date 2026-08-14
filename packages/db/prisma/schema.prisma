@@ -225,6 +225,12 @@ model Party {
   status        PartyStatus @default(ACTIVE)
   createdAt     DateTime    @default(now())
 
+  // Party split [Q26][Q26b] : vide = pas d'aparté en cours. Sinon, userId des joueurs isolés
+  // (+ MJ implicite) — sert à savoir quand émettre le repère système et quels messages
+  // révéler d'un coup à la table quand le MJ-IA déclenche le reveal manuel (tool reveal_huddle).
+  partySplitUserIds    String[]  @default([])
+  partySplitStartedAt  DateTime?
+
   participants PartyParticipant[]
   messages     Message[]
   diceRolls    DiceRoll[]

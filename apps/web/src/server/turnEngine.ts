@@ -1,9 +1,11 @@
 import type { Server as SocketIOServer } from "socket.io";
-import { streamText, stepCountIs, type ModelMessage } from "ai";
+import { tool, streamText, stepCountIs, type ModelMessage } from "ai";
+import { z } from "zod";
 import { prisma } from "@superdiscogm/db";
 import { getConfiguredModel, buildGameTools } from "@superdiscogm/llm";
 import { assembleTurnContext } from "./turnContext";
 import { entityMemoryQueue, summaryConsolidationQueue } from "./queue";
+import type { ChatMessagePayload } from "./socket";
 
 // Moteur de tour MJ côté serveur (étape 35) : persistance des messages en DB — jusqu'ici
 // socket.ts ne faisait qu'un relais temps réel sans écrire en base — puis génération streamée
@@ -13,6 +15,21 @@ import { entityMemoryQueue, summaryConsolidationQueue } from "./queue";
 
 function partyRoom(partyId: string) {
   return `party:${partyId}`;
+}
+
+async function emitAndPersistSystemMessage(io: SocketIOServer, partyId: string, content: string) {
+  const message = await prisma.message.create({
+    data: { partyId, authorType: "SYSTEM", content, visibleToUserIds: [] },
+  });
+  io.to(partyRoom(partyId)).emit("chat:message", {
+    partyId,
+    authorType: "SYSTEM",
+    content,
+    visibleToUserIds: [],
+    id: message.id,
+    createdAt: message.createdAt,
+  } satisfies ChatMessagePayload);
+  return message;
 }
 
 export async function persistPlayerMessage(params: {
@@ -28,6 +45,89 @@ export async function persistPlayerMessage(params: {
       authorUserId: params.authorUserId,
       content: params.content,
       visibleToUserIds: params.visibleToUserIds ?? [],
+    },
+  });
+}
+
+// Party split [Q26][Q26b] : dès qu'un message vise un sous-ensemble de la table (nouveau
+// périmètre, différent de l'aparté déjà en cours le cas échéant), on émet un repère SYSTEM
+// visible de tous — signale qu'un aparté a lieu SANS révéler son contenu — et on mémorise le
+// périmètre sur la Party pour permettre le reveal manuel plus tard (createRevealHuddleTool).
+// Ne fait rien pour un message public (visibleToUserIds vide) ni pour la continuation d'un
+// aparté déjà annoncé avec exactement le même périmètre (évite de spammer un repère par message).
+export async function announcePartySplitIfNeeded(
+  io: SocketIOServer,
+  partyId: string,
+  visibleToUserIds: string[] | undefined
+): Promise<void> {
+  const scope = [...(visibleToUserIds ?? [])].sort();
+  if (scope.length === 0) return;
+
+  const party = await prisma.party.findUniqueOrThrow({ where: { id: partyId } });
+  const current = [...party.partySplitUserIds].sort();
+  const sameScope = scope.length === current.length && scope.every((id, i) => id === current[i]);
+  if (sameScope) return;
+
+  const participants = await prisma.user.findMany({ where: { id: { in: scope } }, select: { name: true } });
+  await prisma.party.update({
+    where: { id: partyId },
+    data: { partySplitUserIds: scope, partySplitStartedAt: new Date() },
+  });
+
+  const names = participants.map((p) => p.name).join(" et ") || "certains joueurs";
+  await emitAndPersistSystemMessage(
+    io,
+    partyId,
+    `Le MJ s'isole avec ${names} — un aparté est en cours, son contenu reste privé jusqu'au reveal.`
+  );
+}
+
+// Reveal manuel [Q26b] : décision du MJ-IA seul (tool-call), jamais un bouton joueur. Rend
+// visibles à toute la table les messages de l'aparté en cours (bascule visibleToUserIds -> []
+// en DB + rediffusion en direct pour les clients déjà connectés) et referme le périmètre.
+function createRevealHuddleTool(io: SocketIOServer, partyId: string) {
+  return tool({
+    description:
+      "Révèle à toute la table le contenu de l'aparté privé en cours. À utiliser uniquement quand le MJ-IA décide que ce qui s'est dit en privé doit maintenant être connu de tous.",
+    inputSchema: z.object({}),
+    execute: async () => {
+      const party = await prisma.party.findUniqueOrThrow({ where: { id: partyId } });
+      if (party.partySplitUserIds.length === 0) {
+        return { revealed: false, message: "Aucun aparté en cours." };
+      }
+
+      const hidden = await prisma.message.findMany({
+        where: {
+          partyId,
+          visibleToUserIds: { isEmpty: false },
+          createdAt: { gte: party.partySplitStartedAt ?? new Date(0) },
+        },
+        orderBy: { createdAt: "asc" },
+      });
+
+      await prisma.message.updateMany({
+        where: { id: { in: hidden.map((m) => m.id) } },
+        data: { visibleToUserIds: [] },
+      });
+      await prisma.party.update({
+        where: { id: partyId },
+        data: { partySplitUserIds: [], partySplitStartedAt: null },
+      });
+
+      for (const m of hidden) {
+        io.to(partyRoom(partyId)).emit("chat:message", {
+          partyId,
+          authorType: m.authorType,
+          authorUserId: m.authorUserId ?? undefined,
+          content: m.content,
+          visibleToUserIds: [],
+          id: m.id,
+          createdAt: m.createdAt,
+        } satisfies ChatMessagePayload);
+      }
+      await emitAndPersistSystemMessage(io, partyId, "Le MJ révèle le contenu de l'aparté à toute la table.");
+
+      return { revealed: true, messageCount: hidden.length };
     },
   });
 }
@@ -70,7 +170,10 @@ export async function runMjTurn(
   }));
 
   const model = await getConfiguredModel();
-  const tools = buildGameTools({ campaignId: party.campaignId, partyId });
+  const tools = {
+    ...buildGameTools({ campaignId: party.campaignId, partyId }),
+    reveal_huddle: createRevealHuddleTool(io, partyId),
+  };
 
   const result = streamText({ model, system, messages, tools, stopWhen: stepCountIs(5) });
 
@@ -106,22 +209,11 @@ export async function runMjTurn(
     | { advanced: boolean; newPhase?: { id: string; title: string } }
     | undefined;
   if (phaseOutput?.advanced) {
-    const sysMessage = await prisma.message.create({
-      data: {
-        partyId,
-        authorType: "SYSTEM",
-        content: `La partie avance : ${phaseOutput.newPhase?.title ?? "phase suivante"}.`,
-        visibleToUserIds: [],
-      },
-    });
-    io.to(partyRoom(partyId)).emit("chat:message", {
+    await emitAndPersistSystemMessage(
+      io,
       partyId,
-      authorType: "SYSTEM",
-      content: sysMessage.content,
-      visibleToUserIds: [],
-      id: sysMessage.id,
-      createdAt: sysMessage.createdAt,
-    });
+      `La partie avance : ${phaseOutput.newPhase?.title ?? "phase suivante"}.`
+    );
   }
 
   // Mémoire continue [Q20][Q21] : un agent dédié met à jour résumé + journal d'entités après
