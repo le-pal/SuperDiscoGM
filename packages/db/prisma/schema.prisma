@@ -267,8 +267,11 @@ model CharacterSheet {
   level      Int      @default(1)
   hp         Int
   hpMax      Int
+  ac         Int      @default(10) // classe d'armure — version simplifiée [Q30], pas de calcul détaillé par équipement
   stats      Json // caractéristiques simplifiées (ex: { "DEX": 3, "CON": 1, "SAG": 2 })
   inventory  Json // liste d'objets
+  conditions Json     @default("[]") // liste de conditions actives (ex: ["empoisonné", "à terre"])
+  spellSlots Json     @default("{}") // emplacements de sorts par niveau (ex: { "1": 3, "2": 1 }) — restant disponible
   updatedAt  DateTime @updatedAt
 
   logs CharacterSheetLog[]
