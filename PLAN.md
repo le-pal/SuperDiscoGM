@@ -316,7 +316,7 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 39 | Indicateur de présence câblé côté UI | Écran de partie | ❌ à faire | 12 |
 | 40 | Ambiance dynamique par lieu (hypothèse) | Écran de partie | ❌ à faire | 34, 12 |
 | 41 | Page écran de partie (portage complet) | Écran de partie | ❌ à faire | 9, 35, 36, 37, 38, 39, 40 |
-| 42 | API Parties (lancer/reprendre/rejoindre/bascule rôle) | Dashboard | ❌ à faire | 18, 23, 10 |
+| 42 | API Parties (lancer/reprendre/rejoindre/bascule rôle) | Dashboard | ✅ fait | 18, 23, 10 |
 | 43 | Agrégation dashboard | Dashboard | ❌ à faire | 42, 39 |
 | 44 | Page `/` (portage `dashboard.html`) | Dashboard | ❌ à faire | 9, 42, 43 |
 | 45 | API + page profil (couleur avatar) | Profil | ❌ à faire | 9, 10 |
