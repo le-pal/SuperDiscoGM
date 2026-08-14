@@ -283,13 +283,13 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 11 | Durcir l'auth Socket.IO (cookie de session, pas de userId client) | Fondations | fait | — |
 | 12 | Client Socket.IO (provider + hooks join/leave/presence) | Fondations | fait | 9, 11 |
 | 13 | Gestion utilisateurs & rôles (API Admin) | Admin | fait | 10 |
-| 14 | Envoi d'invitation (API, Super utilisateur) | Admin | à faire | 10, 18 |
+| 14 | Envoi d'invitation (API, Super utilisateur) | Admin | fait | 10, 18 |
 | 15 | Réglages globaux (prompt système, modèle, budget — API Admin) | Admin | fait | 10 |
 | 16 | Bibliothèque de personas MJ + résolution par spécificité | Admin | fait | 10 |
 | 17 | Page `/admin` (portage) | Admin | à faire | 9, 13, 14, 15, 16 |
 | 18 | API Campagnes (create/list/get) | Scénario | fait | 10 |
 | 19 | API Scénarios (create texte + upload fichier) | Scénario | fait (extraction texte = etape 20, separee) | 10 |
-| 20 | Extraction de texte des fichiers uploadés (pdf/docx/md) | Scénario | à faire | 19 |
+| 20 | Extraction de texte des fichiers uploadés (pdf/docx/md) | Scénario | fait | 19 |
 | 21 | Déclenchement de l'analyse + notification de fin | Scénario | à faire | 19, 20, 12 |
 | 22 | Ré-analyse d'un scénario modifié | Scénario | à faire | 21 |
 | 23 | Rattachement scénario ↔ campagne (ordre des chapitres) | Scénario | fait | 18, 19 |
