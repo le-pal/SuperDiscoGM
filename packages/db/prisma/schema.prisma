@@ -37,6 +37,19 @@ model User {
   sentInvitations   Invitation[]      @relation("InvitationSender")
   diceRolls         DiceRoll[]
   messages          Message[]
+  sessions          Session[]
+}
+
+// Auth maison (pas de lib tierce — next-auth v5 écarté en beta depuis fin 2023, cadence en
+// ralentissement, cf doc/technique/questions.md [Q38]). Session opaque en DB : seul le hash du
+// token est stocké, révocation triviale (delete row), pas de JWT à gérer.
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
 
 // Invitation par lien pour rejoindre une campagne sans que l'Admin crée chaque compte [Q38]

@@ -1,29 +1,64 @@
 services:
-  # Postgres est embarqué DANS l'image web (docker-entrypoint.sh gère init/migrations/seed
-  # avant de démarrer Next.js) — choix explicite et temporaire pour la simplicité d'un seul
-  # conteneur. À séparer plus tard (voir doc/technique/architecture.md). worker s'y connecte
-  # par le réseau compose interne (host "web", port 5432 — jamais exposé à l'extérieur).
+  # Postgres en service séparé, image officielle — le Postgres embarqué dans web (initdb à
+  # chaque premier démarrage + migrations + seed avant de lancer Next.js) rendait le démarrage
+  # trop lent. Migrations Prisma versionnées appliquées par le conteneur `migrate` one-shot
+  # avant que web/worker ne démarrent (équivalent Flyway).
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  migrate:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: build
+    command:
+      [
+        "sh",
+        "-c",
+        "npm run migrate:deploy --workspace=packages/db && ADMIN_EMAIL=$ADMIN_EMAIL ADMIN_PASSWORD=$ADMIN_PASSWORD npm run seed --workspace=packages/db",
+      ]
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
   web:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
       REDIS_URL: redis://redis:6379
       NODE_ENV: production
-    volumes:
-      - web_pgdata:/app/pgdata
     depends_on:
+      postgres:
+        condition: service_healthy
       redis:
         condition: service_started
+      migrate:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://localhost:3000').then(()=>process.exit(0)).catch(()=>process.exit(1))"]
       interval: 5s
       timeout: 5s
       retries: 20
-      start_period: 30s
+      start_period: 15s
     restart: unless-stopped
 
   worker:
@@ -31,14 +66,16 @@ services:
       context: .
       dockerfile: apps/worker/Dockerfile
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@web:5432/${POSTGRES_DB}?schema=public
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
       REDIS_URL: redis://redis:6379
       NODE_ENV: production
     depends_on:
-      web:
+      postgres:
         condition: service_healthy
       redis:
         condition: service_started
+      migrate:
+        condition: service_completed_successfully
     restart: unless-stopped
 
   redis:
@@ -69,7 +106,7 @@ services:
     restart: unless-stopped
 
 volumes:
-  web_pgdata:
+  postgres_data:
   redis_data:
   ollama_data:
   caddy_data:

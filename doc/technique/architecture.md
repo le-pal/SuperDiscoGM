@@ -10,11 +10,11 @@ flowchart TB
         UI["UI Next.js<br/>(joueurs, MJ humain = Super utilisateur, Admin)"]
     end
 
-    subgraph WebProc["apps/web — un seul conteneur"]
+    subgraph WebProc["apps/web — un conteneur"]
         Next["Next.js<br/>pages + Route Handlers (REST/BFF)"]
         Socket["Socket.IO<br/>chat temps réel + présence"]
+        Auth["Auth maison<br/>(session DB, cookie httpOnly)"]
         LLMLive["Appel LLM synchrone<br/>(réponse MJ-IA en direct, streamée)"]
-        PGEmbed[("Postgres embarqué<br/>(V1 — séparation prévue plus tard)")]
     end
 
     subgraph WorkerProc["apps/worker — process séparé"]
@@ -24,20 +24,22 @@ flowchart TB
         JobSummary["job: consolidation résumés [Q22]"]
     end
 
+    PG[("PostgreSQL<br/>(service séparé, image officielle)")]
     Redis[("Redis<br/>(file BullMQ)")]
-    LLM{{"Fournisseur LLM<br/>(package ai)<br/>dev: Ollama local · prod: gros modèle cloud"}}
+    LLM{{"Fournisseur LLM<br/>(packages/llm sur le package ai)<br/>dev: Ollama local · prod: gros modèle cloud"}}
 
     UI <-->|HTTP| Next
     UI <-->|WebSocket| Socket
-    Next --> PGEmbed
-    Socket --> PGEmbed
+    Next --> Auth
+    Next --> PG
+    Socket --> PG
     Socket --> LLMLive
     LLMLive --> LLM
     Next -->|enqueue job| Redis
     Redis --> BullMQ
     BullMQ --> JobIngest & JobEntity & JobSummary
-    JobIngest & JobEntity & JobSummary -->|réseau compose interne, port 5432 jamais exposé| PGEmbed
-    JobIngest & JobEntity & JobSummary -.->|appel LLM async, task #7| LLM
+    JobIngest & JobEntity & JobSummary --> PG
+    JobIngest -->|appel LLM, packages/llm| LLM
 
     style WebProc fill:#1b1e2a,stroke:#e0a955,color:#e8e6e3
     style WorkerProc fill:#1b1e2a,stroke:#6c63b5,color:#e8e6e3
@@ -46,28 +48,31 @@ flowchart TB
 ## Pourquoi ce découpage
 
 - **Un seul process pour `web`** (Next.js + Socket.IO sur le même serveur HTTP custom) : évite de partager l'auth/les cookies entre deux origines séparées. Voir `spec.md` § Stack technique pour la justification complète (challengée avec Philippe avant de coder).
-- **Postgres embarqué dans `web`** (`docker-entrypoint.sh` gère init/migrations/seed avant de démarrer Next.js) : choix explicite et temporaire de Philippe pour la simplicité d'un seul conteneur, au prix de la séparation de cycle de vie DB/appli. `worker` s'y connecte par le réseau compose interne (host `web`), le port 5432 n'est jamais exposé à l'extérieur. **Séparation en service dédié prévue plus tard** ("V25" — repère volontairement lointain).
+- **Postgres en service séparé** (image officielle `postgres:16-alpine`, `migrate` en conteneur one-shot dédié). *Un temps embarqué dans `web` pour la simplicité — abandonné : initdb au premier démarrage rendait le boot du conteneur trop lent en pratique, séparé dès que le problème a été observé.*
 - **`worker` séparé** : ne porte que ce qui est *explicitement* asynchrone dans la spec fonctionnelle — l'ingestion de scénario, l'extraction mémoire, la consolidation de résumés. **La réponse du MJ-IA en direct dans le chat ne passe jamais par une queue** : elle doit rester synchrone/streamée pour ne pas casser le rythme de jeu.
-- **`packages/db`** : schéma Prisma partagé, source unique de vérité du modèle de données pour `web` et `worker`. Migrations versionnées (équivalent Flyway) appliquées via `prisma migrate deploy` au démarrage du conteneur `web` — jamais `migrate dev` en dehors du poste de dev.
+- **Auth maison, pas de lib tierce** : next-auth v5 écarté après audit (beta depuis fin 2023, cadence de release en ralentissement net). Session opaque stockée en DB (`Session.tokenHash`), cookie httpOnly — révocation triviale, pas de JWT à gérer. Garde léger dans `proxy.ts` (présence du cookie), vérification authoritative systématique dans chaque page/route via `getCurrentUser()`.
+- **`packages/db`** : schéma Prisma 7 partagé (driver adapter `@prisma/adapter-pg` obligatoire depuis la v7), source unique de vérité du modèle de données pour `web` et `worker`. Migrations versionnées (équivalent Flyway) appliquées par le conteneur `migrate` — jamais `migrate dev` en dehors du poste de dev.
 - **`packages/jobs`** : contrats partagés (noms de queue + types de payload) entre le producteur (`web`, qui enqueue) et le consommateur (`worker`) — évite une désynchronisation silencieuse entre les deux process.
+- **`packages/llm`** : abstraction multi-fournisseurs (Anthropic/OpenAI/Ollama) au-dessus du package `ai`, avec un outil `roll_dice` déterministe comme premier point d'extension pour le tool-calling obligatoire (dés, moteur de règles, fiche perso — jamais improvisé en texte libre par le modèle).
 - **Confidentialité du party split [Q26]** : appliquée côté serveur dans `socket.ts` — un message privé est émis uniquement vers les rooms `user:<id>` des destinataires autorisés, jamais diffusé puis filtré côté client.
 
 ## Flux clés
 
-1. **Tour de jeu normal** : joueur → Socket.IO → MJ-IA génère la réponse (appel LLM synchrone, streamé) → diffusion (room `party:x` publique, ou rooms `user:x` ciblées si aparté privé) → persistance `Message` en DB.
-2. **Ingestion de scénario** : Super utilisateur lance l'analyse → `web` enqueue un job `scenario-ingestion` → `worker` le consomme, appelle le LLM (task #7, pas encore câblé), écrit les `Phase`, notifie.
-3. **Mémoire par entité** : après un échange marquant → job `entity-memory-extraction` → `worker` met à jour `EntityMemory` + `EntityMemoryIndexEntry`.
-4. **Résumés hiérarchiques** : job `summary-consolidation` → `worker` met à jour `Summary` (niveau SESSION / ARC / CAMPAIGN).
+1. **Connexion** : POST `/api/auth/login` → vérifie le mot de passe (bcrypt) → crée une `Session` en DB → cookie httpOnly. `proxy.ts` redirige vers `/login` si le cookie est absent ; chaque page revérifie en DB via `getCurrentUser()`.
+2. **Tour de jeu normal** : joueur → Socket.IO → MJ-IA génère la réponse (appel LLM synchrone, streamé) → diffusion (room `party:x` publique, ou rooms `user:x` ciblées si aparté privé) → persistance `Message` en DB.
+3. **Ingestion de scénario** : Super utilisateur lance l'analyse → `web` enqueue un job `scenario-ingestion` → `worker` le consomme, appelle le LLM via `packages/llm` (`generateObject`), écrit les `Phase` avec métadonnées complètes, notifie.
+4. **Mémoire par entité** : après un échange marquant → job `entity-memory-extraction` → `worker` met à jour `EntityMemory` + `EntityMemoryIndexEntry`.
+5. **Résumés hiérarchiques** : job `summary-consolidation` → `worker` met à jour `Summary` (niveau SESSION / ARC / CAMPAIGN).
 
 ## Ce qui est déjà scaffoldé vs pas encore
 
 | Composant | État |
 |---|---|
 | `apps/web` — Next.js + serveur custom + Socket.IO | ✅ scaffoldé, testé (boot + HTTP 200) |
-| `packages/db` — schéma Prisma complet + migration initiale | ✅ migration `init` générée et validée contre une vraie DB |
-| `apps/worker` — 3 workers BullMQ | 🚧 scaffoldé avec des stubs (pas d'appel LLM réel), connexion DB/Redis validée |
+| `packages/db` — schéma Prisma 7 + driver adapter + migrations | ✅ 3 migrations générées et validées contre une vraie DB |
+| Auth maison (session DB, login/logout/invitation) | ✅ **validé bout en bout** : redirection, rejet mauvais mot de passe, cookie, page authentifiée, déconnexion |
+| `apps/worker` — 3 workers BullMQ | 🚧 `ingestion.ts` branché sur un vrai appel LLM ; `entityMemory.ts`/`summaries.ts` encore en stub |
 | `packages/jobs` — contrats de queue partagés | ✅ scaffoldé |
-| Docker Compose (web avec Postgres embarqué, worker, redis, caddy, ollama dev) | ✅ **validé bout en bout** : build, migrations auto (équiv. Flyway), seed, page lisant la DB au runtime, healthcheck, worker connecté |
-| Auth.js v5 | ❌ pas commencé |
-| Abstraction LLM multi-fournisseurs (`ai`) | ❌ pas commencé — tout ce qui touche au LLM est un stub pour l'instant |
-| Pages réelles (portage de la maquette en composants React) | ❌ pas commencé |
+| `packages/llm` — abstraction multi-fournisseurs + outil `roll_dice` | ✅ scaffoldé, branché dans `ingestion.ts` — pas encore testé contre un vrai Ollama qui tourne |
+| Docker Compose (postgres, migrate, web, worker, redis, caddy, ollama dev) | ✅ **validé bout en bout**, démarrage ~5s après build (Postgres séparé, pas embarqué) |
+| Pages réelles (portage de la maquette en composants React) | ❌ pas commencé — seules login/invite/accueil existent, en style minimal fonctionnel |

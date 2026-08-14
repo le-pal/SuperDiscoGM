@@ -3,10 +3,9 @@
 # un déploiement perso/petit groupe (cf doc/technique/spec.md). Debian slim (pas Alpine) pour
 # éviter les soucis connus OpenSSL/musl avec Prisma.
 #
-# Postgres est embarqué DANS cette image (choix explicite, temporaire — voir
-# doc/technique/architecture.md) : un seul conteneur web+DB, worker s'y connecte par le réseau
-# compose. Nécessite de rester root au runtime (Postgres doit pouvoir s'initialiser/chown son
-# PGDATA) — pas d'utilisateur non-root ici, contrairement à apps/worker/Dockerfile.
+# Postgres est un service séparé (voir docker-compose.yml) — la version "Postgres embarqué
+# dans web" a été abandonnée : initdb au premier démarrage rendait le boot du conteneur trop
+# lent. Les migrations sont appliquées par le conteneur `migrate` dédié, pas par web lui-même.
 FROM node:24-bookworm-slim AS base
 WORKDIR /app
 
@@ -33,10 +32,13 @@ RUN npm run build --workspace=apps/web
 
 FROM base AS runtime
 ENV NODE_ENV=production
+# Prisma a besoin du CLI openssl au runtime pour détecter correctement la variante du query
+# engine à charger (même souci rencontré et corrigé sur apps/worker/Dockerfile).
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends postgresql \
+  && apt-get install -y --no-install-recommends openssl \
   && rm -rf /var/lib/apt/lists/*
 COPY --from=build /app /app
-RUN chmod +x /app/apps/web/docker-entrypoint.sh
-EXPOSE 3000 5432
-ENTRYPOINT ["/app/apps/web/docker-entrypoint.sh"]
+RUN useradd --uid 1001 --create-home appuser && chown -R appuser:appuser /app
+USER appuser
+EXPOSE 3000
+CMD ["npm", "run", "start", "--workspace=apps/web"]

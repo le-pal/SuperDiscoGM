@@ -12,7 +12,6 @@
     "@superdiscogm/db": "*",
     "bcryptjs": "^3.0.3",
     "next": "16.3.1",
-    "next-auth": "^5.0.0-beta.32",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "socket.io": "^4.8.3",
