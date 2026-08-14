@@ -1,6 +1,5 @@
-import { redirect } from "next/navigation";
 import { prisma } from "@superdiscogm/db";
-import { getCurrentUser } from "@/server/auth";
+import { requireUser } from "@/server/authz";
 import { LogoutButton } from "./logout-button";
 
 // Page de démarrage minimale — sert de "hello world" bout en bout : Docker -> Postgres ->
@@ -11,8 +10,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   // Vérification authoritative ici, jamais seulement dans proxy.ts (cf src/proxy.ts).
-  const user = await getCurrentUser();
-  if (!user) redirect("/login");
+  const user = await requireUser();
 
   const settings = await prisma.globalSettings.findUnique({ where: { id: 1 } });
 

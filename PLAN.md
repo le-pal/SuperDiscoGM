@@ -279,7 +279,7 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 7 | Docker Compose (postgres/migrate/web/worker/redis/caddy/ollama dev) | Infra (existant) | fait | — |
 | 8 | Pages minimales (login, invite/accept, accueil hello-world) | UI (existant) | fait (à remplacer par le vrai portage) | — |
 | 9 | Design system + layout partagé (AppShell/TopNav/Avatar) | Fondations | à faire | — |
-| 10 | Garde de rôle côté serveur (requireUser/requireRole) | Fondations | à faire | — |
+| 10 | Garde de rôle côté serveur (requireUser/requireRole) | Fondations | fait | — |
 | 11 | Durcir l'auth Socket.IO (cookie de session, pas de userId client) | Fondations | fait | — |
 | 12 | Client Socket.IO (provider + hooks join/leave/presence) | Fondations | à faire | 9, 11 |
 | 13 | Gestion utilisateurs & rôles (API Admin) | Admin | à faire | 10 |
