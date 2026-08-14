@@ -1,3 +1,12 @@
+// Polyfill obligatoire AVANT l'import de "next" : le serveur custom (lancé via `tsx`,
+// pas `next start`) ne passe pas par le bootstrap CLI de Next.js qui pose normalement
+// `globalThis.AsyncLocalStorage`. Sans lui, Next retombe sur son FakeAsyncLocalStorage
+// interne et toute route qui en dépend (App Router) crashe au premier appel avec
+// "Invariant: AsyncLocalStorage accessed in runtime where it is not available".
+import { AsyncLocalStorage } from "node:async_hooks";
+(globalThis as { AsyncLocalStorage?: typeof AsyncLocalStorage }).AsyncLocalStorage ??=
+  AsyncLocalStorage;
+
 import { createServer } from "node:http";
 import next from "next";
 import { createSocketServer } from "./src/server/socket";
