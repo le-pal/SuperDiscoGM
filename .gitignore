@@ -10,6 +10,7 @@ claude_github_account_key
 # OS
 .DS_Store
 Thumbs.db
+*.zip
 
 # CA locale (proxy/antivirus TLS-inspecting) pour builds Docker sur ce poste — jamais dans l'image de prod
 docker/local-ca/*.crt
