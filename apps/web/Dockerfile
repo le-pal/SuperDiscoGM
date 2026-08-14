@@ -27,6 +27,10 @@ RUN npm ci
 
 FROM deps AS build
 COPY . .
+# DATABASE_URL factice : `prisma generate` (Prisma 7, via prisma.config.ts) exige la variable
+# résolvable mais ne se connecte pas réellement à la DB — la vraie valeur vient du runtime
+# (docker-compose.yml), jamais présente ici puisque .env est exclu du contexte de build.
+ENV DATABASE_URL="postgresql://build:build@localhost:5432/build?schema=public"
 RUN npm run db:generate
 RUN npm run build --workspace=apps/web
 
