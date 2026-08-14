@@ -55,7 +55,23 @@ export async function processScenarioIngestion(job: Job<ScenarioIngestionJob>) {
     phases = object.phases;
   }
 
+  // Ré-analyse [Q18] : une partie déjà en cours ne doit pas casser en direct — les Phase encore
+  // référencées par une Party ACTIVE/PAUSED (currentPhaseId) sont préservées, seules les Phase
+  // orphelines (aucune partie ne pointe dessus, ex: une analyse précédente jamais jouée) sont
+  // remplacées par le nouveau découpage.
+  const referencedPhaseIds = (
+    await prisma.party.findMany({
+      where: { scenarioId, currentPhaseId: { not: null } },
+      select: { currentPhaseId: true },
+    })
+  )
+    .map((p) => p.currentPhaseId)
+    .filter((id): id is string => id !== null);
+
   await prisma.$transaction([
+    prisma.phase.deleteMany({
+      where: { scenarioId, id: { notIn: referencedPhaseIds } },
+    }),
     ...phases.map((phase, index) =>
       prisma.phase.create({
         data: {

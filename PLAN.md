@@ -296,7 +296,7 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 19 | API Scénarios (create texte + upload fichier) | Scénario | ✅ fait (extraction texte = etape 20, separee) | 10 |
 | 20 | Extraction de texte des fichiers uploadés (pdf/docx/md) | Scénario | ✅ fait | 19 |
 | 21 | Déclenchement de l'analyse + notification de fin | Scénario | ✅ fait | 19, 20, 12 |
-| 22 | Ré-analyse d'un scénario modifié | Scénario | ❌ à faire | 21 |
+| 22 | Ré-analyse d'un scénario modifié | Scénario | ✅ fait | 21 |
 | 23 | Rattachement scénario ↔ campagne (ordre des chapitres) | Scénario | ✅ fait | 18, 19 |
 | 24 | Pages d'ingestion (portage `ingestion-scenario.html`) | Scénario | ❌ à faire | 9, 19, 20, 21, 22 |
 | 25 | Création de personnage (gap comblé par hypothèse) | Fiche perso | ❌ à faire | 18 |

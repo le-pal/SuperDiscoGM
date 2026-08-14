@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { checkRole } from "@/server/authz";
 import { triggerScenarioAnalysis } from "@/server/scenarioAnalysis";
 
-// Déclenche l'analyse asynchrone [Q14] — passe le statut à ANALYZING et enqueue le job, déjà
-// consommé côté apps/worker (ingestion.ts, appel LLM réel). Pas de relecture humaine obligatoire
-// avant mise en jeu [Q15] : dès que le worker termine, le scénario est READY et jouable.
+// Ré-analyse d'un scénario modifié [Q18]. Route distincte de /analyze pour la clarté de l'API
+// (intention explicite), mais même logique — le job d'ingestion préserve déjà les Phase
+// référencées par une Party ACTIVE/PAUSED, une partie en cours ne casse pas en direct.
 export async function POST(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const user = await checkRole("SUPER_USER");
   if (!user) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
