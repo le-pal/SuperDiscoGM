@@ -304,7 +304,7 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 27 | API fiche : lecture élargie + actions joueur (montée de niveau) | Fiche perso | ✅ fait | 25 |
 | 28 | Page fiche de personnage (portage) | Fiche perso | ❌ à faire | 9, 27 |
 | 29 | Panneau fiche condensée (sidebar écran de partie) | Fiche perso | ❌ à faire | 27 |
-| 30 | Assemblage du contexte de tour (5 blocs, troncature Q19) | Mémoire & contexte | ❌ à faire | 16, 26 |
+| 30 | Assemblage du contexte de tour (5 blocs, troncature Q19) | Mémoire & contexte | ✅ fait | 16, 26 |
 | 31 | Outil de récupération à la demande (lookup_entity_history) | Mémoire & contexte | ❌ à faire | 30 |
 | 32 | Extraction réelle de mémoire par entité (remplace le stub) | Mémoire & contexte | ✅ fait (pas encore testé contre un LLM qui tourne) | — |
 | 33 | Consolidation réelle des résumés hiérarchiques (remplace le stub) | Mémoire & contexte | ✅ fait (pas encore testé contre un LLM qui tourne) | — |
