@@ -10,9 +10,13 @@
     "dev:worker": "npm run dev --workspace=apps/worker",
     "build": "npm run build --workspace=packages/db && npm run build --workspace=apps/web && npm run build --workspace=apps/worker",
     "db:generate": "npm run generate --workspace=packages/db",
-    "db:migrate": "npm run migrate:dev --workspace=packages/db"
+    "db:migrate": "npm run migrate:dev --workspace=packages/db",
+    "test": "vitest run"
   },
   "engines": {
     "node": ">=22"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.10"
   }
 }
