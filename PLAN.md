@@ -319,7 +319,7 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 42 | API Parties (lancer/reprendre/rejoindre/bascule rôle) | Dashboard | ✅ fait | 18, 23, 10 |
 | 43 | Agrégation dashboard | Dashboard | ❌ à faire | 42, 39 |
 | 44 | Page `/` (portage `dashboard.html`) | Dashboard | ❌ à faire | 9, 42, 43 |
-| 45 | API + page profil (couleur avatar) | Profil | ❌ à faire | 9, 10 |
+| 45 | API + page profil (couleur avatar) | Profil | ✅ fait (valide tsc/next build uniquement, jamais teste dans un navigateur - Docker/dev server indisponibles) | 9, 10 |
 | 46 | Bloc-notes privé (API + onglet sidebar) | Bloc-notes | ✅ fait (API ; onglet sidebar reporte a l'etape 41) | 41, 10 |
 | 47 | Mise en place Vitest + tests unitaires/intégration ciblés | Tests | ✅ fait (infra + 29 tests moteur de regles/des, commit 842dee4 ; tests d'integration DB pour turnContext/turnEngine reportes, besoin d'un Postgres joignable) | 26, 30 |
 | 48 | Suivi de budget/coût API (UsageLog) | Infra | ❌ à faire | 35, 17 |
