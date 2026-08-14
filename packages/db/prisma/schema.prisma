@@ -408,3 +408,22 @@ model Summary {
   // applicativement (findFirst + create/update) dans apps/worker/src/workers/summaries.ts.
   @@index([level, campaignId])
 }
+
+// ---------- Suivi de budget/coût API ----------
+// Coût des appels au modèle porté par un budget global géré par l'Admin [Q03] (voir
+// GlobalSettings.monthlyBudget) — un enregistrement par appel LLM réel (moteur de tour,
+// extraction de mémoire, consolidation de résumés). costUsd est estimé via une table de tarifs
+// (packages/llm/src/pricing.ts) et vaut NULL si le modèle actif n'y figure pas — mieux vaut un
+// suivi silencieusement incomplet qu'un chiffre inventé affiché comme fiable à l'Admin.
+model UsageLog {
+  id           String   @id @default(cuid())
+  provider     String
+  model        String
+  inputTokens  Int
+  outputTokens Int
+  costUsd      Decimal? @db.Decimal(10, 6)
+  source       String // "turn_engine" | "entity_memory" | "summary_consolidation" | "scenario_ingestion"
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+}

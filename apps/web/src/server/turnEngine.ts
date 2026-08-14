@@ -2,7 +2,7 @@ import type { Server as SocketIOServer } from "socket.io";
 import { tool, streamText, stepCountIs, type ModelMessage } from "ai";
 import { z } from "zod";
 import { prisma } from "@superdiscogm/db";
-import { getConfiguredModel, buildGameTools } from "@superdiscogm/llm";
+import { getConfiguredModelInfo, buildGameTools, recordUsage } from "@superdiscogm/llm";
 import { assembleTurnContext } from "./turnContext";
 import { entityMemoryQueue, summaryConsolidationQueue } from "./queue";
 import type { ChatMessagePayload } from "./socket";
@@ -169,7 +169,7 @@ export async function runMjTurn(
     content: m.authorName ? `[${m.authorName}] ${m.content}` : m.content,
   }));
 
-  const model = await getConfiguredModel();
+  const { model, provider, modelName } = await getConfiguredModelInfo();
   const tools = {
     ...buildGameTools({ campaignId: party.campaignId, partyId }),
     reveal_huddle: createRevealHuddleTool(io, partyId),
@@ -199,6 +199,13 @@ export async function runMjTurn(
       createdAt: mjMessage.createdAt,
     });
   }
+
+  // Suivi de budget/coût [Q03] (étape 48) — journalisé après consommation du stream, jamais
+  // bloquant pour la réponse déjà envoyée au joueur si l'écriture échoue.
+  const usage = await result.usage;
+  await recordUsage({ provider, model: modelName, usage, source: "turn_engine" }).catch((err) => {
+    console.error("[usage] échec de journalisation (turn_engine) :", err);
+  });
 
   // Transition de phase [Q17] : advance_phase (étape 34) mute déjà l'état, il ne manque que
   // l'annonce visible en chat (repère SYSTEM), seule chose que le tool lui-même ne peut pas faire

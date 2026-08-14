@@ -1,7 +1,7 @@
 import type { Job } from "bullmq";
 import { generateText } from "ai";
 import { prisma } from "@superdiscogm/db";
-import { getConfiguredModel } from "@superdiscogm/llm";
+import { getConfiguredModelInfo, recordUsage } from "@superdiscogm/llm";
 import type { SummaryConsolidationJob } from "@superdiscogm/jobs";
 
 // Hiérarchie de résumés à 3 niveaux [Q22] : session -> arc/scénario -> campagne.
@@ -40,14 +40,18 @@ export async function processSummaryConsolidation(job: Job<SummaryConsolidationJ
 
   if (sourceText.trim().length === 0) return; // rien à consolider pour l'instant
 
-  const model = await getConfiguredModel();
-  const { text: content } = await generateText({
+  const { model, provider, modelName } = await getConfiguredModelInfo();
+  const { text: content, usage } = await generateText({
     model,
     prompt:
       `Condense ce${level === "SESSION" ? " fil de messages de partie" : "s résumés"} de jeu de rôle ` +
       "en un résumé fidèle et concis, qui garde les décisions et événements importants pour qu'un " +
       "Maître du Jeu puisse reprendre la partie sans relire le détail brut.\n\n" +
       `Niveau : ${level}\n\n${sourceText}`,
+  });
+
+  await recordUsage({ provider, model: modelName, usage, source: "summary_consolidation" }).catch((err) => {
+    console.error("[usage] échec de journalisation (summary_consolidation) :", err);
   });
 
   // findFirst + create/update plutôt qu'un upsert sur clé composite : partyId/scenarioId sont

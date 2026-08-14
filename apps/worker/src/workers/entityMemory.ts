@@ -2,7 +2,7 @@ import type { Job } from "bullmq";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { prisma } from "@superdiscogm/db";
-import { getConfiguredModel } from "@superdiscogm/llm";
+import { getConfiguredModelInfo, recordUsage } from "@superdiscogm/llm";
 import type { EntityMemoryExtractionJob } from "@superdiscogm/jobs";
 
 // Mémoire indexée par entité [Q41][Q42][Q43] : extraction automatique déclenchée après un
@@ -44,8 +44,8 @@ export async function processEntityMemoryExtraction(job: Job<EntityMemoryExtract
     ? existing.map((e) => `- (${e.type}) ${e.name} : ${e.summary}`).join("\n")
     : "(aucune entité connue pour l'instant)";
 
-  const model = await getConfiguredModel();
-  const { object } = await generateObject({
+  const { model, provider, modelName } = await getConfiguredModelInfo();
+  const { object, usage } = await generateObject({
     model,
     schema: entitySchema,
     prompt:
@@ -55,6 +55,10 @@ export async function processEntityMemoryExtraction(job: Job<EntityMemoryExtract
       "explicitement dans l'échange.\n\n" +
       `Entités déjà connues :\n${existingContext}\n\n` +
       `Échange à analyser :\n${transcript}`,
+  });
+
+  await recordUsage({ provider, model: modelName, usage, source: "entity_memory" }).catch((err) => {
+    console.error("[usage] échec de journalisation (entity_memory) :", err);
   });
 
   for (const entity of object.entities) {

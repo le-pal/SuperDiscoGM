@@ -28,5 +28,20 @@ export async function getConfiguredModel(): Promise<LanguageModel> {
   return resolveModel(settings.activeProvider, settings.activeModel);
 }
 
+// Variante utilisée par les appelants qui journalisent l'usage (étape 48) — provider/model en
+// texte sont nécessaires pour recordUsage() (estimation de coût par la table de tarifs) et ne
+// sont pas récupérables depuis un LanguageModel déjà résolu.
+export async function getConfiguredModelInfo(): Promise<{ model: LanguageModel; provider: string; modelName: string }> {
+  const settings = await prisma.globalSettings.findUniqueOrThrow({ where: { id: 1 } });
+  return {
+    model: resolveModel(settings.activeProvider, settings.activeModel),
+    provider: settings.activeProvider,
+    modelName: settings.activeModel,
+  };
+}
+
 export { gameTools, buildGameTools, rollDiceTool, rollDice, createLookupEntityHistoryTool, createAdvancePhaseTool } from "./tools";
 export type { DiceRollResult } from "./tools";
+export { recordUsage } from "./usage";
+export type { UsageSource } from "./usage";
+export { estimateCostUsd } from "./pricing";

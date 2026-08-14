@@ -16,7 +16,11 @@ export const dynamic = "force-dynamic";
 export default async function AdminPage() {
   const admin = await requireRole("ADMIN");
 
-  const [users, settings, promptHistory, personas, campaigns] = await Promise.all([
+  const startOfMonth = new Date();
+  startOfMonth.setDate(1);
+  startOfMonth.setHours(0, 0, 0, 0);
+
+  const [users, settings, promptHistory, personas, campaigns, usageAgg] = await Promise.all([
     prisma.user.findMany({
       select: { id: true, name: true, email: true, role: true },
       orderBy: { createdAt: "asc" },
@@ -35,6 +39,13 @@ export default async function AdminPage() {
       },
     }),
     prisma.campaign.findMany({ select: { id: true, name: true }, orderBy: { createdAt: "desc" } }),
+    // Suivi de budget/coût [Q03] (étape 48) — somme du mois en cours, calculée à l'affichage
+    // plutôt que maintenue en continu : volume attendu (usage perso/petit groupe [Q40]) trop
+    // faible pour justifier un compteur dénormalisé.
+    prisma.usageLog.aggregate({
+      where: { createdAt: { gte: startOfMonth } },
+      _sum: { costUsd: true, inputTokens: true, outputTokens: true },
+    }),
   ]);
 
   return (
@@ -69,6 +80,11 @@ export default async function AdminPage() {
           activeProvider={settings.activeProvider}
           activeModel={settings.activeModel}
           monthlyBudget={settings.monthlyBudget ? Number(settings.monthlyBudget) : null}
+          usageThisMonth={{
+            costUsd: usageAgg._sum.costUsd ? Number(usageAgg._sum.costUsd) : null,
+            inputTokens: usageAgg._sum.inputTokens ?? 0,
+            outputTokens: usageAgg._sum.outputTokens ?? 0,
+          }}
         />
       </div>
 

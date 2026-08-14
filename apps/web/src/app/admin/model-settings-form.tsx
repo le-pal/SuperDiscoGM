@@ -8,16 +8,20 @@ const PROVIDERS = ["anthropic", "openai", "ollama"] as const;
 // Architecture multi-fournisseurs [Q37] : le modèle est un identifiant texte libre (pas un enum
 // figé côté UI) — la liste des modèles disponibles varie trop souvent par fournisseur pour être
 // codée en dur ici sans risquer de devenir fausse. Coût des appels : budget global géré par
-// l'Admin [Q03], suivi réel du consommé reporté à l'étape 48 (UsageLog, pas encore construit) —
-// ce champ n'est pour l'instant qu'un plafond déclaratif, pas un compteur calculé.
+// l'Admin [Q03] ; le consommé réel (étape 48, UsageLog) est en USD (tarifs fournisseurs
+// usuellement libellés ainsi) alors que le plafond saisi ici est en € — pas de conversion de
+// change en V1, les deux chiffres restent volontairement affichés dans leur devise d'origine
+// plutôt que de faire semblant d'une parité qui n'existe pas.
 export function ModelSettingsForm({
   activeProvider,
   activeModel,
   monthlyBudget,
+  usageThisMonth,
 }: {
   activeProvider: string;
   activeModel: string;
   monthlyBudget: number | null;
+  usageThisMonth: { costUsd: number | null; inputTokens: number; outputTokens: number };
 }) {
   const router = useRouter();
   const [provider, setProvider] = useState(activeProvider);
@@ -56,6 +60,15 @@ export function ModelSettingsForm({
       <div className="field">
         <label>Budget mensuel (€)</label>
         <input type="number" min={0} step={1} value={budget} onChange={(e) => setBudget(Number(e.target.value))} disabled={saving} />
+      </div>
+      <div className="flex between" style={{ fontSize: ".8rem", marginBottom: 14 }}>
+        <span className="muted">Consommé ce mois-ci</span>
+        <span style={{ fontWeight: 700, color: "var(--accent)" }}>
+          {usageThisMonth.costUsd !== null ? `$${usageThisMonth.costUsd.toFixed(2)}` : "tarif inconnu"}
+          <span className="faint" style={{ fontWeight: 400, marginLeft: 6 }}>
+            ({usageThisMonth.inputTokens.toLocaleString("fr-FR")} / {usageThisMonth.outputTokens.toLocaleString("fr-FR")} tokens in/out)
+          </span>
+        </span>
       </div>
       <div className="flex" style={{ justifyContent: "flex-end" }}>
         <button type="button" className="btn primary small" onClick={save} disabled={saving}>

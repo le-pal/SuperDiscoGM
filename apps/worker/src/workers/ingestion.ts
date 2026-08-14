@@ -2,7 +2,7 @@ import type { Job } from "bullmq";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { prisma } from "@superdiscogm/db";
-import { getConfiguredModel } from "@superdiscogm/llm";
+import { getConfiguredModelInfo, recordUsage } from "@superdiscogm/llm";
 import type { ScenarioIngestionJob } from "@superdiscogm/jobs";
 import { publishNotification } from "../publisher";
 
@@ -42,8 +42,8 @@ export async function processScenarioIngestion(job: Job<ScenarioIngestionJob>) {
   let phases: z.infer<typeof phaseSchema>["phases"] = [];
 
   if (content.trim().length > 0) {
-    const model = await getConfiguredModel();
-    const { object } = await generateObject({
+    const { model, provider, modelName } = await getConfiguredModelInfo();
+    const { object, usage } = await generateObject({
       model,
       schema: phaseSchema,
       prompt:
@@ -53,6 +53,10 @@ export async function processScenarioIngestion(job: Job<ScenarioIngestionJob>) {
         `Scénario :\n${content}`,
     });
     phases = object.phases;
+
+    await recordUsage({ provider, model: modelName, usage, source: "scenario_ingestion" }).catch((err) => {
+      console.error("[usage] échec de journalisation (scenario_ingestion) :", err);
+    });
   }
 
   // Ré-analyse [Q18] : une partie déjà en cours ne doit pas casser en direct — les Phase encore
