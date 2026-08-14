@@ -301,8 +301,8 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 29 | Panneau fiche condensée (sidebar écran de partie) | Fiche perso | à faire | 27 |
 | 30 | Assemblage du contexte de tour (5 blocs, troncature Q19) | Mémoire & contexte | à faire | 16, 26 |
 | 31 | Outil de récupération à la demande (lookup_entity_history) | Mémoire & contexte | à faire | 30 |
-| 32 | Extraction réelle de mémoire par entité (remplace le stub) | Mémoire & contexte | à faire | — |
-| 33 | Consolidation réelle des résumés hiérarchiques (remplace le stub) | Mémoire & contexte | à faire | — |
+| 32 | Extraction réelle de mémoire par entité (remplace le stub) | Mémoire & contexte | fait (pas encore testé contre un LLM qui tourne) | — |
+| 33 | Consolidation réelle des résumés hiérarchiques (remplace le stub) | Mémoire & contexte | fait (pas encore testé contre un LLM qui tourne) | — |
 | 34 | Détection de transition de phase (outil `advance_phase`) | Mémoire & contexte | à faire | 30 |
 | 35 | Moteur de tour MJ côté serveur (persistance + génération streamée) | Écran de partie | à faire | 11, 12, 26, 30, 31, 34, 21 |
 | 36 | Party split — repère système + reveal | Écran de partie | à faire | 35 |
