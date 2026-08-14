@@ -1,18 +1,9 @@
 import { redirect } from "next/navigation";
 import type { Role, User } from "@superdiscogm/db";
 import { getCurrentUser } from "./auth";
+import { hasRole } from "@/lib/roles";
 
-// Hiérarchie à héritage strict [Q04] : chaque rôle a tous les droits des rôles en dessous.
-const ROLE_RANK: Record<Role, number> = {
-  SPECTATOR: 0,
-  USER: 1,
-  SUPER_USER: 2,
-  ADMIN: 3,
-};
-
-export function hasRole(user: Pick<User, "role">, minRole: Role): boolean {
-  return ROLE_RANK[user.role] >= ROLE_RANK[minRole];
-}
+export { hasRole };
 
 /** À utiliser dans les Server Components/pages : redirige vers /login si non connecté. */
 export async function requireUser(): Promise<User> {
@@ -21,7 +12,7 @@ export async function requireUser(): Promise<User> {
   return user;
 }
 
-/** Idem, mais exige au moins le rôle donné (héritage strict [Q04]) — sinon 403 via notFound-like redirect. */
+/** Idem, mais exige au moins le rôle donné (héritage strict [Q04]) — sinon redirige. */
 export async function requireRole(minRole: Role): Promise<User> {
   const user = await requireUser();
   if (!hasRole(user, minRole)) redirect("/");
