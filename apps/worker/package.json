@@ -10,6 +10,7 @@
   "dependencies": {
     "@superdiscogm/db": "*",
     "@superdiscogm/jobs": "*",
+    "@superdiscogm/llm": "*",
     "bullmq": "^6.1.1",
     "ioredis": "^5.9.3"
   },

@@ -1,13 +1,29 @@
 import type { Job } from "bullmq";
+import { generateObject } from "ai";
+import { z } from "zod";
 import { prisma } from "@superdiscogm/db";
+import { getConfiguredModel } from "@superdiscogm/llm";
 import type { ScenarioIngestionJob } from "@superdiscogm/jobs";
 
 // Pipeline d'ingestion de scénario [Q14] : asynchrone, notifie à la fin, pas de relecture
 // humaine obligatoire avant mise en jeu [Q15]. Découpage en granularité "scène" avec
 // métadonnées structurées (PNJ, lieu, déclencheurs, secrets) [Q16].
-//
-// TODO [task #7 — abstraction LLM multi-fournisseurs] : remplacer le découpage stub ci-dessous
-// par un vrai appel au modèle (via le package `ai`) qui annote le texte et le répartit en scènes.
+const phaseSchema = z.object({
+  phases: z
+    .array(
+      z.object({
+        title: z.string(),
+        summary: z.string(),
+        locationTag: z.string().nullable(),
+        npcTags: z.array(z.string()),
+        entryConditions: z.string().nullable(),
+        exitConditions: z.string().nullable(),
+        secrets: z.string().nullable(),
+      })
+    )
+    .min(1),
+});
+
 export async function processScenarioIngestion(job: Job<ScenarioIngestionJob>) {
   const { scenarioId } = job.data;
 
@@ -21,20 +37,36 @@ export async function processScenarioIngestion(job: Job<ScenarioIngestionJob>) {
     data: { status: "ANALYZING" },
   });
 
-  // --- stub de découpage, à remplacer par l'appel LLM réel ---
   const content = scenario.rawContent ?? "";
-  const stubPhases = content.length > 0 ? [{ title: "Scène 1", summary: content.slice(0, 280) }] : [];
-  // -------------------------------------------------------------
+  let phases: z.infer<typeof phaseSchema>["phases"] = [];
+
+  if (content.trim().length > 0) {
+    const model = await getConfiguredModel();
+    const { object } = await generateObject({
+      model,
+      schema: phaseSchema,
+      prompt:
+        "Découpe ce scénario de jeu de rôle en scènes jouables. Pour chaque scène : un titre court, " +
+        "un résumé, le lieu si identifiable, les PNJ présents, les conditions d'entrée/sortie, et les " +
+        "secrets à ne pas révéler d'emblée. Ne laisse aucune scène sans résumé.\n\n" +
+        `Scénario :\n${content}`,
+    });
+    phases = object.phases;
+  }
 
   await prisma.$transaction([
-    ...stubPhases.map((phase, index) =>
+    ...phases.map((phase, index) =>
       prisma.phase.create({
         data: {
           scenarioId,
           order: index,
           title: phase.title,
           summary: phase.summary,
-          npcTags: [],
+          locationTag: phase.locationTag,
+          npcTags: phase.npcTags,
+          entryConditions: phase.entryConditions,
+          exitConditions: phase.exitConditions,
+          secrets: phase.secrets,
         },
       })
     ),
