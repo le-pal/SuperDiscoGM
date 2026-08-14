@@ -13,6 +13,6 @@
     "db:migrate": "npm run migrate:dev --workspace=packages/db"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   }
 }

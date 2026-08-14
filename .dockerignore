@@ -1,0 +1,15 @@
+node_modules
+**/node_modules
+.next
+**/.next
+.git
+.idea
+.claude
+maquette
+doc
+*.md
+!apps/web/README.md
+.env
+.env.*
+claude_github_account_key
+claude_github_account_key.pub

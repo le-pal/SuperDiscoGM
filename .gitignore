@@ -11,6 +11,9 @@ claude_github_account_key
 .DS_Store
 Thumbs.db
 
+# CA locale (proxy/antivirus TLS-inspecting) pour builds Docker sur ce poste — jamais dans l'image de prod
+docker/local-ca/*.crt
+
 # Future Node/Next.js app (stack decided in doc/technique/spec.md)
 node_modules/
 .env

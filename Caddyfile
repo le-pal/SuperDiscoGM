@@ -1,0 +1,5 @@
+# Reverse proxy minimal devant web. Remplacer :80 par ton nom de domaine pour un TLS
+# automatique (Caddy gère Let's Encrypt tout seul dès qu'un domaine réel est configuré).
+:80 {
+	reverse_proxy web:3000
+}

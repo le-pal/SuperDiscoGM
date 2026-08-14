@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc -p tsconfig.json",
-    "start": "NODE_ENV=production node dist/index.js"
+    "build": "tsc --noEmit -p tsconfig.json",
+    "start": "NODE_ENV=production tsx src/index.ts"
   },
   "dependencies": {
     "@superdiscogm/db": "*",
