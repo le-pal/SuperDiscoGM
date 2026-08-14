@@ -291,7 +291,7 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 14 | Envoi d'invitation (API, Super utilisateur) | Admin | ✅ fait | 10, 18 |
 | 15 | Réglages globaux (prompt système, modèle, budget — API Admin) | Admin | ✅ fait | 10 |
 | 16 | Bibliothèque de personas MJ + résolution par spécificité | Admin | ✅ fait | 10 |
-| 17 | Page `/admin` (portage) | Admin | ❌ à faire | 9, 13, 14, 15, 16 |
+| 17 | Page `/admin` (portage) | Admin | ✅ fait (valide tsc/next build uniquement, jamais teste en navigateur) | 9, 13, 14, 15, 16 |
 | 18 | API Campagnes (create/list/get) | Scénario | ✅ fait | 10 |
 | 19 | API Scénarios (create texte + upload fichier) | Scénario | ✅ fait (extraction texte = etape 20, separee) | 10 |
 | 20 | Extraction de texte des fichiers uploadés (pdf/docx/md) | Scénario | ✅ fait | 19 |
