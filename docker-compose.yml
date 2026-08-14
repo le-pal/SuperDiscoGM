@@ -84,6 +84,33 @@ services:
       - redis_data:/data
     restart: unless-stopped
 
+  # Sauvegarde pg_dump planifiée dès la V1 (doc/technique/spec.md) : la conteneurisation ne
+  # remplace pas une sauvegarde, l'historique de campagne et les fiches perso n'ont pas de filet
+  # sinon. Fréquence/rétention non spécifiées côté doc — hypothèse V1 pragmatique : dump
+  # quotidien compressé, rétention glissante de 14 jours. Image postgres:16-alpine déjà de
+  # confiance (même que le service `postgres`) plutôt qu'une image tierce non auditée pour un
+  # simple besoin de `pg_dump` en boucle.
+  backup:
+    image: postgres:16-alpine
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_backups:/backups
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        while true; do
+          FILE="/backups/${POSTGRES_DB}_$(date +%Y%m%d_%H%M%S).sql.gz"
+          pg_dump -h postgres -U ${POSTGRES_USER} ${POSTGRES_DB} | gzip > "$$FILE"
+          echo "Sauvegarde ecrite : $$FILE"
+          find /backups -name '*.sql.gz' -mtime +14 -delete
+          sleep 86400
+        done
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
   # Fournisseur LLM local pour le dev [Q37] — profil "dev" uniquement, jamais démarré en prod.
   # Lancer avec : docker compose --profile dev up
   ollama:
@@ -107,6 +134,7 @@ services:
 
 volumes:
   postgres_data:
+  postgres_backups:
   redis_data:
   ollama_data:
   caddy_data:

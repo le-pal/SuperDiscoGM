@@ -323,5 +323,5 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 46 | Bloc-notes privé (API + onglet sidebar) | Bloc-notes | ✅ fait (API ; onglet sidebar reporte a l'etape 41) | 41, 10 |
 | 47 | Mise en place Vitest + tests unitaires/intégration ciblés | Tests | ✅ fait (infra + 29 tests moteur de regles/des, commit 842dee4 ; tests d'integration DB pour turnContext/turnEngine reportes, besoin d'un Postgres joignable) | 26, 30 |
 | 48 | Suivi de budget/coût API (UsageLog) | Infra | ❌ à faire | 35, 17 |
-| 49 | Sauvegarde `pg_dump` planifiée | Infra | ❌ à faire | — |
+| 49 | Sauvegarde `pg_dump` planifiée | Infra | ✅ fait (config validee via `docker compose config`, execution reelle non testee - Docker indisponible) | — |
 | 50 | Versioning des prompts avec retour arrière (Q53, demande explicite) | Admin | ✅ fait | 15, 16 |
