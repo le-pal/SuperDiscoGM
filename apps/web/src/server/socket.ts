@@ -1,6 +1,6 @@
 import type { Server as HttpServer } from "node:http";
 import { Server as SocketIOServer, type Socket } from "socket.io";
-import { getUserByToken, SESSION_COOKIE } from "./auth";
+import { getUserByToken, SESSION_COOKIE } from "./session";
 
 // Événements du chat de partie. La confidentialité d'un message "party split" [Q26]
 // est appliquée ICI, côté serveur, en n'émettant que vers les rooms des destinataires
