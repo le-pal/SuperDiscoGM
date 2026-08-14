@@ -47,6 +47,7 @@ export function MyPartiesGrid({ parties }: { parties: PartyCardData[] }) {
             )}
             <div className="flex gap-8" style={{ marginTop: 12 }}>
               <a className="btn primary small" href={`/party/${p.partyId}`}>Reprendre</a>
+              <a className="btn ghost small" href={`/campaigns/${p.campaign.id}/character-sheet`}>Fiche de personnage</a>
             </div>
           </div>
         );
