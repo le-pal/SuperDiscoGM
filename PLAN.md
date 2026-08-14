@@ -65,6 +65,11 @@ Table utilisateurs + rôles + bouton « inviter », formulaire prompt système, 
 - Fichiers : `apps/web/src/app/admin/page.tsx` (nouveau) + composants.
 - Dépendances : 9, 13, 14, 15, 16.
 
+### Étape 50 — Versioning des prompts avec retour arrière (demande explicite de Philippe, `[Q53]`)
+Le prompt système global ET les fragments de persona sont versionnés : chaque `PATCH` qui change le contenu journalise la valeur REMPLACÉE (`PromptVersion`, jamais la valeur courante dupliquée). Restaurer = réappliquer le contenu d'une entrée d'historique via le `PATCH` normal, ce qui journalise à son tour la valeur courante (un "redo" reste donc possible).
+- Fichiers : `packages/db/prisma/schema.prisma` (modèle `PromptVersion` + enum `PromptTarget`), `apps/web/src/server/promptVersion.ts` (nouveau — `snapshotPromptVersion()`), `apps/web/src/app/api/admin/settings/route.ts` (PATCH modifié), `apps/web/src/app/api/admin/settings/history/route.ts` (nouveau), `apps/web/src/app/api/personas/[id]/route.ts` (nouveau — PATCH manquait jusqu'ici), `apps/web/src/app/api/personas/[id]/history/route.ts` (nouveau).
+- Dépendances : 15, 16. La page `/admin` (étape 17) devra exposer l'historique + un bouton "restaurer" une fois portée.
+
 ---
 
 ## Campagnes & Scénarios (`doc/scenario/spec.md`)
@@ -290,7 +295,7 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 18 | API Campagnes (create/list/get) | Scénario | ✅ fait | 10 |
 | 19 | API Scénarios (create texte + upload fichier) | Scénario | ✅ fait (extraction texte = etape 20, separee) | 10 |
 | 20 | Extraction de texte des fichiers uploadés (pdf/docx/md) | Scénario | ✅ fait | 19 |
-| 21 | Déclenchement de l'analyse + notification de fin | Scénario | ❌ à faire | 19, 20, 12 |
+| 21 | Déclenchement de l'analyse + notification de fin | Scénario | ✅ fait | 19, 20, 12 |
 | 22 | Ré-analyse d'un scénario modifié | Scénario | ❌ à faire | 21 |
 | 23 | Rattachement scénario ↔ campagne (ordre des chapitres) | Scénario | ✅ fait | 18, 19 |
 | 24 | Pages d'ingestion (portage `ingestion-scenario.html`) | Scénario | ❌ à faire | 9, 19, 20, 21, 22 |
@@ -319,3 +324,4 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 47 | Mise en place Vitest + tests unitaires/intégration ciblés | Tests | ❌ à faire | 26, 30 |
 | 48 | Suivi de budget/coût API (UsageLog) | Infra | ❌ à faire | 35, 17 |
 | 49 | Sauvegarde `pg_dump` planifiée | Infra | ❌ à faire | — |
+| 50 | Versioning des prompts avec retour arrière (Q53, demande explicite) | Admin | ✅ fait | 15, 16 |

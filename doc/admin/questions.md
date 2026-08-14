@@ -4,6 +4,9 @@ Retour à [l'index](../index.md). Statut : `[ ]` ouverte · `[x]` tranchée (voi
 
 Aucune question ouverte pour ce lot à date — toutes tranchées. Historique conservé pour traçabilité.
 
+- **Q53.** `[x]` Les prompts éditables (système global, personas) doivent-ils être versionnés avec retour arrière ?
+  → **Décision (demande explicite de Philippe) : oui.** Chaque modification journalise la valeur remplacée (jamais la valeur courante dupliquée — elle vit dans `GlobalSettings.systemPrompt`/`Persona.systemPromptFragment`). Restaurer une ancienne version passe par le chemin d'édition normal, ce qui journalise à son tour la valeur courante — un "redo" reste donc possible après un retour arrière. Implémenté : modèle `PromptVersion`, routes `GET /api/admin/settings/history` et `GET /api/personas/:id/history`.
+
 - **Q01.** `[x]` "Maître du Jeu Virtuel" — le MJ est-il **toujours** une IA, ou un humain peut-il aussi endosser le rôle de MJ ?
   → **Décision : le MJ est toujours une IA.** "Mettre des images/contenu/mise en forme" est donc une action du MJ-IA lui-même (déclenchement et source à préciser — `[Q28]`, voir [partie/questions.md](../partie/questions.md)).
 - **Q02.** `[x]` Un seul système de jeu par instance, ou plusieurs tables/parties indépendantes en parallèle ?

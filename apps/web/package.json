@@ -11,6 +11,8 @@
   "dependencies": {
     "@superdiscogm/db": "*",
     "bcryptjs": "^3.0.3",
+    "bullmq": "^6.1.1",
+    "ioredis": "^5.9.3",
     "mammoth": "^1.12.1",
     "next": "16.3.1",
     "pdf-parse": "^2.4.5",

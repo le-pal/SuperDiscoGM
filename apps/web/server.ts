@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 import next from "next";
 import { createSocketServer } from "./src/server/socket";
+import { subscribeToNotifications } from "./src/server/notifications";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
@@ -12,7 +13,8 @@ app.prepare().then(() => {
     handle(req, res);
   });
 
-  createSocketServer(httpServer);
+  const io = createSocketServer(httpServer);
+  subscribeToNotifications(io);
 
   httpServer.listen(port, () => {
     console.log(

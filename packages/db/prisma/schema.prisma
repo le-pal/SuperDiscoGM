@@ -38,6 +38,7 @@ model User {
   diceRolls         DiceRoll[]
   messages          Message[]
   sessions          Session[]
+  promptVersionsAuthored PromptVersion[]
 }
 
 // Auth maison (pas de lib tierce — next-auth v5 écarté en beta depuis fin 2023, cadence en
@@ -167,6 +168,7 @@ model Persona {
 
   campaignOverrides Campaign[] @relation("CampaignPersonaOverride")
   scenarioOverrides Scenario[] @relation("ScenarioPersonaOverride")
+  promptVersions    PromptVersion[]
 }
 
 // Paramètres globaux — singleton logique (une seule ligne), gérés par l'Admin [Q09][Q37]
@@ -177,6 +179,30 @@ model GlobalSettings {
   activeModel     String
   monthlyBudget   Decimal? @db.Decimal(10, 2)
   updatedAt       DateTime @updatedAt
+}
+
+// Prompts éditables versionnés avec retour arrière (Admin, demande explicite de Philippe) —
+// couvre le prompt système global ET les fragments de persona. Journal "undo" : chaque entrée
+// est la valeur REMPLACÉE au moment d'une modification (pas la nouvelle) ; la valeur courante
+// vit toujours dans GlobalSettings.systemPrompt / Persona.systemPromptFragment directement.
+// Restaurer une version = réappliquer son contenu via le chemin d'édition normal, ce qui journalise
+// à son tour la valeur courante — un "redo" reste donc possible après un retour arrière.
+enum PromptTarget {
+  GLOBAL_SYSTEM_PROMPT
+  PERSONA
+}
+
+model PromptVersion {
+  id          String       @id @default(cuid())
+  target      PromptTarget
+  personaId   String? // requis si target = PERSONA, absent pour GLOBAL_SYSTEM_PROMPT (singleton)
+  persona     Persona?     @relation(fields: [personaId], references: [id])
+  content     String
+  createdById String
+  createdBy   User         @relation(fields: [createdById], references: [id])
+  createdAt   DateTime     @default(now())
+
+  @@index([target, personaId, createdAt])
 }
 
 // ---------- Partie / Session ----------

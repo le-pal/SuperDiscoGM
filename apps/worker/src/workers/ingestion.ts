@@ -4,6 +4,7 @@ import { z } from "zod";
 import { prisma } from "@superdiscogm/db";
 import { getConfiguredModel } from "@superdiscogm/llm";
 import type { ScenarioIngestionJob } from "@superdiscogm/jobs";
+import { publishNotification } from "../publisher";
 
 // Pipeline d'ingestion de scénario [Q14] : asynchrone, notifie à la fin, pas de relecture
 // humaine obligatoire avant mise en jeu [Q15]. Découpage en granularité "scène" avec
@@ -76,6 +77,9 @@ export async function processScenarioIngestion(job: Job<ScenarioIngestionJob>) {
     }),
   ]);
 
-  // TODO : notifier le Super utilisateur (via Socket.IO room `user:<id>` côté apps/web,
-  // par exemple en publiant un événement Redis pub/sub que apps/web relaie).
+  await publishNotification({
+    userId: scenario.createdById,
+    type: "scenario:ready",
+    data: { scenarioId, title: scenario.title, phaseCount: phases.length },
+  });
 }
