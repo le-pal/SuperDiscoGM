@@ -308,7 +308,7 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 | 31 | Outil de récupération à la demande (lookup_entity_history) | Mémoire & contexte | ✅ fait | 30 |
 | 32 | Extraction réelle de mémoire par entité (remplace le stub) | Mémoire & contexte | ✅ fait (pas encore testé contre un LLM qui tourne) | — |
 | 33 | Consolidation réelle des résumés hiérarchiques (remplace le stub) | Mémoire & contexte | ✅ fait (pas encore testé contre un LLM qui tourne) | — |
-| 34 | Détection de transition de phase (outil `advance_phase`) | Mémoire & contexte | ❌ à faire | 30 |
+| 34 | Détection de transition de phase (outil `advance_phase`) | Mémoire & contexte | ✅ fait | 30 |
 | 35 | Moteur de tour MJ côté serveur (persistance + génération streamée) | Écran de partie | ❌ à faire | 11, 12, 26, 30, 31, 34, 21 |
 | 36 | Party split — repère système + reveal | Écran de partie | ❌ à faire | 35 |
 | 37 | Actions structurées joueur (`/roll`, raccourcis) | Écran de partie | ❌ à faire | 35 |
