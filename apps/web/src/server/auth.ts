@@ -54,7 +54,15 @@ export async function getCurrentUser(): Promise<User | null> {
   const jar = await cookies();
   const token = jar.get(SESSION_COOKIE)?.value;
   if (!token) return null;
+  return getUserByToken(token);
+}
 
+/**
+ * Même vérification que getCurrentUser(), mais sans dépendre de next/headers — utilisable
+ * depuis le handshake Socket.IO (server.ts/socket.ts), qui n'a pas accès à l'API cookies()
+ * réservée aux Server Components/Route Handlers.
+ */
+export async function getUserByToken(token: string): Promise<User | null> {
   const session = await prisma.session.findUnique({
     where: { tokenHash: hashToken(token) },
     include: { user: true },

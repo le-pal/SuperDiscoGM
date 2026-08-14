@@ -1,5 +1,6 @@
 import type { Server as HttpServer } from "node:http";
 import { Server as SocketIOServer, type Socket } from "socket.io";
+import { getUserByToken, SESSION_COOKIE } from "./auth";
 
 // Événements du chat de partie. La confidentialité d'un message "party split" [Q26]
 // est appliquée ICI, côté serveur, en n'émettant que vers les rooms des destinataires
@@ -23,6 +24,15 @@ function userRoom(userId: string) {
   return `user:${userId}`;
 }
 
+function parseCookie(header: string | undefined, name: string): string | undefined {
+  if (!header) return undefined;
+  const found = header
+    .split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${name}=`));
+  return found ? decodeURIComponent(found.slice(name.length + 1)) : undefined;
+}
+
 function partyPresenceRoom(io: SocketIOServer, partyId: string): string[] {
   const room = io.sockets.adapter.rooms.get(partyRoom(partyId));
   if (!room) return [];
@@ -40,15 +50,25 @@ export function createSocketServer(httpServer: HttpServer): SocketIOServer {
     path: "/socket.io",
   });
 
-  io.on("connection", (socket: Socket) => {
-    // TODO [task Auth.js — #6] : remplacer par la session authentifiée réelle,
-    // ne pas faire confiance à un userId envoyé librement par le client.
-    const userId = socket.handshake.auth?.userId as string | undefined;
-    if (!userId) {
-      socket.disconnect(true);
+  // Vérifie la session AVANT d'accepter la connexion (pas de confiance dans un userId
+  // envoyé librement par le client) — même mécanisme que getCurrentUser() côté HTTP,
+  // via le cookie de session porté par le navigateur au handshake WebSocket.
+  io.use(async (socket, next) => {
+    const cookieHeader = socket.handshake.headers.cookie;
+    const token = parseCookie(cookieHeader, SESSION_COOKIE);
+    const user = token ? await getUserByToken(token) : null;
+
+    if (!user) {
+      next(new Error("unauthorized"));
       return;
     }
-    socket.data.userId = userId;
+
+    socket.data.userId = user.id;
+    next();
+  });
+
+  io.on("connection", (socket: Socket) => {
+    const userId = socket.data.userId as string;
     socket.join(userRoom(userId));
 
     socket.on("party:join", (partyId: string) => {
