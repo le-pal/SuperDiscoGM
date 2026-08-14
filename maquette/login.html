@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>SuperDiscoGM — Connexion</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> SuperDiscoGM</div>
+    <div class="topnav">
+      <a href="index.html">Sommaire</a>
+      <a class="active" href="login.html">Connexion</a>
+      <a href="dashboard.html">Tableau de bord</a>
+      <a href="ingestion-scenario.html">Ingestion scénario</a>
+      <a href="ecran-partie.html">Écran de partie</a>
+      <a href="fiche-personnage.html">Fiche personnage</a>
+      <a href="profil.html">Mon profil</a>
+      <a href="admin.html">Admin</a>
+    </div>
+  </div>
+
+  <div class="page" style="display:flex; align-items:center; justify-content:center; min-height:80vh;">
+    <div style="width:100%; max-width:380px;">
+      <div style="text-align:center; margin-bottom:22px;">
+        <div class="brand" style="justify-content:center; font-size:1.5rem;"><span class="dot"></span> SuperDiscoGM</div>
+        <p class="muted" style="font-size:.85rem">Maître du Jeu Virtuel</p>
+      </div>
+
+      <div class="card">
+        <div class="field">
+          <label>Adresse e-mail</label>
+          <input type="email" placeholder="vous@exemple.com">
+        </div>
+        <div class="field">
+          <label>Mot de passe</label>
+          <input type="password" placeholder="••••••••••">
+        </div>
+        <button class="btn primary" style="width:100%; justify-content:center;">Se connecter</button>
+
+        <div class="flex center" style="margin:18px 0; gap:10px;">
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+          <span class="faint" style="font-size:.75rem">ou</span>
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+        </div>
+
+        <div class="field">
+          <label>Rejoindre une table via invitation</label>
+          <input type="text" placeholder="Coller le lien ou le code d'invitation">
+        </div>
+        <button class="btn ghost" style="width:100%; justify-content:center;">Rejoindre</button>
+      </div>
+
+      <p class="faint" style="text-align:center; font-size:.75rem; margin-top:16px;">Les comptes sont créés par un Admin ou via invitation d'un Super utilisateur.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

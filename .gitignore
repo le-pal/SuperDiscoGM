@@ -1,0 +1,17 @@
+# Secrets — never commit private keys
+claude_github_account_key
+
+# JetBrains IDE (local, machine-specific)
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Future Node/Next.js app (stack decided in doc/technique/spec.md)
+node_modules/
+.env
+.env.local
+.env.*.local
+dist/
+.next/

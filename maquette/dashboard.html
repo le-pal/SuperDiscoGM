@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>SuperDiscoGM — Tableau de bord</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> SuperDiscoGM</div>
+    <div class="topnav">
+      <a href="index.html">Sommaire</a>
+      <a href="login.html">Connexion</a>
+      <a class="active" href="dashboard.html">Tableau de bord</a>
+      <a href="ingestion-scenario.html">Ingestion scénario</a>
+      <a href="ecran-partie.html">Écran de partie</a>
+      <a href="fiche-personnage.html">Fiche personnage</a>
+      <a href="profil.html">Mon profil</a>
+      <a href="admin.html">Admin</a>
+    </div>
+    <div class="flex center gap-8">
+      <span class="badge role-super">Super utilisateur</span>
+      <div class="avatar sm" style="background:var(--p3)">PH</div>
+    </div>
+  </div>
+
+  <div class="page wide">
+    <div class="mockup-banner">🎭 Maquette statique — vue Super utilisateur. Instance multi-tenant : plusieurs tables tournent en parallèle sur la même instance.</div>
+
+    <div class="section-head">
+      <h1>Mes campagnes</h1>
+      <div class="flex gap-8">
+        <button class="btn ghost small">+ Importer un scénario</button>
+        <button class="btn primary small">+ Nouvelle campagne</button>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="flex between">
+          <h3>Les Cendres de Valdoré</h3>
+          <span class="badge status-ok">En cours</span>
+        </div>
+        <p class="muted" style="font-size:.85rem">3 scénarios enchaînés · 4 joueurs · groupe souple</p>
+        <div class="flex gap-8" style="margin:10px 0;">
+          <div class="avatar sm" style="background:var(--p1)">EL</div>
+          <div class="avatar sm" style="background:var(--p2)">KA</div>
+          <div class="avatar sm" style="background:var(--p3)">TH</div>
+          <div class="avatar sm" style="background:var(--p4)">SA</div>
+        </div>
+        <p class="faint" style="font-size:.78rem">Chapitre actif : « Le siège d'Ombre-Rouge » — scène 4/9</p>
+        <div class="flex gap-8" style="margin-top:12px;">
+          <button class="btn primary small">Reprendre</button>
+          <button class="btn ghost small">Détails</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="flex between">
+          <h3>La Malédiction du Marais Gris</h3>
+          <span class="badge status-pending">En pause</span>
+        </div>
+        <p class="muted" style="font-size:.85rem">1 scénario · 3 joueurs</p>
+        <div class="flex gap-8" style="margin:10px 0;">
+          <div class="avatar sm" style="background:var(--p2)">KA</div>
+          <div class="avatar sm" style="background:var(--p4)">SA</div>
+          <div class="avatar sm" style="background:var(--role-spectateur)">+1</div>
+        </div>
+        <p class="faint" style="font-size:.78rem">Dernière session il y a 12 jours</p>
+        <div class="flex gap-8" style="margin-top:12px;">
+          <button class="btn primary small">Reprendre</button>
+          <button class="btn ghost small">Détails</button>
+        </div>
+      </div>
+
+      <div class="card" style="display:flex; align-items:center; justify-content:center; border-style:dashed; color:var(--text-muted); min-height:150px;">
+        + Nouvelle campagne
+      </div>
+    </div>
+
+    <div class="section" style="margin-top:36px;">
+      <div class="section-head"><h2>Parties en cours sur l'instance</h2></div>
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>Table</th><th>Campagne</th><th>Participants</th><th>Statut</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Table de Philippe</td>
+              <td>Les Cendres de Valdoré</td>
+              <td>4 joueurs, 1 spectateur</td>
+              <td><span class="badge status-ok">En direct</span></td>
+              <td><button class="btn small">Rejoindre</button></td>
+            </tr>
+            <tr>
+              <td>Table du jeudi</td>
+              <td>La Malédiction du Marais Gris</td>
+              <td>3 joueurs</td>
+              <td><span class="badge tag">En pause</span></td>
+              <td><button class="btn small ghost">Voir</button></td>
+            </tr>
+            <tr>
+              <td>Table découverte</td>
+              <td>Scénario d'initiation — Grotte des Échos</td>
+              <td>2 joueurs</td>
+              <td><span class="badge status-ok">En direct</span></td>
+              <td><button class="btn small">Rejoindre</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

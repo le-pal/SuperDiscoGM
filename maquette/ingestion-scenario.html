@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>SuperDiscoGM — Ingestion de scénario</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> SuperDiscoGM</div>
+    <div class="topnav">
+      <a href="index.html">Sommaire</a>
+      <a href="login.html">Connexion</a>
+      <a href="dashboard.html">Tableau de bord</a>
+      <a class="active" href="ingestion-scenario.html">Ingestion scénario</a>
+      <a href="ecran-partie.html">Écran de partie</a>
+      <a href="fiche-personnage.html">Fiche personnage</a>
+      <a href="profil.html">Mon profil</a>
+      <a href="admin.html">Admin</a>
+    </div>
+    <span class="badge role-super">Super utilisateur</span>
+  </div>
+
+  <div class="page wide">
+    <div class="mockup-banner">🎭 Maquette statique — "on lui fait manger" un scénario complet, puis on lance l'analyse.</div>
+
+    <h1>Nouveau scénario — Le Siège d'Ombre-Rouge</h1>
+    <p class="muted">Étape 1 : fournir le contenu. Étape 2 : lancer l'analyse (asynchrone). Étape 3 : le scénario digéré, jouable immédiatement.</p>
+
+    <div class="hr"></div>
+
+    <div class="section">
+      <div class="section-head"><h2>1 · Contenu du scénario</h2></div>
+      <div class="card">
+        <div class="tabs">
+          <div class="tab active">Coller le texte</div>
+          <div class="tab">Importer un fichier (PDF / docx / markdown)</div>
+        </div>
+        <div class="upload-zone">
+          <p style="margin-bottom:4px">📄 Glissez-déposez un fichier ici, ou collez le texte complet du scénario</p>
+          <p class="faint" style="font-size:.78rem">Images/cartes du fichier : ignorées en V1 (le pipeline est conçu pour les accueillir plus tard)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><h2>2 · Analyse</h2></div>
+      <div class="card flex between center">
+        <div class="flex center gap-12">
+          <span class="spinner"></span>
+          <div>
+            <div style="font-weight:700">Analyse en cours…</div>
+            <div class="muted" style="font-size:.8rem">Annotation et découpage en scènes — asynchrone, vous serez notifié à la fin.</div>
+          </div>
+        </div>
+        <span class="badge status-pending">Job #4821</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>3 · Scénario digéré</h2>
+        <span class="badge status-ok">Prêt — jouable immédiatement</span>
+      </div>
+      <p class="faint" style="font-size:.78rem; margin-top:-6px;">Pas de relecture obligatoire en V1 : le découpage automatique ci-dessous est utilisé tel quel dès qu'il est prêt.</p>
+
+      <div class="card-grid" style="margin-top:14px;">
+
+        <div class="card scene-card">
+          <div class="flex between">
+            <h3 style="margin:0">Scène 1 — Arrivée aux portes</h3>
+            <span class="badge tag">#1</span>
+          </div>
+          <p class="muted" style="font-size:.85rem">Le groupe arrive devant les portes assiégées d'Ombre-Rouge, gardées par la milice locale.</p>
+          <div class="tags">
+            <span class="badge tag">📍 Portes d'Ombre-Rouge</span>
+            <span class="badge tag">🧑 Capitaine Ilvane</span>
+            <span class="badge tag">→ sortie : accord ou combat</span>
+          </div>
+        </div>
+
+        <div class="card scene-card">
+          <div class="flex between">
+            <h3 style="margin:0">Scène 2 — Le marché noir</h3>
+            <span class="badge tag">#2</span>
+          </div>
+          <p class="muted" style="font-size:.85rem">Un marché souterrain où circulent rumeurs et informations sur le siège.</p>
+          <div class="tags">
+            <span class="badge tag">📍 Marché noir</span>
+            <span class="badge tag">🧑 Grimsby le forgeron</span>
+            <span class="badge tag">🔒 secret : identité du traître</span>
+          </div>
+        </div>
+
+        <div class="card scene-card">
+          <div class="flex between">
+            <h3 style="margin:0">Scène 3 — Confrontation au rempart</h3>
+            <span class="badge tag">#3</span>
+          </div>
+          <p class="muted" style="font-size:.85rem">Affrontement décisif sur les remparts nord, déclenché si le groupe a choisi le combat en scène 1.</p>
+          <div class="tags">
+            <span class="badge tag">📍 Rempart nord</span>
+            <span class="badge tag">🧑 Capitaine Ilvane</span>
+            <span class="badge tag">→ entrée conditionnelle : combat choisi en #1</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

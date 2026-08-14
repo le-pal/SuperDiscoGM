@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>SuperDiscoGM — Mon profil</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> SuperDiscoGM</div>
+    <div class="topnav">
+      <a href="index.html">Sommaire</a>
+      <a href="login.html">Connexion</a>
+      <a href="dashboard.html">Tableau de bord</a>
+      <a href="ingestion-scenario.html">Ingestion scénario</a>
+      <a href="ecran-partie.html">Écran de partie</a>
+      <a href="fiche-personnage.html">Fiche personnage</a>
+      <a class="active" href="profil.html">Mon profil</a>
+      <a href="admin.html">Admin</a>
+    </div>
+    <span class="badge role-user">Utilisateur</span>
+  </div>
+
+  <div class="page">
+    <div class="mockup-banner">🎭 Maquette statique — gestion de l'avatar, distincte des images de contenu de jeu (pas d'image de contenu en V1, cf ingestion de scénario).</div>
+
+    <h1>Mon profil</h1>
+    <p class="muted">L'avatar identifie un utilisateur partout dans l'app : chat, tableau de bord, gestion des utilisateurs.</p>
+
+    <div class="card-grid" style="align-items:start;">
+
+      <div class="card">
+        <h3>Avatar actuel</h3>
+        <div class="flex center gap-16" style="margin:14px 0;">
+          <div class="avatar lg" style="background:var(--p2); width:72px; height:72px; font-size:1.6rem;">KA</div>
+          <div>
+            <div style="font-weight:700">Kara</div>
+            <div class="muted" style="font-size:.82rem">Utilisatrice</div>
+          </div>
+        </div>
+        <p class="faint" style="font-size:.75rem;">Cette couleur est aussi celle du contour de vos messages dans le chat — elle doit rester unique sur chaque table.</p>
+      </div>
+
+      <div class="card" style="grid-column: span 2;">
+        <h3>Choisir un avatar (V1 — bibliothèque prédéfinie)</h3>
+        <p class="muted" style="font-size:.82rem; margin-bottom:14px;">Couleur + initiales, générées automatiquement à partir de votre nom. Cliquez une couleur pour la changer.</p>
+        <div class="avatar-grid">
+          <div class="avatar-option" style="background:var(--p1)">KA</div>
+          <div class="avatar-option selected" style="background:var(--p2)">KA</div>
+          <div class="avatar-option" style="background:var(--p3)">KA</div>
+          <div class="avatar-option" style="background:var(--p4)">KA</div>
+          <div class="avatar-option" style="background:#d64550">KA</div>
+          <div class="avatar-option" style="background:#3aafa9">KA</div>
+          <div class="avatar-option" style="background:#c77dff">KA</div>
+          <div class="avatar-option" style="background:#e0a955">KA</div>
+        </div>
+
+        <div class="hr"></div>
+
+        <h3 style="display:flex; align-items:center; gap:8px;">Image personnalisée <span class="badge tag">Disponible à partir de la V2</span></h3>
+        <div class="upload-zone" style="opacity:.5; margin-top:10px;">
+          <p style="margin-bottom:0">📷 Importer une photo ou une illustration — désactivé en V1, cohérent avec l'absence d'images de contenu en V1 (bibliothèque/générateur IA arrivant en V2).</p>
+        </div>
+
+        <div class="flex" style="margin-top:16px; justify-content:flex-end;">
+          <button class="btn primary small">Enregistrer</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section" style="margin-top:28px;">
+      <div class="section-head"><h2>Où cet avatar apparaît</h2></div>
+      <div class="card flex gap-16 wrap">
+        <div class="flex center gap-8"><div class="avatar sm" style="background:var(--p2)">KA</div><span class="muted" style="font-size:.85rem">Chat de partie (contour des messages)</span></div>
+        <div class="flex center gap-8"><div class="avatar sm" style="background:var(--p2)">KA</div><span class="muted" style="font-size:.85rem">Tableau de bord (participants)</span></div>
+        <div class="flex center gap-8"><div class="avatar sm" style="background:var(--p2)">KA</div><span class="muted" style="font-size:.85rem">Gestion des utilisateurs (Admin)</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

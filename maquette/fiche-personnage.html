@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>SuperDiscoGM — Fiche de personnage</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> SuperDiscoGM</div>
+    <div class="topnav">
+      <a href="index.html">Sommaire</a>
+      <a href="login.html">Connexion</a>
+      <a href="dashboard.html">Tableau de bord</a>
+      <a href="ingestion-scenario.html">Ingestion scénario</a>
+      <a href="ecran-partie.html">Écran de partie</a>
+      <a class="active" href="fiche-personnage.html">Fiche personnage</a>
+      <a href="profil.html">Mon profil</a>
+      <a href="admin.html">Admin</a>
+    </div>
+    <span class="badge role-user">Utilisateur</span>
+  </div>
+
+  <div class="page">
+    <div class="mockup-banner">🎭 Maquette statique — version simplifiée de la fiche (V1). Mise à jour automatiquement par le MJ-IA via des actions tracées (tool-call), jamais par simple texte généré.</div>
+
+    <div class="flex center gap-16" style="margin-bottom:24px;">
+      <div class="avatar lg" style="background:var(--p1); width:84px; height:84px; font-size:1.8rem;">EL</div>
+      <div>
+        <h1 style="margin-bottom:2px;">Elyon Vasterel</h1>
+        <p class="muted">Rôdeur elfe · Niveau 4 · Campagne « Les Cendres de Valdoré »</p>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Points de vie</h3>
+        <div class="pv-bar" style="height:16px; margin-bottom:6px;"><div style="width:72%"></div></div>
+        <div class="muted" style="font-size:.85rem;">26 / 36 PV</div>
+      </div>
+
+      <div class="card">
+        <h3>Caractéristiques</h3>
+        <div class="stat-grid">
+          <div class="stat-box"><div class="val">+1</div><div class="lab">FOR</div></div>
+          <div class="stat-box"><div class="val">+3</div><div class="lab">DEX</div></div>
+          <div class="stat-box"><div class="val">+1</div><div class="lab">CON</div></div>
+          <div class="stat-box"><div class="val">+0</div><div class="lab">INT</div></div>
+          <div class="stat-box"><div class="val">+2</div><div class="lab">SAG</div></div>
+          <div class="stat-box"><div class="val">+1</div><div class="lab">CHA</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Classe d'armure &amp; jets</h3>
+        <div class="flex gap-16">
+          <div class="stat-box" style="flex:1"><div class="val">15</div><div class="lab">CA</div></div>
+          <div class="stat-box" style="flex:1"><div class="val">+4</div><div class="lab">Init.</div></div>
+          <div class="stat-box" style="flex:1"><div class="val">9m</div><div class="lab">Vitesse</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Inventaire</h3>
+        <p class="muted" style="font-size:.87rem;">Arc long, 12 flèches, cape de camouflage, rations (3j), sceau gravé <span class="badge tag" style="margin-left:4px">nouveau</span></p>
+      </div>
+
+      <div class="card">
+        <h3>Sorts &amp; capacités</h3>
+        <p class="muted" style="font-size:.87rem;">Marque du chasseur, Tir de précision, Compagnon animal (faucon « Ombre »)</p>
+      </div>
+
+      <div class="card">
+        <h3>Journal des modifications</h3>
+        <p class="muted" style="font-size:.82rem;">
+          + Sceau gravé <span class="faint">— obtenu, scène « Le marché noir »</span><br>
+          − 6 PV <span class="faint">— embuscade, scène précédente</span><br>
+          + Niveau 4 <span class="faint">— fin de chapitre 1</span>
+        </p>
+        <p class="faint" style="font-size:.72rem; margin-top:8px;">Chaque ligne correspond à un outil déterministe appelé par le MJ-IA, jamais à une improvisation en texte libre.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

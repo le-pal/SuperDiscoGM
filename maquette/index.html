@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>SuperDiscoGM — Maquette</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> SuperDiscoGM</div>
+    <div class="topnav">
+      <a class="active" href="index.html">Sommaire</a>
+      <a href="login.html">Connexion</a>
+      <a href="dashboard.html">Tableau de bord</a>
+      <a href="ingestion-scenario.html">Ingestion scénario</a>
+      <a href="ecran-partie.html">Écran de partie</a>
+      <a href="fiche-personnage.html">Fiche personnage</a>
+      <a href="profil.html">Mon profil</a>
+      <a href="admin.html">Admin</a>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="mockup-banner">🎭 Maquette visuelle statique — aucune interactivité réelle, sert uniquement à valider le visuel et les parcours avant développement.</div>
+
+    <h1>SuperDiscoGM</h1>
+    <p class="muted" style="max-width:640px">Maître du Jeu Virtuel — un ou plusieurs joueurs vivent une partie de JDR animée par une IA, à partir d'un scénario fourni. Ci-dessous, les écrans clés de la V1 (D&amp;D uniquement, multi-tenant, temps réel).</p>
+
+    <div class="hr"></div>
+
+    <div class="card-grid">
+
+      <a class="card" href="login.html" style="display:block;color:inherit">
+        <span class="badge tag">Tous rôles</span>
+        <h3 style="margin-top:10px">Connexion</h3>
+        <p class="muted" style="font-size:.85rem">Email/mot de passe, ou rejoindre une table via un lien d'invitation.</p>
+      </a>
+
+      <a class="card" href="dashboard.html" style="display:block;color:inherit">
+        <span class="badge role-super">Super utilisateur</span>
+        <h3 style="margin-top:10px">Tableau de bord</h3>
+        <p class="muted" style="font-size:.85rem">Campagnes, scénarios et parties en cours — instance multi-tenant : plusieurs tables tournent en parallèle.</p>
+      </a>
+
+      <a class="card" href="ingestion-scenario.html" style="display:block;color:inherit">
+        <span class="badge role-super">Super utilisateur</span>
+        <h3 style="margin-top:10px">Ingestion de scénario</h3>
+        <p class="muted" style="font-size:.85rem">"On lui fait manger" un scénario complet — analyse asynchrone, découpage en scènes annotées.</p>
+      </a>
+
+      <a class="card" href="ecran-partie.html" style="display:block;color:inherit">
+        <span class="badge role-user">Utilisateur</span>
+        <h3 style="margin-top:10px">Écran de partie</h3>
+        <p class="muted" style="font-size:.85rem">Le chat géant temps réel, une couleur par joueur, narration du MJ-IA, canal privé (party split), dés en outil.</p>
+      </a>
+
+      <a class="card" href="fiche-personnage.html" style="display:block;color:inherit">
+        <span class="badge role-user">Utilisateur</span>
+        <h3 style="margin-top:10px">Fiche de personnage</h3>
+        <p class="muted" style="font-size:.85rem">Version simplifiée, mise à jour automatiquement par le MJ-IA via des actions tracées.</p>
+      </a>
+
+      <a class="card" href="admin.html" style="display:block;color:inherit">
+        <span class="badge role-admin">Admin</span>
+        <h3 style="margin-top:10px">Administration</h3>
+        <p class="muted" style="font-size:.85rem">Utilisateurs, prompt système global, choix des modèles LLM, bibliothèque de personas MJ.</p>
+      </a>
+
+      <a class="card" href="profil.html" style="display:block;color:inherit">
+        <span class="badge tag">Tous rôles</span>
+        <h3 style="margin-top:10px">Mon profil</h3>
+        <p class="muted" style="font-size:.85rem">Gestion de l'avatar — bibliothèque de couleurs en V1, image personnalisée à partir de la V2.</p>
+      </a>
+
+    </div>
+
+    <div class="hr"></div>
+    <p class="faint" style="font-size:.8rem">Basé sur <code>doc/index.md</code> et les spécifications par lot (admin, scénario, partie, technique).</p>
+  </div>
+</div>
+</body>
+</html>

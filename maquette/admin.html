@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>SuperDiscoGM — Administration</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> SuperDiscoGM</div>
+    <div class="topnav">
+      <a href="index.html">Sommaire</a>
+      <a href="login.html">Connexion</a>
+      <a href="dashboard.html">Tableau de bord</a>
+      <a href="ingestion-scenario.html">Ingestion scénario</a>
+      <a href="ecran-partie.html">Écran de partie</a>
+      <a href="fiche-personnage.html">Fiche personnage</a>
+      <a href="profil.html">Mon profil</a>
+      <a class="active" href="admin.html">Admin</a>
+    </div>
+    <span class="badge role-admin">Admin</span>
+  </div>
+
+  <div class="page wide">
+    <div class="mockup-banner">🎭 Maquette statique — panneau Admin : utilisateurs, prompt système global, modèles, personas MJ.</div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>Utilisateurs</h2>
+        <button class="btn primary small">+ Inviter un utilisateur</button>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>Philippe S.</td><td>philippe.scheffer@···</td><td><span class="badge role-admin">Admin</span></td><td><button class="btn small ghost">Modifier</button></td></tr>
+            <tr><td>Elyon (joueur)</td><td>elyon@···</td><td><span class="badge role-super">Super utilisateur</span></td><td><button class="btn small ghost">Modifier</button></td></tr>
+            <tr><td>Kara (joueuse)</td><td>kara@···</td><td><span class="badge role-user">Utilisateur</span></td><td><button class="btn small ghost">Modifier</button></td></tr>
+            <tr><td>Invité·e du jeudi</td><td>—</td><td><span class="badge role-spectateur">Spectateur</span></td><td><button class="btn small ghost">Modifier</button></td></tr>
+          </tbody>
+        </table>
+        <p class="faint" style="font-size:.75rem; margin-top:10px;">Hiérarchie à héritage strict : Admin ⊃ Super utilisateur ⊃ Utilisateur ⊃ Spectateur.</p>
+      </div>
+    </div>
+
+    <div class="card-grid" style="align-items:start;">
+
+      <div class="card" style="grid-column: span 2;">
+        <h3>Prompt système global</h3>
+        <p class="muted" style="font-size:.82rem;">S'applique à toutes les parties de l'instance. Les personas MJ (ci-contre) viennent se composer par-dessus, jamais le remplacer.</p>
+        <textarea style="min-height:140px;">Tu es le Maître du Jeu. Reste toujours cohérent avec le scénario digéré et la mémoire de campagne fournis en contexte. Les jets de dés et les modifications de fiche passent obligatoirement par les outils dédiés — jamais d'improvisation en texte libre sur les règles.</textarea>
+        <div class="flex" style="margin-top:10px; justify-content:flex-end;">
+          <button class="btn primary small">Enregistrer</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Modèles LLM</h3>
+        <p class="muted" style="font-size:.82rem;">Architecture multi-fournisseurs, budget global.</p>
+        <div class="field">
+          <label>Fournisseur actif</label>
+          <select><option>Anthropic — Claude</option><option>OpenAI — GPT</option></select>
+        </div>
+        <div class="field">
+          <label>Modèle</label>
+          <select><option>claude-sonnet-5</option><option>claude-opus-5</option></select>
+        </div>
+        <div class="flex between" style="font-size:.8rem;">
+          <span class="muted">Budget du mois</span>
+          <span style="font-weight:700; color:var(--accent)">42 € / 150 €</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section" style="margin-top:28px;">
+      <div class="section-head">
+        <h2>Bibliothèque de personas MJ</h2>
+        <button class="btn small ghost">+ Nouvelle persona</button>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <span class="badge tag">Fantasy épique</span>
+          <h3 style="margin-top:10px;">Le Chroniqueur</h3>
+          <p class="muted" style="font-size:.82rem;">Narration lyrique, quêtes héroïques, tons de légende.</p>
+          <p class="faint" style="font-size:.72rem; margin-top:6px;">Utilisée par : Les Cendres de Valdoré</p>
+        </div>
+        <div class="card">
+          <span class="badge tag">Horreur cosmique</span>
+          <h3 style="margin-top:10px;">L'Insondable</h3>
+          <p class="muted" style="font-size:.82rem;">Tension, indices distillés, ambiance oppressante.</p>
+          <p class="faint" style="font-size:.72rem; margin-top:6px;">Utilisée par : La Malédiction du Marais Gris</p>
+        </div>
+        <div class="card" style="display:flex; align-items:center; justify-content:center; border-style:dashed; color:var(--text-muted);">
+          + Nouvelle persona
+        </div>
+      </div>
+      <p class="faint" style="font-size:.75rem; margin-top:10px;">Bibliothèque globale réutilisable, avec surcharge possible au niveau campagne ou scénario (priorité : scénario &gt; campagne &gt; persona globale).</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

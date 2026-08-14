@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>SuperDiscoGM — Écran de partie</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .partie-shell { display: flex; flex: 1; min-height: 0; }
+  .partie-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .partie-sidebar { width: 300px; border-left: 1px solid var(--border); background: var(--bg-alt); padding: 16px; overflow-y: auto; flex-shrink: 0; }
+  .scene-strip { padding: 8px 20px; border-bottom: 1px solid var(--border); background: var(--bg-alt); font-size: .8rem; color: var(--text-muted); display:flex; align-items:center; gap:8px; }
+</style>
+</head>
+<body>
+<div class="app-shell" style="height:100vh;">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> SuperDiscoGM</div>
+    <div style="text-align:center; flex:1;">
+      <div style="font-weight:700; font-size:.9rem;">Les Cendres de Valdoré — Le Siège d'Ombre-Rouge</div>
+      <div class="faint" style="font-size:.72rem;">Scène active : #2 Le marché noir</div>
+    </div>
+    <div class="flex center gap-8">
+      <span title="Temps réel" style="width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);"></span>
+      <div class="avatar sm" style="background:var(--p1)">EL</div>
+      <div class="avatar sm" style="background:var(--p2)">KA</div>
+      <div class="avatar sm" style="background:var(--p3)">TH</div>
+      <div class="avatar sm" style="background:var(--p4)">SA</div>
+      <div class="avatar sm" style="background:var(--role-spectateur)" title="1 spectateur">+1</div>
+    </div>
+  </div>
+
+  <div class="partie-shell" data-ambiance="ville" id="partie-shell">
+    <div class="partie-main">
+
+      <div class="scene-strip">
+        <span class="faint">🎭 Outils de démonstration de la maquette — n'existent pas tels quels dans le vrai produit :</span>
+        <span class="viewer-strip flex center gap-8">
+          👁 Point de vue :
+          <select id="viewer-select">
+            <option value="elyon">Elyon (participant à l'aparté)</option>
+            <option value="kara">Kara (participant à l'aparté)</option>
+            <option value="thrain">Thraïn (non impliqué)</option>
+            <option value="sable">Sable (non impliqué)</option>
+            <option value="mj">MJ-IA (voit tout)</option>
+          </select>
+        </span>
+        <span class="viewer-strip flex center gap-8" style="margin-left:auto">
+          🌍 Ambiance <span class="faint">(aperçu d'une fonctionnalité anticipée — la vraie version suivrait automatiquement le lieu de la scène)</span> :
+          <select id="ambiance-select">
+            <option value="ville">Ville</option>
+            <option value="grotte">Grotte</option>
+            <option value="jungle">Jungle</option>
+          </select>
+        </span>
+      </div>
+
+      <div class="chat-scroll" style="flex:1; padding-left:24px; padding-right:24px;">
+
+        <div class="msg narration" data-visible="all">
+          <div class="bubble">
+            <div class="who"><span class="avatar sm mj">MJ</span> Maître du Jeu <span class="time">21:04</span></div>
+            <div class="text">Les ruelles s'étrécissent à mesure que vous descendez vers le <em>marché noir</em>. Une odeur d'huile et d'épices rances flotte dans l'air. Au fond d'un renfoncement, un forgeron borgne — <strong>Grimsby</strong> — vous observe sans un mot, un marteau à la main.</div>
+          </div>
+        </div>
+
+        <div class="msg p1" data-visible="all">
+          <div class="avatar sm" style="background:var(--p1)">EL</div>
+          <div>
+            <div class="bubble">
+              <div class="who">Elyon <span class="time">21:05</span></div>
+              <div class="text">Je m'approche doucement, mains visibles, et je le salue. "On m'a dit que tu savais qui ravitaille la milice en douce."</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg p3" data-visible="all">
+          <div class="avatar sm" style="background:var(--p3)">TH</div>
+          <div>
+            <div class="bubble">
+              <div class="who">Thraïn <span class="time">21:05</span></div>
+              <div class="text">Je tente de lire son expression. (Perception)</div>
+              <div class="dice-card">🎲 <span>d20 Perception</span> <span class="result">17</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg narration" data-visible="all">
+          <div class="bubble">
+            <div class="who"><span class="avatar sm mj">MJ</span> Maître du Jeu <span class="time">21:06</span></div>
+            <div class="text">Grimsby se raidit imperceptiblement à la question d'Elyon — Thraïn le remarque nettement. Il repose son marteau. "Suis-moi. Pas tous. Juste toi et la discrète, là." <span class="faint">(il désigne Kara du menton)</span></div>
+          </div>
+        </div>
+
+        <div class="msg system" data-visible="all">
+          <div class="divider">🔀 Party split — Elyon et Kara s'isolent avec Grimsby. Le reste de la table continue.</div>
+        </div>
+
+        <div class="msg private" data-visible="elyon,kara,mj">
+          <div class="avatar sm" style="background:var(--mj)">MJ</div>
+          <div>
+            <span class="private-flag">🔒 aparté — visible seulement par Kara, Elyon et le MJ</span>
+            <div class="bubble">
+              <div class="who">Maître du Jeu <span class="time">21:07</span></div>
+              <div class="text">Grimsby vous entraîne dans l'arrière-boutique. "Le traître, c'est quelqu'un du conseil. Je ne dirai pas son nom ici — trop d'oreilles." Il vous glisse un sceau gravé.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg p4" data-visible="all">
+          <div class="avatar sm" style="background:var(--p4)">SA</div>
+          <div>
+            <div class="bubble">
+              <div class="who">Sable <span class="time">21:07</span></div>
+              <div class="text">Pendant ce temps, je fais le guet près de l'entrée, discrètement.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg system" data-visible="all">
+          <div class="divider">↩ Elyon et Kara reviennent — le MJ décidera du moment pour révéler (ou non) ce qui s'est dit.</div>
+        </div>
+
+      </div>
+
+      <div class="composer">
+        <button class="btn small">🎲 Lancer un dé</button>
+        <button class="btn small ghost">⚡ Action rapide</button>
+        <input type="text" placeholder="Écrivez votre action ou votre réplique…">
+        <button class="btn primary small">Envoyer</button>
+      </div>
+    </div>
+
+    <div class="partie-sidebar">
+      <div class="tabs">
+        <div class="tab active">Fiche perso</div>
+        <div class="tab">Bloc-notes 🔒</div>
+      </div>
+
+      <div class="flex center gap-12" style="margin-bottom:10px;">
+        <div class="avatar lg" style="background:var(--p1)">EL</div>
+        <div>
+          <div style="font-weight:700">Elyon Vasterel</div>
+          <div class="muted" style="font-size:.8rem">Rôdeur elfe · Niveau 4</div>
+          <div class="faint" style="font-size:.7rem">Campagne : Les Cendres de Valdoré</div>
+        </div>
+      </div>
+
+      <a href="fiche-personnage.html" class="btn small ghost" style="width:100%; justify-content:center; margin-bottom:16px;">Voir la fiche complète →</a>
+
+      <label>Points de vie</label>
+      <div class="pv-bar" style="margin-bottom:4px;"><div style="width:72%"></div></div>
+      <div class="faint" style="font-size:.75rem; margin-bottom:16px;">26 / 36 PV</div>
+
+      <div class="stat-grid" style="margin-bottom:16px;">
+        <div class="stat-box"><div class="val">+3</div><div class="lab">DEX</div></div>
+        <div class="stat-box"><div class="val">+1</div><div class="lab">CON</div></div>
+        <div class="stat-box"><div class="val">+2</div><div class="lab">SAG</div></div>
+      </div>
+
+      <label>Inventaire (résumé)</label>
+      <p class="muted" style="font-size:.82rem;">Arc long, 12 flèches, cape de camouflage, sceau gravé <span class="faint">(obtenu à l'instant)</span></p>
+
+      <div class="hr"></div>
+      <p class="faint" style="font-size:.72rem;">Fiche mise à jour automatiquement par le MJ-IA via des actions tracées — dernière modification : + sceau gravé.</p>
+      <p class="faint" style="font-size:.72rem;">Cette fiche est propre à la campagne « Les Cendres de Valdoré ». Elyon a une fiche différente dans chacune de ses autres campagnes.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Démo maquette uniquement : simule ce qu'un joueur voit selon son point de vue.
+  // Dans le vrai produit, chaque utilisateur n'a bien sûr accès qu'à SA propre vue — il n'y a pas de sélecteur.
+  function applyViewer(viewer) {
+    document.querySelectorAll('.msg').forEach(function (m) {
+      var vis = m.getAttribute('data-visible') || 'all';
+      var ok = vis === 'all' || vis.split(',').indexOf(viewer) !== -1;
+      m.style.display = ok ? '' : 'none';
+    });
+  }
+  var viewerSelect = document.getElementById('viewer-select');
+  viewerSelect.addEventListener('change', function (e) { applyViewer(e.target.value); });
+  applyViewer(viewerSelect.value);
+
+  document.getElementById('ambiance-select').addEventListener('change', function (e) {
+    document.getElementById('partie-shell').setAttribute('data-ambiance', e.target.value);
+  });
+</script>
+</body>
+</html>
