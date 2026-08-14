@@ -270,52 +270,52 @@ Aucun test n'existe dans le repo actuellement (vérifié — seuls des tests de 
 
 | # | Étape | Domaine | Statut | Dépendances |
 |---|---|---|---|---|
-| 1 | Auth maison (login/logout/session DB/invitation — acceptation) | Fondations (existant) | fait | — |
-| 2 | Socket.IO — serveur scaffold (rooms party/user, relais chat:message, présence) | Fondations (existant) | fait | — |
-| 3 | `packages/db` — schéma Prisma + migrations | Fondations (existant) | fait | — |
-| 4 | `packages/jobs` — contrats de queue partagés | Fondations (existant) | fait | — |
-| 5 | `packages/llm` — abstraction multi-fournisseurs + outil `roll_dice` | Fondations (existant) | fait | — |
-| 6 | `apps/worker` — job `ingestion.ts` (découpage en scènes, appel LLM réel) | Scénario (existant) | fait (notification de fin manquante, cf. #21) | — |
-| 7 | Docker Compose (postgres/migrate/web/worker/redis/caddy/ollama dev) | Infra (existant) | fait | — |
-| 8 | Pages minimales (login, invite/accept, accueil hello-world) | UI (existant) | fait (à remplacer par le vrai portage) | — |
-| 9 | Design system + layout partagé (AppShell/TopNav/Avatar) | Fondations | fait | — |
-| 10 | Garde de rôle côté serveur (requireUser/requireRole) | Fondations | fait | — |
-| 11 | Durcir l'auth Socket.IO (cookie de session, pas de userId client) | Fondations | fait | — |
-| 12 | Client Socket.IO (provider + hooks join/leave/presence) | Fondations | fait | 9, 11 |
-| 13 | Gestion utilisateurs & rôles (API Admin) | Admin | fait | 10 |
-| 14 | Envoi d'invitation (API, Super utilisateur) | Admin | fait | 10, 18 |
-| 15 | Réglages globaux (prompt système, modèle, budget — API Admin) | Admin | fait | 10 |
-| 16 | Bibliothèque de personas MJ + résolution par spécificité | Admin | fait | 10 |
-| 17 | Page `/admin` (portage) | Admin | à faire | 9, 13, 14, 15, 16 |
-| 18 | API Campagnes (create/list/get) | Scénario | fait | 10 |
-| 19 | API Scénarios (create texte + upload fichier) | Scénario | fait (extraction texte = etape 20, separee) | 10 |
-| 20 | Extraction de texte des fichiers uploadés (pdf/docx/md) | Scénario | fait | 19 |
-| 21 | Déclenchement de l'analyse + notification de fin | Scénario | à faire | 19, 20, 12 |
-| 22 | Ré-analyse d'un scénario modifié | Scénario | à faire | 21 |
-| 23 | Rattachement scénario ↔ campagne (ordre des chapitres) | Scénario | fait | 18, 19 |
-| 24 | Pages d'ingestion (portage `ingestion-scenario.html`) | Scénario | à faire | 9, 19, 20, 21, 22 |
-| 25 | Création de personnage (gap comblé par hypothèse) | Fiche perso | à faire | 18 |
-| 26 | Outils déterministes du moteur de règles (dégâts, objets, conditions, sorts, CA) | Fiche perso | à faire | — |
-| 27 | API fiche : lecture élargie + actions joueur (montée de niveau) | Fiche perso | à faire | 25 |
-| 28 | Page fiche de personnage (portage) | Fiche perso | à faire | 9, 27 |
-| 29 | Panneau fiche condensée (sidebar écran de partie) | Fiche perso | à faire | 27 |
-| 30 | Assemblage du contexte de tour (5 blocs, troncature Q19) | Mémoire & contexte | à faire | 16, 26 |
-| 31 | Outil de récupération à la demande (lookup_entity_history) | Mémoire & contexte | à faire | 30 |
-| 32 | Extraction réelle de mémoire par entité (remplace le stub) | Mémoire & contexte | fait (pas encore testé contre un LLM qui tourne) | — |
-| 33 | Consolidation réelle des résumés hiérarchiques (remplace le stub) | Mémoire & contexte | fait (pas encore testé contre un LLM qui tourne) | — |
-| 34 | Détection de transition de phase (outil `advance_phase`) | Mémoire & contexte | à faire | 30 |
-| 35 | Moteur de tour MJ côté serveur (persistance + génération streamée) | Écran de partie | à faire | 11, 12, 26, 30, 31, 34, 21 |
-| 36 | Party split — repère système + reveal | Écran de partie | à faire | 35 |
-| 37 | Actions structurées joueur (`/roll`, raccourcis) | Écran de partie | à faire | 35 |
-| 38 | Historique paginé (scroll infini) | Écran de partie | à faire | 10 |
-| 39 | Indicateur de présence câblé côté UI | Écran de partie | à faire | 12 |
-| 40 | Ambiance dynamique par lieu (hypothèse) | Écran de partie | à faire | 34, 12 |
-| 41 | Page écran de partie (portage complet) | Écran de partie | à faire | 9, 35, 36, 37, 38, 39, 40 |
-| 42 | API Parties (lancer/reprendre/rejoindre/bascule rôle) | Dashboard | à faire | 18, 23, 10 |
-| 43 | Agrégation dashboard | Dashboard | à faire | 42, 39 |
-| 44 | Page `/` (portage `dashboard.html`) | Dashboard | à faire | 9, 42, 43 |
-| 45 | API + page profil (couleur avatar) | Profil | à faire | 9, 10 |
-| 46 | Bloc-notes privé (API + onglet sidebar) | Bloc-notes | à faire | 41, 10 |
-| 47 | Mise en place Vitest + tests unitaires/intégration ciblés | Tests | à faire | 26, 30 |
-| 48 | Suivi de budget/coût API (UsageLog) | Infra | à faire | 35, 17 |
-| 49 | Sauvegarde `pg_dump` planifiée | Infra | à faire | — |
+| 1 | Auth maison (login/logout/session DB/invitation — acceptation) | Fondations (existant) | ✅ fait | — |
+| 2 | Socket.IO — serveur scaffold (rooms party/user, relais chat:message, présence) | Fondations (existant) | ✅ fait | — |
+| 3 | `packages/db` — schéma Prisma + migrations | Fondations (existant) | ✅ fait | — |
+| 4 | `packages/jobs` — contrats de queue partagés | Fondations (existant) | ✅ fait | — |
+| 5 | `packages/llm` — abstraction multi-fournisseurs + outil `roll_dice` | Fondations (existant) | ✅ fait | — |
+| 6 | `apps/worker` — job `ingestion.ts` (découpage en scènes, appel LLM réel) | Scénario (existant) | ✅ fait (notification de fin manquante, cf. #21) | — |
+| 7 | Docker Compose (postgres/migrate/web/worker/redis/caddy/ollama dev) | Infra (existant) | ✅ fait | — |
+| 8 | Pages minimales (login, invite/accept, accueil hello-world) | UI (existant) | ✅ fait (à remplacer par le vrai portage) | — |
+| 9 | Design system + layout partagé (AppShell/TopNav/Avatar) | Fondations | ✅ fait | — |
+| 10 | Garde de rôle côté serveur (requireUser/requireRole) | Fondations | ✅ fait | — |
+| 11 | Durcir l'auth Socket.IO (cookie de session, pas de userId client) | Fondations | ✅ fait | — |
+| 12 | Client Socket.IO (provider + hooks join/leave/presence) | Fondations | ✅ fait | 9, 11 |
+| 13 | Gestion utilisateurs & rôles (API Admin) | Admin | ✅ fait | 10 |
+| 14 | Envoi d'invitation (API, Super utilisateur) | Admin | ✅ fait | 10, 18 |
+| 15 | Réglages globaux (prompt système, modèle, budget — API Admin) | Admin | ✅ fait | 10 |
+| 16 | Bibliothèque de personas MJ + résolution par spécificité | Admin | ✅ fait | 10 |
+| 17 | Page `/admin` (portage) | Admin | ❌ à faire | 9, 13, 14, 15, 16 |
+| 18 | API Campagnes (create/list/get) | Scénario | ✅ fait | 10 |
+| 19 | API Scénarios (create texte + upload fichier) | Scénario | ✅ fait (extraction texte = etape 20, separee) | 10 |
+| 20 | Extraction de texte des fichiers uploadés (pdf/docx/md) | Scénario | ✅ fait | 19 |
+| 21 | Déclenchement de l'analyse + notification de fin | Scénario | ❌ à faire | 19, 20, 12 |
+| 22 | Ré-analyse d'un scénario modifié | Scénario | ❌ à faire | 21 |
+| 23 | Rattachement scénario ↔ campagne (ordre des chapitres) | Scénario | ✅ fait | 18, 19 |
+| 24 | Pages d'ingestion (portage `ingestion-scenario.html`) | Scénario | ❌ à faire | 9, 19, 20, 21, 22 |
+| 25 | Création de personnage (gap comblé par hypothèse) | Fiche perso | ❌ à faire | 18 |
+| 26 | Outils déterministes du moteur de règles (dégâts, objets, conditions, sorts, CA) | Fiche perso | ❌ à faire | — |
+| 27 | API fiche : lecture élargie + actions joueur (montée de niveau) | Fiche perso | ❌ à faire | 25 |
+| 28 | Page fiche de personnage (portage) | Fiche perso | ❌ à faire | 9, 27 |
+| 29 | Panneau fiche condensée (sidebar écran de partie) | Fiche perso | ❌ à faire | 27 |
+| 30 | Assemblage du contexte de tour (5 blocs, troncature Q19) | Mémoire & contexte | ❌ à faire | 16, 26 |
+| 31 | Outil de récupération à la demande (lookup_entity_history) | Mémoire & contexte | ❌ à faire | 30 |
+| 32 | Extraction réelle de mémoire par entité (remplace le stub) | Mémoire & contexte | ✅ fait (pas encore testé contre un LLM qui tourne) | — |
+| 33 | Consolidation réelle des résumés hiérarchiques (remplace le stub) | Mémoire & contexte | ✅ fait (pas encore testé contre un LLM qui tourne) | — |
+| 34 | Détection de transition de phase (outil `advance_phase`) | Mémoire & contexte | ❌ à faire | 30 |
+| 35 | Moteur de tour MJ côté serveur (persistance + génération streamée) | Écran de partie | ❌ à faire | 11, 12, 26, 30, 31, 34, 21 |
+| 36 | Party split — repère système + reveal | Écran de partie | ❌ à faire | 35 |
+| 37 | Actions structurées joueur (`/roll`, raccourcis) | Écran de partie | ❌ à faire | 35 |
+| 38 | Historique paginé (scroll infini) | Écran de partie | ❌ à faire | 10 |
+| 39 | Indicateur de présence câblé côté UI | Écran de partie | ❌ à faire | 12 |
+| 40 | Ambiance dynamique par lieu (hypothèse) | Écran de partie | ❌ à faire | 34, 12 |
+| 41 | Page écran de partie (portage complet) | Écran de partie | ❌ à faire | 9, 35, 36, 37, 38, 39, 40 |
+| 42 | API Parties (lancer/reprendre/rejoindre/bascule rôle) | Dashboard | ❌ à faire | 18, 23, 10 |
+| 43 | Agrégation dashboard | Dashboard | ❌ à faire | 42, 39 |
+| 44 | Page `/` (portage `dashboard.html`) | Dashboard | ❌ à faire | 9, 42, 43 |
+| 45 | API + page profil (couleur avatar) | Profil | ❌ à faire | 9, 10 |
+| 46 | Bloc-notes privé (API + onglet sidebar) | Bloc-notes | ❌ à faire | 41, 10 |
+| 47 | Mise en place Vitest + tests unitaires/intégration ciblés | Tests | ❌ à faire | 26, 30 |
+| 48 | Suivi de budget/coût API (UsageLog) | Infra | ❌ à faire | 35, 17 |
+| 49 | Sauvegarde `pg_dump` planifiée | Infra | ❌ à faire | — |
