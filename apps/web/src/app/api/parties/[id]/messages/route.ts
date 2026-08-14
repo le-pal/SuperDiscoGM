@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@superdiscogm/db";
 import { requireUser } from "@/server/authz";
 import { hasRole } from "@/lib/roles";
+import { getMessagesPage } from "@/server/partyMessages";
 
 // Historique paginé, scroll infini uniquement en V1 [Q29] — pagination par curseur (createdAt du
 // plus ancien message déjà chargé) plutôt que par offset, pour rester correcte même si de
@@ -26,23 +27,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
   const url = new URL(request.url);
   const cursorId = url.searchParams.get("cursor");
-  const limit = Math.min(Number(url.searchParams.get("limit") ?? 50) || 50, 100);
+  const limit = Number(url.searchParams.get("limit") ?? 50) || 50;
 
-  const cursorMessage = cursorId ? await prisma.message.findUnique({ where: { id: cursorId } }) : null;
-
-  const page = await prisma.message.findMany({
-    where: { partyId, ...(cursorMessage ? { createdAt: { lt: cursorMessage.createdAt } } : {}) },
-    orderBy: { createdAt: "desc" },
-    take: limit + 1,
-    include: { authorUser: { select: { id: true, name: true, avatarColor: true } } },
-  });
-
-  const hasMore = page.length > limit;
-  const batch = page.slice(0, limit);
-  const nextCursor = hasMore ? batch[batch.length - 1].id : null;
-
-  // Filtrage serveur — jamais laisser fuiter un aparté en comptant sur un filtrage client [Q26].
-  const visible = batch.filter((m) => m.visibleToUserIds.length === 0 || m.visibleToUserIds.includes(user.id));
-
-  return NextResponse.json({ messages: visible.reverse(), nextCursor });
+  const result = await getMessagesPage(partyId, user.id, { cursorId, limit });
+  return NextResponse.json(result);
 }
