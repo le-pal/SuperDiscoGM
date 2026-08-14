@@ -1,6 +1,7 @@
 import type { Server as HttpServer } from "node:http";
 import { Server as SocketIOServer, type Socket } from "socket.io";
 import { getUserByToken, SESSION_COOKIE } from "./session";
+import { persistPlayerMessage, runMjTurn } from "./turnEngine";
 
 // Événements du chat de partie. La confidentialité d'un message "party split" [Q26]
 // est appliquée ICI, côté serveur, en n'émettant que vers les rooms des destinataires
@@ -14,6 +15,9 @@ export interface ChatMessagePayload {
   content: string;
   /** Vide = visible de toute la table. Sinon, liste des userId autorisés (+ MJ implicite). */
   visibleToUserIds?: string[];
+  /** Absents pour un message optimiste émis avant confirmation DB — renseignés après persistance (étape 35). */
+  id?: string;
+  createdAt?: Date;
 }
 
 function partyRoom(partyId: string) {
@@ -87,18 +91,37 @@ export function createSocketServer(httpServer: HttpServer): SocketIOServer {
       });
     });
 
-    socket.on("chat:message", (payload: ChatMessagePayload) => {
-      const { partyId, visibleToUserIds } = payload;
+    // Seuls les messages JOUEUR entrent par ce canal client — le MJ-IA et les repères SYSTEM
+    // (transition de phase...) sont émis directement par le moteur de tour (turnEngine.ts, étape
+    // 35), jamais relayés depuis un payload client (authorType/authorUserId y seraient
+    // spoofables). authorUserId vient toujours de la session vérifiée au handshake, jamais du payload.
+    socket.on("chat:message", async (payload: Pick<ChatMessagePayload, "partyId" | "content" | "visibleToUserIds">) => {
+      const { partyId, content, visibleToUserIds } = payload;
+      if (typeof content !== "string" || content.trim().length === 0) return;
+
+      const saved = await persistPlayerMessage({ partyId, authorUserId: userId, content, visibleToUserIds });
+      const outgoing: ChatMessagePayload = {
+        partyId,
+        authorType: "PLAYER",
+        authorUserId: userId,
+        content,
+        visibleToUserIds,
+        id: saved.id,
+        createdAt: saved.createdAt,
+      };
 
       if (!visibleToUserIds || visibleToUserIds.length === 0) {
-        io.to(partyRoom(partyId)).emit("chat:message", payload);
-        return;
+        io.to(partyRoom(partyId)).emit("chat:message", outgoing);
+      } else {
+        // Aparté privé [Q26] : émission ciblée, pas de broadcast à la table.
+        for (const uid of visibleToUserIds) {
+          io.to(userRoom(uid)).emit("chat:message", outgoing);
+        }
       }
 
-      // Aparté privé [Q26] : émission ciblée, pas de broadcast à la table.
-      for (const uid of visibleToUserIds) {
-        io.to(userRoom(uid)).emit("chat:message", payload);
-      }
+      runMjTurn(io, partyId, saved.id, visibleToUserIds ?? []).catch((err) => {
+        console.error(`[turnEngine] échec du tour MJ pour la partie ${partyId} :`, err);
+      });
     });
 
     socket.on("disconnect", () => {
