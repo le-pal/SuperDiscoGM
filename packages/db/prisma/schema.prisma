@@ -1,0 +1,353 @@
+// Schéma de données SuperDiscoGM — traduit les décisions actées dans /doc (voir chaque commentaire [Qxx]).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Utilisateurs & rôles ----------
+// Hiérarchie à héritage strict : ADMIN > SUPER_USER > USER > SPECTATOR [Q04]
+
+enum Role {
+  ADMIN
+  SUPER_USER
+  USER
+  SPECTATOR
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role     @default(USER)
+  avatarColor  String // couleur choisie en bibliothèque V1 [Q50] — identité du contour de message [Q25]
+  createdAt    DateTime @default(now())
+
+  createdCampaigns  Campaign[]        @relation("CampaignCreator")
+  createdScenarios  Scenario[]        @relation("ScenarioCreator")
+  createdPersonas   Persona[]         @relation("PersonaCreator")
+  participations    PartyParticipant[]
+  characterSheets   CharacterSheet[]
+  playerNotes       PlayerNote[]
+  sentInvitations   Invitation[]      @relation("InvitationSender")
+  diceRolls         DiceRoll[]
+  messages          Message[]
+}
+
+// Invitation par lien pour rejoindre une campagne sans que l'Admin crée chaque compte [Q38]
+model Invitation {
+  id          String    @id @default(cuid())
+  token       String    @unique
+  campaignId  String
+  campaign    Campaign  @relation(fields: [campaignId], references: [id])
+  invitedById String
+  invitedBy   User      @relation("InvitationSender", fields: [invitedById], references: [id])
+  role        Role      @default(USER)
+  expiresAt   DateTime
+  usedAt      DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+// ---------- Campagne / Scénario ----------
+// Campagne = suite de scénarios joués comme des chapitres ; scénario réutilisable entre campagnes [Q10]
+
+model Campaign {
+  id            String   @id @default(cuid())
+  name          String
+  createdById   String
+  createdBy     User     @relation("CampaignCreator", fields: [createdById], references: [id])
+  personaId     String? // surcharge de persona au niveau campagne [Q06]
+  persona       Persona? @relation("CampaignPersonaOverride", fields: [personaId], references: [id])
+  createdAt     DateTime @default(now())
+
+  scenarios      CampaignScenario[]
+  parties        Party[]
+  characterSheets CharacterSheet[] // fiche liée à la campagne, pas au scénario [Q47]
+  entityMemories EntityMemory[]    // mémoire par entité persistante au niveau campagne [Q45]
+  summaries      Summary[]
+  playerNotes    PlayerNote[]
+  invitations    Invitation[]
+}
+
+enum ScenarioStatus {
+  DRAFT // contenu fourni, analyse pas encore lancée
+  ANALYZING // job d'analyse asynchrone en cours [Q14]
+  READY // digéré, jouable immédiatement sans validation humaine obligatoire [Q15]
+}
+
+model Scenario {
+  id          String         @id @default(cuid())
+  title       String
+  rawContent  String? // texte collé [Q13]
+  status      ScenarioStatus @default(DRAFT)
+  createdById String
+  createdBy   User           @relation("ScenarioCreator", fields: [createdById], references: [id])
+  personaId   String? // surcharge de persona au niveau scénario (priorité max) [Q06]
+  persona     Persona?       @relation("ScenarioPersonaOverride", fields: [personaId], references: [id])
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  files     ScenarioFile[]
+  phases    Phase[]
+  campaigns CampaignScenario[]
+  parties   Party[]
+}
+
+// Fichier uploadé (PDF/docx/markdown) [Q13] — stocké en base pour l'instant, pas de stockage objet en V1.
+// Point de bascule documenté dans doc/technique/spec.md dès que des images de contenu apparaissent (V2/V3).
+model ScenarioFile {
+  id         String   @id @default(cuid())
+  scenarioId String
+  scenario   Scenario @relation(fields: [scenarioId], references: [id])
+  filename   String
+  mimeType   String
+  data       Bytes
+  uploadedAt DateTime @default(now())
+}
+
+// Table de jonction : une campagne enchaîne plusieurs scénarios, dans un ordre donné [Q10]
+model CampaignScenario {
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  scenarioId String
+  scenario   Scenario @relation(fields: [scenarioId], references: [id])
+  order      Int
+
+  @@id([campaignId, scenarioId])
+}
+
+// Scène/phase issue du pipeline d'analyse — granularité "scène" avec métadonnées structurées [Q16]
+model Phase {
+  id               String   @id @default(cuid())
+  scenarioId       String
+  scenario         Scenario @relation(fields: [scenarioId], references: [id])
+  order            Int
+  title            String
+  summary          String
+  locationTag      String?
+  npcTags          String[] // noms de PNJ présents, alimentent la mémoire par entité [Q41]
+  entryConditions  String?
+  exitConditions   String? // détection de transition automatique par le MJ-IA [Q17]
+  secrets          String?
+
+  parties Party[] @relation("CurrentPhase")
+}
+
+// ---------- Persona MJ & prompt système ----------
+// Bibliothèque globale réutilisable, surchargeable par campagne/scénario [Q06]. Composée par-dessus
+// le prompt système global (jamais le remplacer) [Q24] — voir GlobalSettings.systemPrompt.
+
+model Persona {
+  id                    String   @id @default(cuid())
+  name                  String
+  genreTag              String
+  systemPromptFragment  String
+  createdById           String
+  createdBy             User     @relation("PersonaCreator", fields: [createdById], references: [id])
+  createdAt             DateTime @default(now())
+
+  campaignOverrides Campaign[] @relation("CampaignPersonaOverride")
+  scenarioOverrides Scenario[] @relation("ScenarioPersonaOverride")
+}
+
+// Paramètres globaux — singleton logique (une seule ligne), gérés par l'Admin [Q09][Q37]
+model GlobalSettings {
+  id              Int      @id @default(1)
+  systemPrompt    String
+  activeProvider  String // "anthropic" | "openai" | "ollama" — multi-fournisseurs [Q37]
+  activeModel     String
+  monthlyBudget   Decimal? @db.Decimal(10, 2)
+  updatedAt       DateTime @updatedAt
+}
+
+// ---------- Partie / Session ----------
+// Un scénario se joue sur plusieurs sessions ; reprendre = recharger l'état exact [Q11]
+
+enum PartyStatus {
+  ACTIVE
+  PAUSED
+  ENDED
+}
+
+model Party {
+  id            String      @id @default(cuid())
+  campaignId    String
+  campaign      Campaign    @relation(fields: [campaignId], references: [id])
+  scenarioId    String
+  scenario      Scenario    @relation(fields: [scenarioId], references: [id])
+  currentPhaseId String?
+  currentPhase  Phase?      @relation("CurrentPhase", fields: [currentPhaseId], references: [id])
+  status        PartyStatus @default(ACTIVE)
+  createdAt     DateTime    @default(now())
+
+  participants PartyParticipant[]
+  messages     Message[]
+  diceRolls    DiceRoll[]
+  summaries    Summary[]
+  entityMemoryRefs EntityMemoryIndexEntry[]
+}
+
+// Rôle de participation dans une partie donnée — distinct du rôle système global [Q04].
+// Bascule libre JOUEUR <-> SPECTATEUR en cours de partie, fiche conservée [Q08].
+enum ParticipantRole {
+  JOUEUR
+  SPECTATEUR
+}
+
+model PartyParticipant {
+  id       String          @id @default(cuid())
+  partyId  String
+  party    Party           @relation(fields: [partyId], references: [id])
+  userId   String
+  user     User            @relation(fields: [userId], references: [id])
+  role     ParticipantRole @default(JOUEUR)
+  joinedAt DateTime        @default(now())
+
+  @@unique([partyId, userId])
+}
+
+// ---------- Fiche de personnage ----------
+// Version simplifiée V1 [Q30], liée à la campagne (une fiche par campagne, pas par scénario) [Q47].
+// Éditée uniquement par le MJ-IA via tool-call structuré, jamais en texte libre [Q31][Q31b].
+
+model CharacterSheet {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  name       String
+  className  String
+  race       String
+  level      Int      @default(1)
+  hp         Int
+  hpMax      Int
+  stats      Json // caractéristiques simplifiées (ex: { "DEX": 3, "CON": 1, "SAG": 2 })
+  inventory  Json // liste d'objets
+  updatedAt  DateTime @updatedAt
+
+  logs CharacterSheetLog[]
+
+  @@unique([userId, campaignId])
+}
+
+// Journal des modifications tracées — chaque ligne correspond à un tool-call déterministe [Q31b]
+model CharacterSheetLog {
+  id               String         @id @default(cuid())
+  characterSheetId String
+  characterSheet   CharacterSheet @relation(fields: [characterSheetId], references: [id])
+  toolName         String // ex: "apply_damage", "add_item", "level_up"
+  argsJson         Json
+  resultJson       Json
+  createdAt        DateTime       @default(now())
+}
+
+// Bloc-notes personnel, privé, jamais lu par le MJ-IA ni les autres joueurs [Q46].
+// Portée campagne par défaut (structure/portée fine encore TBD [Q46b]).
+model PlayerNote {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  content    String
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, campaignId])
+}
+
+// ---------- Chat / messages ----------
+// Temps réel géré côté Socket.IO ; ce modèle est la persistance du fil.
+// visibleToUserIds = null -> visible de tous ; sinon liste explicite (party split privé) [Q26][Q26b].
+
+enum AuthorType {
+  PLAYER
+  MJ
+  SYSTEM // repère de type "party split en cours" [Q26]
+}
+
+model Message {
+  id               String     @id @default(cuid())
+  partyId          String
+  party            Party      @relation(fields: [partyId], references: [id])
+  authorType       AuthorType
+  authorUserId     String?
+  authorUser       User?      @relation(fields: [authorUserId], references: [id])
+  content          String
+  visibleToUserIds String[] // vide = visible de tous
+  createdAt        DateTime   @default(now())
+}
+
+// Outil de dés séparé du LLM, utilisable par le MJ-IA et directement par les joueurs [Q32].
+// Journal consultable par les joueurs (transparence anti-triche).
+model DiceRoll {
+  id              String   @id @default(cuid())
+  partyId         String
+  party           Party    @relation(fields: [partyId], references: [id])
+  rolledByUserId  String?
+  rolledByUser    User?    @relation(fields: [rolledByUserId], references: [id])
+  formula         String // ex: "1d20+3"
+  result          Json // détail du jet (dés individuels + total)
+  requestedByMj   Boolean  @default(false) // false = jet non sollicité, le MJ-IA peut l'ignorer [Q32c]
+  createdAt       DateTime @default(now())
+}
+
+// ---------- Mémoire par entité & résumés hiérarchiques ----------
+// PNJ, lieux, factions, quêtes — persistant au niveau campagne [Q41][Q45]
+
+enum EntityType {
+  NPC
+  LOCATION
+  FACTION
+  QUEST
+}
+
+model EntityMemory {
+  id         String     @id @default(cuid())
+  campaignId String
+  campaign   Campaign   @relation(fields: [campaignId], references: [id])
+  type       EntityType
+  name       String
+  summary    String // fiche résumé courte, toujours injectée si l'entité est pertinente à la scène active [Q44]
+  updatedAt  DateTime   @updatedAt
+
+  indexEntries EntityMemoryIndexEntry[]
+
+  @@unique([campaignId, type, name])
+}
+
+// Index de pointeurs vers les échanges bruts, groupés par échange/scène [Q43].
+// Récupéré à la demande du MJ-IA seulement, pas injecté par défaut [Q44].
+model EntityMemoryIndexEntry {
+  id             String       @id @default(cuid())
+  entityMemoryId String
+  entityMemory   EntityMemory @relation(fields: [entityMemoryId], references: [id])
+  partyId        String
+  party          Party        @relation(fields: [partyId], references: [id])
+  fromMessageId  String
+  toMessageId    String
+  createdAt      DateTime     @default(now())
+}
+
+// Hiérarchie à 3 niveaux : session -> arc/scénario -> campagne [Q22]
+enum SummaryLevel {
+  SESSION
+  ARC
+  CAMPAIGN
+}
+
+model Summary {
+  id         String       @id @default(cuid())
+  level      SummaryLevel
+  campaignId String
+  campaign   Campaign     @relation(fields: [campaignId], references: [id])
+  partyId    String? // requis si level = SESSION
+  party      Party?       @relation(fields: [partyId], references: [id])
+  content    String
+  updatedAt  DateTime     @updatedAt
+}

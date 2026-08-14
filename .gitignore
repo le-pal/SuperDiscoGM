@@ -4,6 +4,9 @@ claude_github_account_key
 # JetBrains IDE (local, machine-specific)
 .idea/
 
+# Claude Code local tooling config (local, machine-specific)
+.claude/
+
 # OS
 .DS_Store
 Thumbs.db
