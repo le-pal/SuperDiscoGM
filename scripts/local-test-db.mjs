@@ -26,6 +26,10 @@ const pg = new EmbeddedPostgres({
   user: USER,
   password: PASSWORD,
   persistent: true,
+  // Force UTF-8 : sans ça, initdb dérive l'encodage de la locale Windows (ex: WIN1252 sur ce
+  // poste), ce qui casse dès qu'un message contient un emoji (🎲, cf apps/web/src/server/socket.ts)
+  // ou certains accents. --locale=C évite aussi la dépendance à la locale système pour le tri.
+  initdbFlags: ["--encoding=UTF8", "--locale=C"],
 });
 
 const command = process.argv[2] ?? "start";
