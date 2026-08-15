@@ -46,10 +46,22 @@ model User {
 // Auth maison (pas de lib tierce — next-auth v5 écarté en beta depuis fin 2023, cadence en
 // ralentissement, cf doc/technique/questions.md [Q38]). Session opaque en DB : seul le hash du
 // token est stocké, révocation triviale (delete row), pas de JWT à gérer.
+//
+// ---------- Règles onDelete (audit AUDIT.md — aucune n'était déclarée avant ce passage) ----------
+// Philosophie appliquée partout ci-dessous, faute d'un vrai flux "supprimer/archiver" encore
+// spécifié côté produit : ne JAMAIS cascader silencieusement sur de l'historique de partie
+// partagé (Message, DiceRoll, CharacterSheet, EntityMemory, Summary, Party lui-même — Restrict,
+// une suppression du parent doit échouer explicitement plutôt que d'emporter du vécu de table) ;
+// Cascade uniquement pour des enregistrements purement dépendants sans sens autonome (tables de
+// jonction, journaux techniques, fichiers joints, données strictement personnelles comme le
+// bloc-notes privé) ; SetNull pour les liens de traçabilité optionnels où perdre la référence est
+// acceptable (auteur d'un message après suppression de son compte, persona après suppression de
+// la persona). Aucune route DELETE n'existe encore [Q05][Q10] — ces règles ne changent rien au
+// comportement actuel, elles ne font qu'éviter un mauvais choix par défaut le jour où l'une sera ajoutée.
 model Session {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   tokenHash String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
@@ -60,14 +72,14 @@ model Invitation {
   id          String    @id @default(cuid())
   token       String    @unique
   campaignId  String
-  campaign    Campaign  @relation(fields: [campaignId], references: [id])
+  campaign    Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   invitedById String
-  invitedBy   User      @relation("InvitationSender", fields: [invitedById], references: [id])
+  invitedBy   User      @relation("InvitationSender", fields: [invitedById], references: [id], onDelete: Restrict)
   role        Role      @default(USER)
   expiresAt   DateTime
   usedAt      DateTime?
   usedById    String? // qui a accepté cette invitation — fait le lien membership durable avec la campagne, au-delà de la création de compte (audit AUDIT.md : nécessaire pour vérifier qui a le droit de rejoindre une partie de cette campagne)
-  usedBy      User?     @relation("InvitationRedeemer", fields: [usedById], references: [id])
+  usedBy      User?     @relation("InvitationRedeemer", fields: [usedById], references: [id], onDelete: SetNull)
   createdAt   DateTime  @default(now())
 }
 
@@ -78,9 +90,9 @@ model Campaign {
   id            String   @id @default(cuid())
   name          String
   createdById   String
-  createdBy     User     @relation("CampaignCreator", fields: [createdById], references: [id])
+  createdBy     User     @relation("CampaignCreator", fields: [createdById], references: [id], onDelete: Restrict)
   personaId     String? // surcharge de persona au niveau campagne [Q06]
-  persona       Persona? @relation("CampaignPersonaOverride", fields: [personaId], references: [id])
+  persona       Persona? @relation("CampaignPersonaOverride", fields: [personaId], references: [id], onDelete: SetNull)
   createdAt     DateTime @default(now())
 
   scenarios      CampaignScenario[]
@@ -104,9 +116,9 @@ model Scenario {
   rawContent  String? // texte collé [Q13]
   status      ScenarioStatus @default(DRAFT)
   createdById String
-  createdBy   User           @relation("ScenarioCreator", fields: [createdById], references: [id])
+  createdBy   User           @relation("ScenarioCreator", fields: [createdById], references: [id], onDelete: Restrict)
   personaId   String? // surcharge de persona au niveau scénario (priorité max) [Q06]
-  persona     Persona?       @relation("ScenarioPersonaOverride", fields: [personaId], references: [id])
+  persona     Persona?       @relation("ScenarioPersonaOverride", fields: [personaId], references: [id], onDelete: SetNull)
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
 
@@ -122,7 +134,7 @@ model Scenario {
 model ScenarioFile {
   id         String   @id @default(cuid())
   scenarioId String
-  scenario   Scenario @relation(fields: [scenarioId], references: [id])
+  scenario   Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
   filename   String
   mimeType   String
   data       Bytes
@@ -132,9 +144,9 @@ model ScenarioFile {
 // Table de jonction : une campagne enchaîne plusieurs scénarios, dans un ordre donné [Q10]
 model CampaignScenario {
   campaignId String
-  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   scenarioId String
-  scenario   Scenario @relation(fields: [scenarioId], references: [id])
+  scenario   Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
   order      Int
 
   @@id([campaignId, scenarioId])
@@ -144,7 +156,7 @@ model CampaignScenario {
 model Phase {
   id               String   @id @default(cuid())
   scenarioId       String
-  scenario         Scenario @relation(fields: [scenarioId], references: [id])
+  scenario         Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
   order            Int
   title            String
   summary          String
@@ -167,7 +179,7 @@ model Persona {
   genreTag              String
   systemPromptFragment  String
   createdById           String
-  createdBy             User     @relation("PersonaCreator", fields: [createdById], references: [id])
+  createdBy             User     @relation("PersonaCreator", fields: [createdById], references: [id], onDelete: Restrict)
   createdAt             DateTime @default(now())
 
   campaignOverrides Campaign[] @relation("CampaignPersonaOverride")
@@ -214,10 +226,10 @@ model PromptVersion {
   id          String       @id @default(cuid())
   target      PromptTarget
   personaId   String? // requis si target = PERSONA, absent pour GLOBAL_SYSTEM_PROMPT (singleton)
-  persona     Persona?     @relation(fields: [personaId], references: [id])
+  persona     Persona?     @relation(fields: [personaId], references: [id], onDelete: SetNull)
   content     String
   createdById String
-  createdBy   User         @relation(fields: [createdById], references: [id])
+  createdBy   User         @relation(fields: [createdById], references: [id], onDelete: Restrict)
   createdAt   DateTime     @default(now())
 
   @@index([target, personaId, createdAt])
@@ -235,11 +247,11 @@ enum PartyStatus {
 model Party {
   id            String      @id @default(cuid())
   campaignId    String
-  campaign      Campaign    @relation(fields: [campaignId], references: [id])
+  campaign      Campaign    @relation(fields: [campaignId], references: [id], onDelete: Restrict)
   scenarioId    String
-  scenario      Scenario    @relation(fields: [scenarioId], references: [id])
+  scenario      Scenario    @relation(fields: [scenarioId], references: [id], onDelete: Restrict)
   currentPhaseId String?
-  currentPhase  Phase?      @relation("CurrentPhase", fields: [currentPhaseId], references: [id])
+  currentPhase  Phase?      @relation("CurrentPhase", fields: [currentPhaseId], references: [id], onDelete: SetNull)
   status        PartyStatus @default(ACTIVE)
   createdAt     DateTime    @default(now())
 
@@ -266,9 +278,9 @@ enum ParticipantRole {
 model PartyParticipant {
   id       String          @id @default(cuid())
   partyId  String
-  party    Party           @relation(fields: [partyId], references: [id])
+  party    Party           @relation(fields: [partyId], references: [id], onDelete: Cascade)
   userId   String
-  user     User            @relation(fields: [userId], references: [id])
+  user     User            @relation(fields: [userId], references: [id], onDelete: Restrict)
   role     ParticipantRole @default(JOUEUR)
   joinedAt DateTime        @default(now())
 
@@ -282,9 +294,9 @@ model PartyParticipant {
 model CharacterSheet {
   id         String   @id @default(cuid())
   userId     String
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Restrict)
   campaignId String
-  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Restrict)
   name       String
   className  String
   race       String
@@ -307,7 +319,7 @@ model CharacterSheet {
 model CharacterSheetLog {
   id               String         @id @default(cuid())
   characterSheetId String
-  characterSheet   CharacterSheet @relation(fields: [characterSheetId], references: [id])
+  characterSheet   CharacterSheet @relation(fields: [characterSheetId], references: [id], onDelete: Cascade)
   toolName         String // ex: "apply_damage", "add_item", "level_up"
   argsJson         Json
   resultJson       Json
@@ -319,9 +331,9 @@ model CharacterSheetLog {
 model PlayerNote {
   id         String   @id @default(cuid())
   userId     String
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   campaignId String
-  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   content    String
   updatedAt  DateTime @updatedAt
 
@@ -341,10 +353,10 @@ enum AuthorType {
 model Message {
   id               String     @id @default(cuid())
   partyId          String
-  party            Party      @relation(fields: [partyId], references: [id])
+  party            Party      @relation(fields: [partyId], references: [id], onDelete: Restrict)
   authorType       AuthorType
   authorUserId     String?
-  authorUser       User?      @relation(fields: [authorUserId], references: [id])
+  authorUser       User?      @relation(fields: [authorUserId], references: [id], onDelete: SetNull)
   content          String
   visibleToUserIds String[] // vide = visible de tous
   createdAt        DateTime   @default(now())
@@ -355,9 +367,9 @@ model Message {
 model DiceRoll {
   id              String   @id @default(cuid())
   partyId         String
-  party           Party    @relation(fields: [partyId], references: [id])
+  party           Party    @relation(fields: [partyId], references: [id], onDelete: Restrict)
   rolledByUserId  String?
-  rolledByUser    User?    @relation(fields: [rolledByUserId], references: [id])
+  rolledByUser    User?    @relation(fields: [rolledByUserId], references: [id], onDelete: SetNull)
   formula         String // ex: "1d20+3"
   result          Json // détail du jet (dés individuels + total)
   requestedByMj   Boolean  @default(false) // false = jet non sollicité, le MJ-IA peut l'ignorer [Q32c]
@@ -377,7 +389,7 @@ enum EntityType {
 model EntityMemory {
   id         String     @id @default(cuid())
   campaignId String
-  campaign   Campaign   @relation(fields: [campaignId], references: [id])
+  campaign   Campaign   @relation(fields: [campaignId], references: [id], onDelete: Restrict)
   type       EntityType
   name       String
   summary    String // fiche résumé courte, toujours injectée si l'entité est pertinente à la scène active [Q44]
@@ -393,9 +405,9 @@ model EntityMemory {
 model EntityMemoryIndexEntry {
   id             String       @id @default(cuid())
   entityMemoryId String
-  entityMemory   EntityMemory @relation(fields: [entityMemoryId], references: [id])
+  entityMemory   EntityMemory @relation(fields: [entityMemoryId], references: [id], onDelete: Cascade)
   partyId        String
-  party          Party        @relation(fields: [partyId], references: [id])
+  party          Party        @relation(fields: [partyId], references: [id], onDelete: Restrict)
   fromMessageId  String
   toMessageId    String
   createdAt      DateTime     @default(now())
@@ -412,11 +424,11 @@ model Summary {
   id         String       @id @default(cuid())
   level      SummaryLevel
   campaignId String
-  campaign   Campaign     @relation(fields: [campaignId], references: [id])
+  campaign   Campaign     @relation(fields: [campaignId], references: [id], onDelete: Restrict)
   partyId    String? // requis si level = SESSION
-  party      Party?       @relation(fields: [partyId], references: [id])
+  party      Party?       @relation(fields: [partyId], references: [id], onDelete: SetNull)
   scenarioId String? // requis si level = ARC (un résumé d'arc par scénario de la campagne)
-  scenario   Scenario?    @relation(fields: [scenarioId], references: [id])
+  scenario   Scenario?    @relation(fields: [scenarioId], references: [id], onDelete: SetNull)
   content    String
   updatedAt  DateTime     @updatedAt
 
