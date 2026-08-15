@@ -4,8 +4,10 @@ claude_github_account_key
 # JetBrains IDE (local, machine-specific)
 .idea/
 
-# Claude Code local tooling config (local, machine-specific)
-.claude/
+# Claude Code local tooling config (local, machine-specific) — MAIS pas les skills du projet
+# (.claude/skills/), qui doivent être commités pour être réutilisables d'une session à l'autre.
+.claude/*
+!.claude/skills/
 
 # OS
 .DS_Store
