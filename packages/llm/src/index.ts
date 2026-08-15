@@ -30,9 +30,10 @@ export function resolveModel(provider: string, model: string): LanguageModel {
 // tronqué en plein milieu (finishReason "length") dès qu'un scénario dépassait quelques milliers
 // de tokens en entrée, avant même de laisser de la place pour la sortie. Sans ce réglage, TOUT
 // appel LLM via Ollama (ingestion, tour de jeu, mémoire, résumés) était silencieusement susceptible
-// de tronquer sa réponse. 16384 = compromis pragmatique (au-delà, le CPU de dev devient très lent) ;
-// à revoir si un scénario/contexte de tour dépasse cette taille en usage réel.
-const OLLAMA_NUM_CTX = 16384;
+// de tronquer sa réponse. 32768 = compromis pragmatique pour couvrir un scénario long typique
+// (testé jusqu'à ~40k tokens en entrée) sans exploser le temps de calcul sur un poste de dev sans
+// GPU dédié — un scénario encore plus long réintroduira le même symptôme, à surveiller.
+const OLLAMA_NUM_CTX = 32768;
 
 export function buildProviderOptions(provider: string): ProviderOptions | undefined {
   if (provider !== "ollama") return undefined;
