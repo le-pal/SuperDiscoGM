@@ -5,6 +5,7 @@ import type { ChatMessagePayload } from "@/server/socket";
 import type { CharacterSheetView } from "@/lib/characterSheet";
 import type { Ambiance } from "@/lib/ambiance";
 import { Avatar } from "@/components/Avatar";
+import { ThemeRoot } from "@/components/ThemeRoot";
 import { usePartyChannel } from "@/hooks/usePartyChannel";
 import { usePartyPresence } from "@/hooks/usePartyPresence";
 import { Composer } from "./Composer";
@@ -68,7 +69,7 @@ export function PartyScreen({
   const spectatorCount = Object.values(participantsById).filter((p) => p.role === "SPECTATEUR").length;
 
   return (
-    <div className="app-shell" style={{ height: "100vh" }}>
+    <ThemeRoot className="app-shell" style={{ height: "100vh" }}>
       <div className="topbar">
         <a className="brand" href="/" style={{ textDecoration: "none", color: "inherit" }}>
           <span className="dot" /> SuperDiscoGM
@@ -134,7 +135,7 @@ export function PartyScreen({
 
         <PartySidebar campaignId={campaignId} sheet={ownSheet} initialNotes={initialNotes} />
       </div>
-    </div>
+    </ThemeRoot>
   );
 }
 

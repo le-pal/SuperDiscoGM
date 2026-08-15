@@ -5,6 +5,7 @@ import { RoleBadge } from "./RoleBadge";
 import { Avatar } from "./Avatar";
 import { SocketProvider } from "./SocketProvider";
 import { LogoutButton } from "./LogoutButton";
+import { ThemeRoot } from "./ThemeRoot";
 
 interface AppShellProps {
   user: User;
@@ -16,7 +17,7 @@ interface AppShellProps {
 export function AppShell({ user, wide = false, children }: AppShellProps) {
   return (
     <SocketProvider>
-      <div className="app-shell">
+      <ThemeRoot className="app-shell">
         <div className="topbar">
           <div className="brand">
             <span className="dot" /> SuperDiscoGM
@@ -29,7 +30,7 @@ export function AppShell({ user, wide = false, children }: AppShellProps) {
           </div>
         </div>
         <div className={wide ? "page wide" : "page"}>{children}</div>
-      </div>
+      </ThemeRoot>
     </SocketProvider>
   );
 }

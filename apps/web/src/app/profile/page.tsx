@@ -4,6 +4,7 @@ import { Avatar } from "@/components/Avatar";
 import { resolveInitials } from "@/lib/avatar";
 import { AvatarPicker } from "./avatar-picker";
 import { IdentityForm } from "./identity-form";
+import { ThemeSelector } from "./theme-selector";
 
 // Portage de maquette/profil.html (étape 45 du PLAN.md) — gestion de l'avatar (couleur +
 // initiales déduites du nom par défaut [Q50], surchargeables ainsi que le nom affiché [Q54]).
@@ -60,6 +61,18 @@ export default async function ProfilePage() {
               📷 Importer une photo ou une illustration — désactivé en V1, cohérent avec l&apos;absence d&apos;images de contenu en V1.
             </p>
           </div>
+        </div>
+      </div>
+
+      <div className="section" style={{ marginTop: 28 }}>
+        <div className="section-head">
+          <h2>Thème visuel</h2>
+        </div>
+        <div className="card">
+          <p className="muted" style={{ fontSize: ".82rem", marginBottom: 14 }}>
+            S&apos;applique à toute l&apos;app, immédiatement.
+          </p>
+          <ThemeSelector />
         </div>
       </div>
 

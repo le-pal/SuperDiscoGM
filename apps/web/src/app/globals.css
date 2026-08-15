@@ -469,3 +469,41 @@ th { color: var(--text-muted); font-weight: 600; font-size: .75rem; text-transfo
     radial-gradient(ellipse 70% 50% at 15% 100%, rgba(90,60,20,.5), transparent 65%),
     linear-gradient(180deg, #120e08, #16110a 55%, #100c07);
 }
+
+/* ---------- Thèmes visuels (data-theme sur .app-shell) ---------- */
+/* 4 thèmes par défaut, sélection client (localStorage, voir /profile) — même principe que
+   l'ambiance de lieu ci-dessus : seule la palette "monde" (fond/accent/MJ/statuts) change,
+   jamais les couleurs d'identité joueur (--p1..--p4) ni les couleurs de rôle (--role-*), pour
+   rester reconnaissable quel que soit le thème. "sobre" = thème actuel par défaut, aucune
+   surcharge nécessaire (:root suffit) — les 3 autres sont des overrides scopés.
+   Contraste vérifié à l'œil sur chaque palette (texte clair sur fond sombre, ratio confortable) :
+   c'est un chat, la lisibilité prime sur l'esthétique même sur les thèmes les plus chargés. */
+
+.app-shell[data-theme="disco"] {
+  --bg: #16091f; --bg-alt: #1f0e2c; --panel: #241332; --panel-alt: #3a1f4d33;
+  --border: #4a2b63; --border-soft: #4a2b6300;
+  --text: #f5e9ff; --text-muted: #c6a8dd; --text-faint: #8f6ba8;
+  --accent: #ff2fb0; --accent-soft: #ff2fb022; --accent-strong: #ff6ad1;
+  --mj: #ffd700; --mj-soft: #ffd70022; --mj-border: #ffe066;
+  --danger: #ff3860; --success: #2fe6a0; --info: #4fc3f7;
+}
+
+.app-shell[data-theme="psychedelique"] {
+  --bg: #0d0221; --bg-alt: #150730; --panel: #1c0b3e; --panel-alt: #2d144f33;
+  --border: #4d2080; --border-soft: #4d208000;
+  --text: #fef6ff; --text-muted: #c9a6e6; --text-faint: #8f6bb0;
+  --accent: #ff6b1a; --accent-soft: #ff6b1a22; --accent-strong: #ff9152;
+  --mj: #00e0c6; --mj-soft: #00e0c622; --mj-border: #4dffef;
+  --danger: #ff3860; --success: #7ef542; --info: #ff2fd6;
+}
+
+/* Rétro 70s — palette ancrée dans les teintes réelles de la décennie (harvest gold, avocado
+   green, burnt sienna/rust, chocolate brown) plutôt que des couleurs approximatives. */
+.app-shell[data-theme="retro70"] {
+  --bg: #221607; --bg-alt: #2b1c0c; --panel: #33220f; --panel-alt: #4a301933;
+  --border: #5c3d1f; --border-soft: #5c3d1f00;
+  --text: #f3e6d0; --text-muted: #c7a97c; --text-faint: #93794f;
+  --accent: #da9100; --accent-soft: #da910022; --accent-strong: #e97451;
+  --mj: #568203; --mj-soft: #56820322; --mj-border: #7ea832;
+  --danger: #b7410e; --success: #7c9a3a; --info: #c2b280;
+}
