@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 1120" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4a4a4a"/>
+    </marker>
+    <marker id="arrowStable" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a8a8a"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1320" height="1120" fill="#fbfaf7"/>
+
+  <!-- Title -->
+  <text x="660" y="42" text-anchor="middle" font-size="24" font-weight="700" fill="#241a08">SuperDiscoGM — vers un moteur de règles générique</text>
+  <text x="660" y="66" text-anchor="middle" font-size="13" fill="#6b6d7c">Réflexion d'architecture — doc/technique/architecture-generique.md — un GameSystem déclaratif alimente à la fois les outils MJ-IA et l'UI joueur</text>
+
+  <!-- Legend -->
+  <g transform="translate(880,84)">
+    <rect x="0" y="0" width="410" height="86" rx="8" fill="#ffffff" stroke="#d8d3c8"/>
+    <text x="12" y="18" font-size="12" font-weight="700" fill="#241a08">Légende</text>
+    <rect x="12" y="26" width="16" height="14" rx="3" fill="#e8ddfa" stroke="#9b6bce"/>
+    <text x="34" y="37" font-size="11" fill="#333">Définition déclarative (nouveau)</text>
+    <rect x="12" y="46" width="16" height="14" rx="3" fill="#dbeee6" stroke="#52b788"/>
+    <text x="34" y="57" font-size="11" fill="#333">Généré à partir de la définition (nouveau)</text>
+    <rect x="220" y="26" width="16" height="14" rx="3" fill="#fdeccf" stroke="#e0a955"/>
+    <text x="242" y="37" font-size="11" fill="#333">Stockage (modifié)</text>
+    <rect x="220" y="46" width="16" height="14" rx="3" fill="#eef0f3" stroke="#9a9ba8" stroke-dasharray="3,2"/>
+    <text x="242" y="57" font-size="11" fill="#333">Existant, ne change pas</text>
+    <text x="12" y="76" font-size="10" fill="#6b6d7c">Flèche pleine = flux du système générique · pointillée = flux déjà stable</text>
+  </g>
+
+  <!-- Layer 1: GameSystem declarative definition -->
+  <g transform="translate(360,100)">
+    <rect x="0" y="0" width="440" height="100" rx="10" fill="#e8ddfa" stroke="#9b6bce" stroke-width="1.5"/>
+    <text x="220" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#3a2a5c">GameSystem (déclaratif, versionné)</text>
+    <text x="220" y="46" text-anchor="middle" font-size="12" fill="#3a2a5c">resourceDefs · trackDefs · tagCategoryDefs · attributeDefs</text>
+    <text x="220" y="66" text-anchor="middle" font-size="11" fill="#5c4a80">ex. « D&amp;D-like » : PV=ressource, sorts=tracks, FOR..CHA=attributs</text>
+    <text x="220" y="86" text-anchor="middle" font-size="11" fill="#5c4a80">Campaign.gameSystemId choisit le système à la création</text>
+  </g>
+
+  <!-- Arrows down to two generators -->
+  <path d="M 480 200 L 250 260" fill="none" stroke="#4a4a4a" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <path d="M 680 200 L 940 260" fill="none" stroke="#4a4a4a" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- Generator: tools -->
+  <g transform="translate(60,264)">
+    <rect x="0" y="0" width="400" height="70" rx="10" fill="#dbeee6" stroke="#52b788" stroke-width="1.5"/>
+    <text x="200" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#1f4a37">Générateur de tools MJ-IA</text>
+    <text x="200" y="50" text-anchor="middle" font-size="11" fill="#1f4a37">clés valides = enum généré (pas de texte libre halluciné)</text>
+  </g>
+
+  <!-- Generator: UI -->
+  <g transform="translate(760,264)">
+    <rect x="0" y="0" width="400" height="70" rx="10" fill="#dbeee6" stroke="#52b788" stroke-width="1.5"/>
+    <text x="200" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#1f4a37">Générateur d'UI joueur</text>
+    <text x="200" y="50" text-anchor="middle" font-size="11" fill="#1f4a37">un composant générique, plus 3 UI dupliquées à la main</text>
+  </g>
+
+  <path d="M 260 334 L 260 380" fill="none" stroke="#4a4a4a" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <path d="M 960 334 L 960 380" fill="none" stroke="#4a4a4a" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- Generated tools list -->
+  <g transform="translate(60,382)">
+    <rect x="0" y="0" width="400" height="150" rx="10" fill="#ffffff" stroke="#52b788" stroke-width="1.2"/>
+    <text x="16" y="24" font-size="12" font-weight="700" fill="#1f4a37">Outils générés (par instance du système)</text>
+    <text x="16" y="46" font-size="11.5" fill="#333">adjust_resource(resourceId, delta)</text>
+    <text x="16" y="65" font-size="11.5" fill="#333">consume_track / refill_track(trackId)</text>
+    <text x="16" y="84" font-size="11.5" fill="#333">add_tag / remove_tag(category, tag)</text>
+    <text x="16" y="103" font-size="11.5" fill="#333">add_item / remove_item(item, qty)</text>
+    <text x="16" y="122" font-size="11.5" fill="#333">update_attribute(attributeId, value)</text>
+    <text x="16" y="142" font-size="10.5" fill="#6b6d7c">Remplace applyDamage/applyHeal/consumeSpellSlot ; add/removeItem-Condition déjà sous cette forme</text>
+  </g>
+
+  <!-- Generated UI list -->
+  <g transform="translate(760,382)">
+    <rect x="0" y="0" width="400" height="150" rx="10" fill="#ffffff" stroke="#52b788" stroke-width="1.2"/>
+    <text x="16" y="24" font-size="12" font-weight="700" fill="#1f4a37">UI générée (une source, trois usages)</text>
+    <text x="16" y="46" font-size="11.5" fill="#333">Fiche de personnage complète</text>
+    <text x="16" y="65" font-size="11.5" fill="#333">Panneau condensé (sidebar écran de partie)</text>
+    <text x="16" y="84" font-size="11.5" fill="#333">Formulaire de création de personnage</text>
+    <text x="16" y="103" font-size="11.5" fill="#333">Actions rapides du composer (objet/sort)</text>
+    <text x="16" y="122" font-size="10.5" fill="#6b6d7c">Rendu par type de capacité : ressource → barre,</text>
+    <text x="16" y="138" font-size="10.5" fill="#6b6d7c">track → pastilles, tags → badges</text>
+  </g>
+
+  <!-- Stable tools box (unchanged), feeding into turn engine too -->
+  <g transform="translate(500,382)">
+    <rect x="0" y="0" width="220" height="150" rx="10" fill="#eef0f3" stroke="#9a9ba8" stroke-width="1.2" stroke-dasharray="4,3"/>
+    <text x="110" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4a4b57">Outils stables (inchangés)</text>
+    <text x="16" y="44" font-size="11" fill="#333">roll_dice</text>
+    <text x="16" y="63" font-size="11" fill="#333">advance_phase</text>
+    <text x="16" y="82" font-size="11" fill="#333">lookup_entity_history</text>
+    <text x="16" y="101" font-size="11" fill="#333">reveal_huddle</text>
+    <text x="16" y="126" font-size="10" fill="#6b6d7c">Déjà génériques, ne dépendent</text>
+    <text x="16" y="140" font-size="10" fill="#6b6d7c">pas du système de règles</text>
+  </g>
+
+  <!-- Arrows from the three tool sources down into turn engine -->
+  <path d="M 260 532 L 500 610" fill="none" stroke="#4a4a4a" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <path d="M 610 532 L 610 610" fill="none" stroke="#8a8a8a" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrowStable)"/>
+  <path d="M 960 532 L 750 610" fill="none" stroke="#4a4a4a" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- Turn engine (existing, structure unchanged) -->
+  <g transform="translate(360,612)">
+    <rect x="0" y="0" width="440" height="96" rx="10" fill="#eef0f3" stroke="#9a9ba8" stroke-width="1.4" stroke-dasharray="5,3"/>
+    <text x="220" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#4a4b57">Moteur de tour (turnEngine.ts)</text>
+    <text x="220" y="48" text-anchor="middle" font-size="11.5" fill="#333">Contexte de tour à 5 blocs — structure inchangée</text>
+    <text x="220" y="68" text-anchor="middle" font-size="11" fill="#6b6d7c">seul le bloc « personnages de la table » change de source</text>
+    <text x="220" y="86" text-anchor="middle" font-size="11" fill="#6b6d7c">(lit la fiche générique au lieu des colonnes fixes)</text>
+  </g>
+
+  <!-- Turn engine writes to CharacterSheetLog -->
+  <path d="M 800 660 L 1120 660" fill="none" stroke="#8a8a8a" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrowStable)"/>
+  <g transform="translate(1120,614)">
+    <rect x="0" y="0" width="180" height="92" rx="10" fill="#eef0f3" stroke="#9a9ba8" stroke-width="1.2" stroke-dasharray="4,3"/>
+    <text x="90" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#4a4b57">CharacterSheetLog</text>
+    <text x="90" y="44" text-anchor="middle" font-size="10.5" fill="#333">journal, inchangé</text>
+    <text x="90" y="64" text-anchor="middle" font-size="10" fill="#6b6d7c">chaque tool-call trace</text>
+    <text x="90" y="78" text-anchor="middle" font-size="10" fill="#6b6d7c">l'action + le résultat</text>
+  </g>
+
+  <!-- Storage box below turn engine -->
+  <path d="M 580 708 L 580 760" fill="none" stroke="#4a4a4a" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <g transform="translate(340,762)">
+    <rect x="0" y="0" width="480" height="120" rx="10" fill="#fdeccf" stroke="#e0a955" stroke-width="1.5"/>
+    <text x="240" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#5c3d0e">CharacterSheet générique (stockage)</text>
+    <text x="240" y="50" text-anchor="middle" font-size="12" fill="#5c3d0e">{ resources, tracks, attributes } Json + gameSystemId</text>
+    <text x="240" y="70" text-anchor="middle" font-size="11.5" fill="#5c3d0e">inventory, conditions : déjà génériques, inchangés</text>
+    <text x="240" y="94" text-anchor="middle" font-size="10.5" fill="#7a5a1e">Remplace les colonnes fixes className/race/level/hp/hpMax/ac/stats/spellSlots</text>
+    <text x="240" y="110" text-anchor="middle" font-size="10.5" fill="#7a5a1e">Migration : le D&amp;D actuel devient le 1er GameSystem, mapping direct</text>
+  </g>
+
+  <!-- Side panel: stays stable regardless of system -->
+  <g transform="translate(60,762)">
+    <rect x="0" y="0" width="250" height="270" rx="10" fill="#eef0f3" stroke="#9a9ba8" stroke-width="1.3" stroke-dasharray="5,3"/>
+    <text x="125" y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#4a4b57">Reste stable, quel que</text>
+    <text x="125" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#4a4b57">soit le système</text>
+    <text x="16" y="70" font-size="11.5" fill="#333">• Dés (roll_dice, formule NdM+K)</text>
+    <text x="16" y="94" font-size="11.5" fill="#333">• Party split (repère + reveal)</text>
+    <text x="16" y="118" font-size="11.5" fill="#333">• Mémoire par entité (PNJ/lieux/</text>
+    <text x="30" y="136" font-size="11.5" fill="#333">factions/quêtes)</text>
+    <text x="16" y="160" font-size="11.5" fill="#333">• Résumés hiérarchiques 3 niveaux</text>
+    <text x="16" y="184" font-size="11.5" fill="#333">• Pattern tool-call + journal</text>
+    <text x="30" y="202" font-size="11.5" fill="#333">(jamais d'improvisation texte</text>
+    <text x="30" y="220" font-size="11.5" fill="#333">libre sur les règles)</text>
+    <text x="16" y="246" font-size="10" fill="#6b6d7c">Ces briques ne dépendent d'aucun</text>
+    <text x="16" y="260" font-size="10" fill="#6b6d7c">système de règles précis.</text>
+  </g>
+
+  <!-- Migration note -->
+  <g transform="translate(860,762)">
+    <rect x="0" y="0" width="400" height="270" rx="10" fill="#ffffff" stroke="#d8d3c8" stroke-width="1.3"/>
+    <text x="200" y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#241a08">Ce qui change vs ce qui ne change pas</text>
+    <text x="16" y="52" font-size="11.5" font-weight="700" fill="#1f4a37">Change (nouveau, cette réflexion) :</text>
+    <text x="16" y="72" font-size="11" fill="#333">Fiche fixe → fiche générique par système</text>
+    <text x="16" y="90" font-size="11" fill="#333">Fonctions TS 1-par-mécanique → générateur</text>
+    <text x="16" y="108" font-size="11" fill="#333">3 UI dupliquées → 1 UI générée</text>
+    <text x="16" y="134" font-size="11.5" font-weight="700" fill="#4a4b57">Ne change pas :</text>
+    <text x="16" y="154" font-size="11" fill="#333">Moteur de tour, contexte à 5 blocs</text>
+    <text x="16" y="172" font-size="11" fill="#333">Dés, party split, mémoire, résumés</text>
+    <text x="16" y="190" font-size="11" fill="#333">Journal de traçabilité (CharacterSheetLog)</text>
+    <text x="16" y="208" font-size="11" fill="#333">Invariant anti-triche : jamais de règle</text>
+    <text x="30" y="224" font-size="11" fill="#333">improvisée en texte libre par le MJ-IA</text>
+    <text x="16" y="250" font-size="10.5" fill="#6b6d7c">Questions ouvertes non tranchées ici :</text>
+    <text x="16" y="264" font-size="10.5" fill="#6b6d7c">Q55–Q59, voir doc/technique/questions.md</text>
+  </g>
+
+  <text x="660" y="1108" text-anchor="middle" font-size="10.5" fill="#9a9ba8">SuperDiscoGM — archi/architecture-generique.svg — document de réflexion, aucune implémentation engagée par ce schéma</text>
+</svg>

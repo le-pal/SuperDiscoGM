@@ -12,3 +12,11 @@ Retour à [l'index](../index.md). Statut : `[ ]` ouverte · `[x]` tranchée (voi
   → **Décision : pas prioritaire en V1**, cohérent avec l'échelle "usage perso/petit groupe" (`[Q40]`). À reprendre impérativement avant toute ouverture publique de l'app.
 - **Q40.** `[x]` Hébergement / échelle cible pour la V1 ?
   → **Décision : usage perso / petit groupe.** La V1 ne vise pas une mise en production publique à grande échelle, ce qui permet de rester simple sur l'infra au départ (cohérent avec le multi-tenant déjà acté en `[Q02]`, mais à échelle restreinte).
+
+## Plateforme de règles générique (prolonge `[Q35]`, voir [architecture-generique.md](architecture-generique.md))
+
+- **Q55.** `[ ]` Où vit la définition d'un `GameSystem` (moteur de règles générique) — formulaire Admin en base, ou fichier de config versionné dans le repo pour commencer ?
+- **Q56.** `[ ]` Un Super utilisateur peut-il créer/personnaliser son propre `GameSystem`, ou seulement choisir parmi des systèmes proposés par l'Admin (même logique de droits que les personas, `[Q06]`) ?
+- **Q57.** `[ ]` Les champs narratifs d'une fiche (nom du personnage, race, classe en texte libre) : un bucket d'attributs générique défini par le système, ou un bloc "identité" toujours présent, séparé des mécaniques du système ?
+- **Q58.** `[ ]` Politique de versionnage d'un `GameSystem` qui change après que des fiches de personnage existent déjà dessus — même esprit que `PromptVersion` (undo-log, `[Q53]`), ou un mécanisme différent (une mécanique de jeu n'est pas un texte librement réversible) ?
+- **Q59.** `[ ]` Ce chantier (moteur de règles générique) devient-il un objectif V2 concret, ou reste-t-il en piste V4 (`[Q35]`) le temps que la V1 D&D se stabilise ?

@@ -9,7 +9,7 @@ Ce dossier est le point d'entrée de la spécification fonctionnelle. Elle est r
 | **Admin** | Rôles & permissions, prompt système, persona MJ, budget API | [admin/spec.md](admin/spec.md) | [admin/questions.md](admin/questions.md) |
 | **Scénario** | Campagne/Scénario/Session, pipeline d'ingestion, mémoire & contexte | [scenario/spec.md](scenario/spec.md) | [scenario/questions.md](scenario/questions.md) |
 | **Partie** | Écran de jeu, temps réel, fiche de personnage, dés & règles | [partie/spec.md](partie/spec.md) | [partie/questions.md](partie/questions.md) |
-| **Technique** | Stack, fournisseurs LLM, authentification, RGPD, hébergement — [architecture.md](technique/architecture.md) | [technique/spec.md](technique/spec.md) | [technique/questions.md](technique/questions.md) |
+| **Technique** | Stack, fournisseurs LLM, authentification, RGPD, hébergement — [architecture.md](technique/architecture.md). Réflexion (pas encore tranchée) : moteur de règles générique multi-système — [architecture-generique.md](technique/architecture-generique.md) | [technique/spec.md](technique/spec.md) | [technique/questions.md](technique/questions.md) |
 | **Roadmap** | V1 → V4 | [roadmap.md](roadmap.md) | (questions V2-V4 réparties par lot concerné) |
 | **Idées** | Vivier brut de fonctionnalités (pas encore décidé), inspiré de retours réels de JDR | [idees-fonctionnalites.md](idees-fonctionnalites.md) | — |
 
