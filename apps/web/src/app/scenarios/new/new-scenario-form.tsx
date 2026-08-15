@@ -19,9 +19,20 @@ export function NewScenarioForm() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (saving || !title.trim()) return;
-    if (mode === "paste" && !content.trim()) return;
-    if (mode === "upload" && !file) return;
+    if (saving) return;
+
+    if (!title.trim()) {
+      setError("Le titre du scénario est requis.");
+      return;
+    }
+    if (mode === "paste" && !content.trim()) {
+      setError("Colle le texte du scénario avant de créer.");
+      return;
+    }
+    if (mode === "upload" && !file) {
+      setError("Choisis un fichier avant de créer.");
+      return;
+    }
 
     setSaving(true);
     setError(null);

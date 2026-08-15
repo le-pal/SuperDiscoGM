@@ -23,7 +23,11 @@ export function NewCampaignForm() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (name.trim().length === 0 || saving) return;
+    if (saving) return;
+    if (name.trim().length === 0) {
+      setError("Le nom de la campagne est requis.");
+      return;
+    }
     setSaving(true);
     setError(null);
     const res = await fetch("/api/campaigns", {

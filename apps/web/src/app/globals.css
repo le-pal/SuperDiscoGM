@@ -167,13 +167,29 @@ small, .muted { color: var(--text-muted); }
   color: var(--text);
   font-size: .85rem;
   font-weight: 600;
-  cursor: default;
+  cursor: pointer;
+  transition: background-color .12s ease, border-color .12s ease, transform .05s ease, opacity .12s ease;
 }
+/* cursor: default d'origine venait de la maquette statique (boutons non branchés) — les vrais
+   boutons ont besoin d'un retour visuel au survol/clic, sinon impossible de voir qu'on a cliqué. */
+.btn:hover { background: var(--panel-alt); border-color: var(--text-faint); }
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn:disabled { cursor: default; opacity: .5; transform: none; }
+
 .btn.primary { background: var(--accent); border-color: var(--accent); color: #241a08; }
+.btn.primary:hover:not(:disabled) { background: var(--accent-strong); border-color: var(--accent-strong); }
+
 .btn.mj { background: var(--mj); border-color: var(--mj); color: #fff; }
+.btn.mj:hover:not(:disabled) { background: var(--mj-border); border-color: var(--mj-border); }
+
 .btn.ghost { background: transparent; }
+.btn.ghost:hover:not(:disabled) { background: var(--panel-alt); }
+
 .btn.small { padding: 5px 10px; font-size: .78rem; }
+
 .btn.danger { border-color: var(--danger); color: var(--danger); background: transparent; }
+.btn.danger:hover:not(:disabled) { background: var(--danger); color: #fff; }
 
 /* ---------- Badges ---------- */
 
@@ -359,7 +375,8 @@ th { color: var(--text-muted); font-weight: 600; font-size: .75rem; text-transfo
 /* ---------- Tabs ---------- */
 
 .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
-.tabs .tab { padding: 8px 14px; font-size: .82rem; color: var(--text-muted); cursor: default; border-bottom: 2px solid transparent; }
+.tabs .tab { padding: 8px 14px; font-size: .82rem; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: color .12s ease, border-color .12s ease; }
+.tabs .tab:hover { color: var(--text); }
 .tabs .tab.active { color: var(--accent); border-color: var(--accent); font-weight: 700; }
 
 /* ---------- Misc ---------- */
@@ -396,8 +413,11 @@ th { color: var(--text-muted); font-weight: 600; font-size: .75rem; text-transfo
   display: flex; align-items: center; justify-content: center;
   font-weight: 700; font-size: 1.1rem; color: #10121a;
   border: 3px solid transparent;
-  cursor: default;
+  cursor: pointer;
+  transition: transform .1s ease, border-color .12s ease;
 }
+.avatar-option:hover:not(:disabled) { transform: scale(1.08); border-color: var(--text-faint); }
+.avatar-option:active:not(:disabled) { transform: scale(0.96); }
 .avatar-option.selected { border-color: var(--text); box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent); }
 
 .viewer-strip select {

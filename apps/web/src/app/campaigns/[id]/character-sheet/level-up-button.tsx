@@ -22,7 +22,11 @@ export function LevelUpButton({ sheetId }: { sheetId: string }) {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (saving || hpGain <= 0) return;
+    if (saving) return;
+    if (hpGain <= 0) {
+      setError("Le gain de PV doit être supérieur à 0.");
+      return;
+    }
     setSaving(true);
     setError(null);
     const res = await fetch(`/api/character-sheets/${sheetId}/level-up`, {

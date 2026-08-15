@@ -17,7 +17,15 @@ export function NewSheetForm({ campaignId }: { campaignId: string }) {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (saving || !name.trim() || !race.trim() || !className.trim() || hpMax <= 0) return;
+    if (saving) return;
+    if (!name.trim() || !race.trim() || !className.trim()) {
+      setError("Nom, race et classe sont requis.");
+      return;
+    }
+    if (hpMax <= 0) {
+      setError("Les points de vie max doivent être supérieurs à 0.");
+      return;
+    }
     setSaving(true);
     setError(null);
     const res = await fetch(`/api/campaigns/${campaignId}/character-sheet`, {

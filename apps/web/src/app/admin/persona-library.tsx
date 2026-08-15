@@ -24,7 +24,15 @@ export function PersonaLibrary({ personas }: { personas: PersonaRow[] }) {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (saving || !name.trim() || !fragment.trim()) return;
+    if (saving) return;
+    if (!name.trim()) {
+      setError("Le nom de la persona est requis.");
+      return;
+    }
+    if (!fragment.trim()) {
+      setError("Le fragment de prompt est requis.");
+      return;
+    }
     setSaving(true);
     setError(null);
     const res = await fetch("/api/personas", {
