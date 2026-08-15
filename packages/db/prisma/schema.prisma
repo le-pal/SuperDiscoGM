@@ -360,6 +360,9 @@ model Message {
   content          String
   visibleToUserIds String[] // vide = visible de tous
   createdAt        DateTime   @default(now())
+
+  entityMemoryIndexEntriesFrom EntityMemoryIndexEntry[] @relation("EntityMemoryIndexFromMessage")
+  entityMemoryIndexEntriesTo   EntityMemoryIndexEntry[] @relation("EntityMemoryIndexToMessage")
 }
 
 // Outil de dés séparé du LLM, utilisable par le MJ-IA et directement par les joueurs [Q32].
@@ -402,6 +405,9 @@ model EntityMemory {
 
 // Index de pointeurs vers les échanges bruts, groupés par échange/scène [Q43].
 // Récupéré à la demande du MJ-IA seulement, pas injecté par défaut [Q44].
+// fromMessageId/toMessageId : vraies relations Prisma vers Message depuis AUDIT.md (avant, deux
+// String nus sans @relation — aucune contrainte FK, incohérent avec le reste du schéma, qui
+// aurait laissé des pointeurs orphelins silencieux si un nettoyage d'historique était ajouté un jour).
 model EntityMemoryIndexEntry {
   id             String       @id @default(cuid())
   entityMemoryId String
@@ -409,7 +415,9 @@ model EntityMemoryIndexEntry {
   partyId        String
   party          Party        @relation(fields: [partyId], references: [id], onDelete: Restrict)
   fromMessageId  String
+  fromMessage    Message      @relation("EntityMemoryIndexFromMessage", fields: [fromMessageId], references: [id], onDelete: Restrict)
   toMessageId    String
+  toMessage      Message      @relation("EntityMemoryIndexToMessage", fields: [toMessageId], references: [id], onDelete: Restrict)
   createdAt      DateTime     @default(now())
 }
 
