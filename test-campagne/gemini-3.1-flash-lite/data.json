@@ -1,0 +1,386 @@
+{
+  "result": {
+    "modelId": "google/gemini-3.1-flash-lite",
+    "scenarioTitle": "Valjoyeux",
+    "startPhase": "L'Arrivée à Valjoyeux",
+    "finalPhase": "Enquête initiale à l'Auberge",
+    "advancedPhase": true,
+    "elapsedMs": 66335,
+    "messageCount": 41,
+    "toolCalls": [
+      {
+        "toolName": "apply_damage",
+        "args": {
+          "amount": 3
+        }
+      },
+      {
+        "toolName": "apply_damage",
+        "args": {
+          "amount": 3
+        }
+      },
+      {
+        "toolName": "apply_damage",
+        "args": {
+          "amount": 3
+        }
+      },
+      {
+        "toolName": "apply_damage",
+        "args": {
+          "amount": 3
+        }
+      },
+      {
+        "toolName": "apply_damage",
+        "args": {
+          "amount": 3
+        }
+      }
+    ],
+    "expectedTools": [
+      "apply_damage",
+      "add_item"
+    ],
+    "gotExpectedTools": [
+      "apply_damage"
+    ],
+    "toolCallScore": "2/3",
+    "usage": {
+      "calls": 57,
+      "inputTokens": 296405,
+      "outputTokens": 30606,
+      "costUsd": null
+    }
+  },
+  "turnLog": [
+    {
+      "index": 1,
+      "authorName": "Elyon Vasterel",
+      "content": "Je m'avance prudemment pour aider à déblayer l'entrée, pioche en main.",
+      "expected": null
+    },
+    {
+      "index": 2,
+      "authorName": "Kara Sombreval",
+      "content": "Je reste en retrait et surveille les alentours pendant que les autres creusent.",
+      "expected": null
+    },
+    {
+      "index": 3,
+      "authorName": "Elyon Vasterel",
+      "content": "Je sens que le sol est instable, je fais attention où je mets les pieds (jet de Vigilance). 🎲 1d20+2 → [9] +2 = 11",
+      "expected": null
+    },
+    {
+      "index": 4,
+      "authorName": "Elyon Vasterel",
+      "content": "L'étançon vient de céder dans un bruit sinistre ! Je tente de m'écarter d'un bond pour éviter les débris (jet de Réflexes).",
+      "expected": null
+    },
+    {
+      "index": 5,
+      "authorName": "Kara Sombreval",
+      "content": "Je crie pour prévenir les autres du danger et recule vivement vers la sortie.",
+      "expected": null
+    },
+    {
+      "index": 6,
+      "authorName": "Elyon Vasterel",
+      "content": "Les débris m'ont touché de plein fouet, je n'ai pas pu les éviter à temps, je saigne d'une entaille au bras.",
+      "expected": "apply_damage"
+    },
+    {
+      "index": 7,
+      "authorName": "Kara Sombreval",
+      "content": "Je me précipite vers Elyon pour voir l'étendue de ses blessures et l'aider à se relever.",
+      "expected": null
+    },
+    {
+      "index": 8,
+      "authorName": "Elyon Vasterel",
+      "content": "Malgré la douleur, je me relève et j'inspecte les décombres à la recherche d'un passage.",
+      "expected": null
+    },
+    {
+      "index": 9,
+      "authorName": "Kara Sombreval",
+      "content": "J'examine les parois pour voir si la structure est stable ou si on risque un nouvel effondrement.",
+      "expected": null
+    },
+    {
+      "index": 10,
+      "authorName": "Elyon Vasterel",
+      "content": "La poussière retombe. L'accès à la zone est-il dégagé maintenant qu'on a évité l'effondrement ?",
+      "expected": null
+    },
+    {
+      "index": 11,
+      "authorName": "Kara Sombreval",
+      "content": "Je ramasse une torche pour éclairer le passage qui semble s'ouvrir devant nous.",
+      "expected": "add_item"
+    },
+    {
+      "index": 12,
+      "authorName": "Elyon Vasterel",
+      "content": "D'après ce qu'on peut voir, les conditions suivantes semblent réunies : Fin de la scène si les PJ décident de rester, ou passage à l'enquête s'ils acceptent de participer.. On avance résolument vers la suite, l'entrée est maintenant dégagée derrière nous.",
+      "expected": "advance_phase"
+    },
+    {
+      "index": 13,
+      "authorName": "Kara Sombreval",
+      "content": "Je suis Elyon vers la zone suivante, prête à affronter ce qui nous attend.",
+      "expected": null
+    },
+    {
+      "index": 14,
+      "authorName": "Elyon Vasterel",
+      "content": "On progresse prudemment dans le nouveau passage qui s'ouvre devant nous.",
+      "expected": null
+    },
+    {
+      "index": 15,
+      "authorName": "Kara Sombreval",
+      "content": "Je scrute l'obscurité devant nous à la recherche de danger (jet de Perception). 🎲 1d20+3 → [12] +3 = 15",
+      "expected": null
+    },
+    {
+      "index": 16,
+      "authorName": "Kara Sombreval",
+      "content": "Je décris ce que je perçois à Elyon à voix basse.",
+      "expected": null
+    },
+    {
+      "index": 17,
+      "authorName": "Elyon Vasterel",
+      "content": "On continue notre exploration en restant groupés et attentifs.",
+      "expected": null
+    },
+    {
+      "index": 18,
+      "authorName": "Kara Sombreval",
+      "content": "Je vérifie l'état de mon équipement avant de poursuivre plus profondément.",
+      "expected": null
+    },
+    {
+      "index": 19,
+      "authorName": "Elyon Vasterel",
+      "content": "Où en sommes-nous exactement de notre progression dans le donjon ?",
+      "expected": null
+    },
+    {
+      "index": 20,
+      "authorName": "Kara Sombreval",
+      "content": "On fait une courte pause pour reprendre son souffle avant de continuer.",
+      "expected": null
+    }
+  ],
+  "messages": [
+    {
+      "authorType": "PLAYER",
+      "content": "Je m'avance prudemment pour aider à déblayer l'entrée, pioche en main.",
+      "createdAt": "2026-08-15T12:58:39.656Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Le village de Valjoyeux se dresse devant vous, ses bâtiments de bois sombre et ses toits de chaume lui donnant une allure paisible, presque trop tranquille pour une bourgade censée subir les assauts de pillards gobelins. \n\nAu centre du village, devant ce qui semble être la mairie, un petit groupe de villageois s'agite autour d'un amas de débris et de charrettes renversées qui obstruent l'accès principal à la place. Le Maire, un homme rondouillard à la moustache grisonnante, agite nerveusement un mouchoir tout en donnant des directives peu coordonnées à deux villageois, Bob et Lisa.\n\nElyon, en t'approchant avec ta pioche pour prêter main-forte, tu remarques que le maire se fige un instant, ses yeux scrutant ton équipement avant de se poser sur Kara. Son sourire devient alors plus formel, un peu trop tiré.\n\n« Ah ! Des voyageurs, des gens d'arme, je suppose ? » lance-t-il en s'essuyant le front. « Vous arrivez à un bien triste moment. Ces misérables gobelins... ils ont saccagé nos réserves cette nuit, et le chaos qu'ils ont laissé derrière eux paralyse notre quotidien. Si vous êtes ici pour nous aider, vous tombez à pic. »\n\nIl jette un regard vers la grange incendiée un peu plus loin, d'où s'échappe encore une fine fumée, puis vers le shérif qui, plus loin, semble superviser les travaux de nettoyage avec une sévérité inhabituelle. \n\nBob, un jeune homme aux vêtements maculés de boue, s'arrête de travailler et vous regarde avec curiosité. « On essaye de dégager l'accès, mais c'est un travail de titan avec tout ce bric-à-brac, » murmure-t-il, un peu intimidé par votre présence.\n\nQue faites-vous ? Souhaitez-vous échanger avec le maire, ou préférez-vous commencer par observer discrètement les environs en aidant à déblayer ?",
+      "createdAt": "2026-08-15T12:58:42.735Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je reste en retrait et surveille les alentours pendant que les autres creusent.",
+      "createdAt": "2026-08-15T12:58:42.750Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Kara, tandis qu'Elyon s'approche des débris, tu décides de rester un peu en retrait. Tes yeux parcourent la place du village, observant les allées et venues. L'atmosphère est lourde, chargée d'une tension qui ne semble pas seulement liée à l'attaque des gobelins.\n\nTu remarques que, malgré l'agitation, les villageois ne se parlent que très peu. Le Maire, bien qu'il ait abordé Elyon avec un sourire, ne quitte pas le shérif des yeux. Il y a un échange de regards brefs, presque imperceptibles, entre le Maire et Lisa lorsqu'elle passe près de lui avec un panier de débris. Lisa a l'air particulièrement nerveuse, ses mains tremblent légèrement alors qu'elle évite de croiser le regard des étrangers que vous êtes.\n\nDe son côté, le shérif reste impassible, les bras croisés, posté près d'un coin d'ombre. Il ne participe pas aux travaux, se contentant de surveiller la zone avec une intensité qui met manifestement les villageois mal à l'aise.\n\nElyon, en commençant à déblayer les débris avec ta pioche, tu sens que le bois des charrettes est anormalement carbonisé pour une simple \"fouille\" de gobelins. Il y a une odeur de pétrole ou d'accélérant qui persiste malgré l'air frais.\n\nSouhaitez-vous approfondir vos observations ou engager la conversation avec l'un des villageois (Bob, Lisa) ou le maire, maintenant que vous avez posé le pied sur la place ?",
+      "createdAt": "2026-08-15T12:58:45.079Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je sens que le sol est instable, je fais attention où je mets les pieds (jet de Vigilance). 🎲 1d20+2 → [9] +2 = 11",
+      "createdAt": "2026-08-15T12:58:45.090Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Elyon, en manipulant ta pioche, tu fais attention à ne pas te prendre les pieds dans les débris carbonisés, mais le sol sous les décombres est plus instable que prévu. En essayant de dégager une grosse poutre, ton pied glisse sur une plaque de boue graisseuse — cette même odeur âcre de pétrole que tu avais remarquée devient presque entêtante à cet endroit précis.\n\nTu vacilles un instant, tes pieds glissant vers une petite dépression dans le sol dissimulée par les débris. Tu réussis à te rattraper de justesse à la carcasse de la charrette, évitant la chute, mais ton action attire l'attention.\n\nLe Maire sursaute et s'approche précipitamment. « Attention, brave aventurier ! Ce sol est gorgé d'eau et de détritus, il est traître. Laissez-moi vous aider à écarter cette poutre. » Il semble très désireux que tu ne fouilles pas trop précisément cet endroit.\n\nKara, depuis ta position en retrait, tu observes cette petite scène. Tu remarques que le regard du shérif, qui était jusqu'ici assez distant, s'est soudainement fixé sur Elyon avec une attention froide, sa main se rapprochant instinctivement de la garde de son épée.\n\nQue faites-vous ? Elyon, acceptes-tu l'aide du maire ? Kara, intervient-tu ou continues-tu à observer le comportement du shérif ?",
+      "createdAt": "2026-08-15T12:58:48.294Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "L'étançon vient de céder dans un bruit sinistre ! Je tente de m'écarter d'un bond pour éviter les débris (jet de Réflexes).",
+      "createdAt": "2026-08-15T12:58:48.299Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Le craquement sinistre de la poutre résonne sur la place du village, coupé net par le bruit sourd de l'effondrement. Elyon, tu tentes de bondir en arrière, mais le sol rendu glissant par cette substance étrange trahit ton équilibre.\n\nTes pieds dérapent à nouveau au moment crucial de ton élan. Tu ne parviens pas à t'écarter totalement de la trajectoire. Le lourd morceau de bois calciné chute lourdement, te heurtant au passage avant de s'écraser au sol dans un nuage de poussière et de cendres.\n\n*Elyon, tu subis des dégâts suite à l'effondrement.*\n\nLa poussière retombe lentement. Tu es au sol, légèrement sonné par le choc, avec une éraflure sur le bras, mais heureusement rien de brisé.\n\nLe Maire est figé, le visage pâle, tandis que le shérif a fait un pas en avant, la main toujours sur sa garde. Un silence pesant s'installe sur la place. Bob et Lisa se sont figés dans leur travail, les yeux fixés sur toi avec une crainte mêlée d'une étrange culpabilité.\n\n« Par tous les dieux ! » s'exclame le Maire, sa voix tremblante, « Je vous avais prévenu que c'était dangereux ! Vous auriez dû m'écouter au lieu de fouiller ainsi. » Il jette un regard anxieux vers le shérif, comme s'il craignait que vous n'ayez découvert quelque chose que vous n'auriez pas dû voir sous ces décombres.\n\nKara, depuis ta position, tu vois le shérif esquisser un mouvement, prêt à intervenir. La situation devient tendue. Que faites-vous ?",
+      "createdAt": "2026-08-15T12:58:53.205Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je crie pour prévenir les autres du danger et recule vivement vers la sortie.",
+      "createdAt": "2026-08-15T12:58:53.209Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Kara, tu saisis immédiatement la menace dans le regard du shérif et la nervosité du maire. Ton cri — un avertissement sec et tranchant — déchire le silence pesant de la place. « Elyon, recule ! Ça ne sent pas bon ici ! »\n\nTu fais un pas rapide en arrière, prête à quitter la place vers la sortie du village. Ton geste semble agir comme un électrochoc.\n\nElyon, tu es encore un peu groggy au sol, tes vêtements maculés de cendres et de cette substance graisseuse. Tu entends Kara, et tu comprends que la situation dépasse largement le cadre d'un simple accident de chantier. Le maire fait un pas vers toi, peut-être pour t'aider à te relever, mais il s'arrête net en voyant le shérif dégainer lentement son arme.\n\nLe shérif, une lueur sombre dans les yeux, lance d'une voix basse et autoritaire : « Pas si vite. Personne ne quitte la place avant que nous ayons sécurisé ces débris. Vous avez causé assez de dégâts, maintenant vous allez réparer. »\n\nLe ton est sans appel. Les villageois, Bob et Lisa, ont baissé la tête, incapables de soutenir ton regard, Elyon. La tension est à son comble.\n\n**État des PJ :**\n*   **Elyon :** Tu es au sol, à proximité immédiate de la zone \"piégée\". Tu as encaissé des dégâts de la chute. (Je déduis 3 PV pour l'impact).\n*   **Kara :** Tu es à quelques mètres, en position de repli tactique vers la sortie.\n\n*Action MJ :*\nLa situation bascule. Le shérif s'avance d'un pas délibéré, son épée dégainée, tandis que le maire tente maladroitement de masquer la dépression du sol que tu viens de révéler avec tes pieds.\n\nQue faites-vous ? Elyon, tentesz-vous de vous relever rapidement pour rejoindre Kara, ou essayez-vous de voir ce qu'il y a réellement sous ces débris avant d'être acculé ? Kara, restez-vous à distance pour couvrir votre compagnon ou tentez-vous de le rejoindre dans ce périmètre de plus en plus dangereux ?",
+      "createdAt": "2026-08-15T12:58:57.390Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Les débris m'ont touché de plein fouet, je n'ai pas pu les éviter à temps, je saigne d'une entaille au bras.",
+      "createdAt": "2026-08-15T12:58:57.395Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Le choc a été brutal, Elyon. La poutre a entaillé ton bras, et le sang commence déjà à imprégner la manche de ta tunique, se mélangeant aux cendres noires et à cette substance huileuse qui recouvre le sol. La douleur est vive, pulsante, mais ton instinct de survie prend le dessus.\n\nLe shérif n'est plus qu'à quelques mètres, le visage fermé. Sa lame, bien que rudimentaire, est tenue avec l'aisance d'un homme qui sait s'en servir. Il te bloque le passage, tandis que le Maire, paniqué, marmonne des excuses qui sonnent creux : « Ce n'est qu'une égratignure, jeune homme... le travail, le travail doit être fini... »\n\nKara, tu es à la limite de la place. La sortie est tout près, mais abandonner Elyon dans cet état, face à un shérif armé, semble suicidaire. \n\n**Situation actuelle :**\n- **Elyon :** Tu es accroupi au sol, affaibli par le choc. Tu constates que sous les débris, là où tu as glissé, le sol n'est pas simplement meuble : il y a une trappe dissimulée, partiellement ouverte, dont s'échappe cette odeur entêtante.\n- **Kara :** Tu as une ligne de vue claire sur le shérif et le Maire, et tu peux voir qu'Elyon a découvert quelque chose d'important sous les décombres.\n\nQue faites-vous ? Le shérif s'apprête à te sommer de te lever, Elyon. Kara, vas-tu tenter une diversion pour permettre à ton compagnon de se replier ou de fouiller davantage ?",
+      "createdAt": "2026-08-15T12:59:00.604Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je me précipite vers Elyon pour voir l'étendue de ses blessures et l'aider à se relever.",
+      "createdAt": "2026-08-15T12:59:00.608Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Kara, tu ne réfléchis pas. Voyant le sang couler sur le bras d'Elyon et l'agressivité grandissante du shérif, tu fonces vers ton compagnon. Tes bottes martèlent le sol terreux de la place tandis que tu traverses la distance qui vous sépare.\n\nTu arrives à sa hauteur, juste à temps pour voir ce qu'il a découvert : sous les débris carbonisés, une trappe en bois épais a été délogée par l'effondrement. L'odeur qui s'en dégage est suffocante — un mélange de pétrole, de vieux cuir et, plus troublant encore, une effluve de décomposition organique.\n\n« Elyon, debout ! » lances-tu en saisissant son bras sain pour l'aider à se redresser. \n\nLe shérif s'arrête net, son regard passant de vous deux à la trappe béante que vous venez de mettre à nu. Son visage se durcit, ses traits se tendent. « Vous n'auriez pas dû voir ça, » lâche-t-il, sa voix perdant tout vernis d'autorité administrative pour laisser place à une menace purement criminelle.\n\nLe Maire, totalement hors de lui, recule en trébuchant. « Shérif, ils ont vu ! Il faut... il faut faire quelque chose ! »\n\nBob et Lisa, totalement terrorisés, reculent eux aussi, s'éloignant de la scène tout en jetant des regards suppliants vers le shérif.\n\nElyon, tu es debout, un peu chancelant, soutenu par Kara. Tu ressens vivement la douleur de ton bras, mais la découverte de cette trappe, ici, au cœur du village, change tout. Vous êtes encerclés par la méfiance, et le shérif ne compte visiblement pas vous laisser partir après cette révélation.\n\nQue faites-vous ? Le shérif semble prêt à charger. Tentez-vous de vous replier en traînant avec vous une preuve de ce qui se cache sous cette trappe, ou cherchez-vous à vous défendre face à cet homme armé ?",
+      "createdAt": "2026-08-15T12:59:04.260Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Malgré la douleur, je me relève et j'inspecte les décombres à la recherche d'un passage.",
+      "createdAt": "2026-08-15T12:59:04.263Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Elyon, tu serres les dents, la douleur lancinante dans ton bras est presque insoutenable, mais ton regard est fixé sur l'ouverture. Malgré le danger immédiat que représente le shérif, ton instinct d'aventurier prend le dessus : cette trappe est la clé du mystère de Valjoyeux.\n\nAvec l'aide de Kara, tu te remets debout. Tes pieds glissent sur la boue graisseuse, mais tu parviens à t'appuyer contre la charrette renversée pour te stabiliser. D'un geste rapide, tu écartes les derniers débris calcinés qui obstruaient l'accès. La trappe, bien que lourde et partiellement calcinée, pivote sur des gonds rouillés. Une odeur fétide s'en échappe, révélant un escalier en pierre étroit qui s'enfonce dans les ténèbres sous la mairie.\n\nLe shérif pousse un grognement bestial. « Vous avez signé votre arrêt de mort, petits curieux ! » Il lève son épée et s'élance vers vous. Le Maire, blême, se cache le visage derrière ses mains, incapable de regarder.\n\n« Elyon, on n'a pas le choix, il faut bouger ! » crie Kara en te tirant vers l'ouverture sombre.\n\nLe shérif n'est plus qu'à quelques mètres. La trappe est ouverte, l'escalier est là.\n\n**Que faites-vous ?**\n1. **Fuite dans les ténèbres :** Vous vous précipitez tous les deux dans l'escalier, dans l'espoir de trouver refuge en bas.\n2. **Affrontement :** Vous restez en haut pour tenter de parer l'attaque du shérif, en profitant de l'effet de surprise de la découverte.\n3. **Autre :** Une ruse ou une tentative de négociation rapide avant que le fer ne vous atteigne ?\n\n*(Note : Elyon, ton état est précaire avec 9/24 PV. La fuite semble être l'option la plus prudente, mais le passage est étroit et sombre.)*",
+      "createdAt": "2026-08-15T12:59:07.976Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "J'examine les parois pour voir si la structure est stable ou si on risque un nouvel effondrement.",
+      "createdAt": "2026-08-15T12:59:07.980Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Kara, tu poses tes mains sur les parois de l'escalier, juste au moment où le shérif amorce sa charge, son épée sifflant dans l'air. \n\nTes doigts rencontrent une pierre froide, humide, mais étonnamment solide. Contrairement à la structure de surface qui n'était qu'un vernis de décombres, ce conduit semble faire partie intégrante des fondations anciennes de la mairie. Ce n'est pas un effondrement fortuit : c'est un souterrain taillé dans la roche, une structure pérenne et stable, bien que vieille de plusieurs décennies.\n\n« C'est solide ! » cries-tu à Elyon tout en le poussant vers l'intérieur. « Ça tient, fonce ! »\n\nElyon, tu t'engouffres dans l'ouverture, ton bras blessé te brûlant à chaque mouvement. Le shérif est presque sur vous ; le bout de sa lame éraflent le bois de la trappe alors que vous vous glissez en bas. \n\nL'obscurité vous enveloppe instantanément, seulement percée par quelques rais de lumière provenant de la trappe laissée entrouverte. Le shérif, furieux, s'arrête net au bord du gouffre, jurant violemment au-dessus de vos têtes. Il hésite un instant, son ombre projetée sur les marches, avant de hurler : « Vous ne sortirez pas d'ici vivants ! »\n\nVous êtes maintenant dans un corridor étroit et sombre, sous la mairie. L'air y est lourd, vicié, et le bruit de vos respirations semble amplifié par le silence de mort qui règne en ces lieux.\n\nQue faites-vous ?\n1. **Vous enfoncer davantage :** Explorer le tunnel pour trouver une autre issue ou comprendre ce qu'ils cachent.\n2. **Obstruer l'entrée :** Tenter de barricader la trappe depuis l'intérieur avec ce que vous trouvez sous la main pour gagner du temps.\n3. **Se cacher :** Rester près de l'entrée et écouter les mouvements du shérif en haut pour voir s'il tente de vous suivre.\n\n*(Elyon, je te rappelle que tu es blessé, la douleur reste vive. Kara, tu as ton équipement habituel.)*",
+      "createdAt": "2026-08-15T12:59:10.994Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "La poussière retombe. L'accès à la zone est-il dégagé maintenant qu'on a évité l'effondrement ?",
+      "createdAt": "2026-08-15T12:59:10.998Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "La poussière retombe lentement, voilant la lumière pâle qui filtre depuis la surface. Vous êtes maintenant dans un corridor étroit taillé à même la roche, bien en dessous du niveau du sol.\n\nElyon, tu t'appuies contre la paroi froide pour reprendre ton souffle. À la lueur incertaine qui descend de la trappe, tu constates que le passage devant vous est désormais parfaitement dégagé. L'effondrement que tu as provoqué en surface, bien qu'il ait failli te coûter cher, a eu pour effet inattendu de balayer les débris qui obstruaient ce qui semble être une entrée condamnée depuis longtemps. \n\nDevant vous, le tunnel s'enfonce dans les ténèbres. Le sol est sec et poussiéreux, à l'exception de traces fraîches — des empreintes de bottes, lourdes et régulières, qui se dirigent vers les profondeurs. L'odeur de pétrole, bien que toujours présente, est ici mélangée à quelque chose de plus organique, une odeur de renfermé et de moisissure ancienne.\n\nAu-dessus de vous, vous entendez le shérif vociférer et ordonner à quelqu'un — probablement Bob ou Lisa — de \"chercher des cordes\" ou de \"sceller ce maudit trou\". \n\nL'accès est dégagé, mais le temps presse.\n\nQue faites-vous ?\n1. **S'enfoncer dans le tunnel :** Suivre les traces de pas pour découvrir ce que cache la mairie, au risque de tomber dans un guet-apens.\n2. **Barricader :** Essayer d'utiliser les décombres encore présents autour de l'ouverture pour bloquer le passage de l'intérieur et empêcher quiconque de vous suivre immédiatement.\n3. **Observer :** Prendre un instant pour examiner les traces de pas plus attentivement afin d'évaluer le nombre de personnes ayant emprunté ce tunnel récemment.",
+      "createdAt": "2026-08-15T12:59:13.562Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je ramasse une torche pour éclairer le passage qui semble s'ouvrir devant nous.",
+      "createdAt": "2026-08-15T12:59:13.567Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Kara, ton regard balaie les parois du tunnel et, à quelques pas de l'entrée, tu avises un support mural en fer forgé, ancien, où repose encore un vestige du passé : une torche dont le bois a été imprégné de résine. Elle semble avoir été là pendant des années, prête à servir. Tu la saisis et, avec ton briquet (ou une étincelle de chance), tu parviens à l'enflammer. \n\nLa flamme vacille, crachotant un peu, avant de projeter une lueur orangée et réconfortante sur les murs de pierre sombre.\n\nLa lumière révèle un couloir qui s'étend sur une quinzaine de mètres avant de bifurquer vers une salle plus vaste, d'où semble provenir un faible bourdonnement, comme celui d'une activité souterraine lointaine. Les traces de bottes que vous aviez remarquées sont bien là, clairement marquées dans la poussière du sol, et elles se dirigent vers cette même direction.\n\nÀ vos oreilles parviennent les bruits du dessus : les ordres du shérif deviennent plus pressants, et tu entends le bruit métallique de lourdes chaînes qu'on traîne sur le sol. Ils préparent visiblement quelque chose pour bloquer ou sceller l'accès.\n\nElyon, tu es toujours à côté de Kara, la torche éclaire ton visage marqué par la douleur de ton bras. \n\nQue décidez-vous ? Vous vous enfoncez plus loin dans ce boyau, vers l'origine du bourdonnement, ou tentez-vous une action rapide pour entraver la trappe avant de vous perdre dans les profondeurs ?",
+      "createdAt": "2026-08-15T12:59:16.114Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "D'après ce qu'on peut voir, les conditions suivantes semblent réunies : Fin de la scène si les PJ décident de rester, ou passage à l'enquête s'ils acceptent de participer.. On avance résolument vers la suite, l'entrée est maintenant dégagée derrière nous.",
+      "createdAt": "2026-08-15T12:59:16.117Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "C'est une décision lourde de conséquences. Vous tournez le dos à la lumière du jour et à la menace immédiate du shérif pour vous enfoncer dans les entrailles de Valjoyeux. L'entrée, béante et révélée, semble maintenant une frontière entre le mensonge du village et la réalité souterraine.\n\nVous progressez le long du corridor. La torche de Kara projette des ombres dansantes sur les parois suintantes. Le bourdonnement, d'abord diffus, devient plus rythmé, plus lourd... presque organique. \n\n*À cet instant, vous avez quitté la phase \"L'Arrivée à Valjoyeux\" et vous pénétrez officiellement dans le cœur de l'intrigue.*\n\nLe passage se termine en une arche de pierre taillée. En franchissant ce seuil, vous débouchez dans une cavité naturelle aménagée. La lumière de la torche éclaire des murs tapissés de notes, de croquis et de cartes du village, toutes épinglées grossièrement. Au sol, une pile de documents officiels, certains portant le sceau de la mairie, d'autres tachés de ce même produit chimique à l'odeur âcre.\n\nAu centre de la pièce, une table de travail est jonchée d'instruments de chirurgie rudimentaires et de flacons remplis de substances sombres. Le bourdonnement semble provenir d'une pièce adjacente, séparée par une lourde porte en bois renforcée de fer.\n\nElyon, ta blessure te rappelle à l'ordre, chaque battement de ton cœur semble faire vibrer la plaie. Kara, ta torche éclaire ces preuves accablantes : le Maire et le Shérif ne se contentaient pas de voler des récoltes, ils menaient des expériences... sur quoi, vous l'ignorez encore.\n\nSoudain, un bruit de pas lourds résonne derrière la porte renforcée. Quelqu'un ou quelque chose s'approche.\n\n**Que faites-vous ?**\n1. **Discrétion :** Vous tentez de vous cacher rapidement dans l'ombre de cette salle pour observer ce qui va sortir.\n2. **Action directe :** Vous vous préparez à affronter ce qui se trouve derrière la porte avant qu'il ne vous surprenne.\n3. **Fouille rapide :** Vous tentez de saisir un ou deux documents compromettants sur la table avant que la porte ne s'ouvre.",
+      "createdAt": "2026-08-15T12:59:20.188Z"
+    },
+    {
+      "authorType": "SYSTEM",
+      "content": "La partie avance : Enquête initiale à l'Auberge.",
+      "createdAt": "2026-08-15T12:59:20.192Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je suis Elyon vers la zone suivante, prête à affronter ce qui nous attend.",
+      "createdAt": "2026-08-15T12:59:20.194Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Vous vous tenez prêts. Elyon, tu te places sur le côté de la lourde porte en bois, ton arme en main malgré la douleur qui irradie de ton bras. Kara, tu restes un peu en retrait, la torche à la main mais prête à la poser pour dégager ton autre main.\n\nLe bourdonnement, plus net ici, semble être le résultat d'un mécanisme ou d'une machine primitive. Puis, le bruit de pas s'arrête.\n\n*CRAC.*\n\nLa lourde porte commence à pivoter sur ses gonds rouillés. Dans l'entrebâillement, une silhouette massive apparaît, baignée par une lumière blafarde provenant de l'autre côté. Ce n'est pas le shérif. C'est un individu vêtu d'une blouse de cuir maculée de produits chimiques, le visage dissimulé par un masque de protection improvisé. Il tient un levier en métal dans une main et une fiole dans l'autre. Il ne vous a pas encore vus, accaparé par les réglages de son mécanisme.\n\nVous avez l'avantage de la surprise.\n\n**Action :** Que faites-vous ?\n- **Attaque surprise :** Vous vous jetez sur lui avant qu'il ne réalise votre présence ?\n- **Sommation :** Vous tentez de l'interpeller pour comprendre ce qui se passe ?\n- **Observation rapide :** Vous essayez d'en voir plus dans la pièce derrière lui avant d'agir ?\n\n*(Note : Elyon, ton état de santé reste à 9/24 PV. Kara, tu es en pleine possession de tes moyens.)*",
+      "createdAt": "2026-08-15T12:59:22.610Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "On progresse prudemment dans le nouveau passage qui s'ouvre devant nous.",
+      "createdAt": "2026-08-15T12:59:22.614Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Vous choisissez la discrétion. Alors que la silhouette en blouse de cuir se détourne vers les entrailles de la salle adjacente, vous vous glissez dans l'ombre, frôlant les murs froids du passage. La pièce dans laquelle il se trouvait était une véritable antichambre de cauchemar : des bocaux remplis de spécimens indéterminés, des plans techniques détaillés du sous-sol de Valjoyeux, et cette odeur âcre, omniprésente.\n\nVous vous faufilez par la porte entrouverte. Le passage devant vous s'enfonce plus profondément encore dans la roche. Le bourdonnement, désormais tout proche, devient une vibration sourde qui vous fait trembler les dents. \n\nLa lumière dans ce nouveau boyau est très faible, presque inexistante. Vous avancez à pas de loup, guidés par la lueur vacillante de la torche de Kara, qui essaie de la protéger pour rester le plus discrète possible.\n\nSoudain, le tunnel débouche sur une vaste cavité naturelle, éclairée par une étrange lueur bleutée émanant de cristaux fixés aux parois. Au centre, vous distinguez une structure en métal et en bois, entourée de cages où des ombres gesticulent. Ce n'est pas un campement gobelin... c'est une zone de détention.\n\nElyon, tu t'arrêtes net : une silhouette se tient près d'une des cages, dos à vous. C'est l'homme à la blouse de cuir. Il manipule une étrange console connectée à une machine à vapeur. À côté de lui, un tas de matériel — vos sacs et vos affaires, que vous aviez laissés à la surface — gît, abandonné, comme s'il s'agissait de simples déchets.\n\nVous avez l'avantage tactique, mais vous êtes en territoire hostile.\n\n**Que faites-vous ?**\n1. **Neutraliser la cible :** Vous tentez d'assommer ou de neutraliser l'homme à la blouse avant qu'il ne déclenche son mécanisme.\n2. **Récupérer vos affaires :** Le matériel est à portée de main, cela vous rendrait un avantage décisif pour la suite.\n3. **Libérer les captifs :** Vous vous dirigez vers les cages pour voir qui est enfermé là.\n\n*(Le MJ signale que vous avez atteint une zone critique du scénario : les conditions de sortie de la phase \"Théâtre du crime\" approchent. Soyez prudents.)*",
+      "createdAt": "2026-08-15T12:59:25.869Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je scrute l'obscurité devant nous à la recherche de danger (jet de Perception). 🎲 1d20+3 → [12] +3 = 15",
+      "createdAt": "2026-08-15T12:59:25.876Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Kara, tes yeux s'habituent rapidement à la lueur bleutée des cristaux. Malgré la tension, tu parviens à rester concentrée.\n\nTon regard balaie la zone de détention et, grâce à ton score de 18, tu repères bien plus que l'homme à la blouse :\n\n1. **La menace immédiate :** L'homme n'est pas seul. Posté dans l'ombre d'une stalagmite, à une dizaine de mètres sur la droite, un garde armé d'une lance, vêtu d'une armure de cuir brut, semble monter la garde, le regard fixé sur le tunnel par lequel vous êtes arrivés. Il ne vous a pas encore vus, mais il est en position d'intercepter quiconque sortirait du tunnel.\n2. **L'état des cages :** À l'intérieur, ce ne sont pas des gobelins, mais des villageois de Valjoyeux, visiblement drogués ou épuisés.\n3. **Le matériel :** Vos sacs sont posés près de l'homme à la blouse, mais ils sont également à portée de main du garde.\n\nTu as maintenant une vue d'ensemble : l'homme à la console est occupé, le garde est en faction et vos affaires sont au milieu de tout ça. \n\nElyon, tu es toujours à côté de Kara. Vous savez maintenant qu'une attaque frontale contre l'homme à la console alerterait instantanément le garde.\n\nQue faites-vous ?\n- **Action furtive :** Tenter de contourner le garde par l'ombre pour le neutraliser d'abord ?\n- **Distraction :** Essayer de créer une diversion (faire tomber un rocher, lancer un objet) pour attirer le garde loin de son poste ?\n- **Foncez :** Tenter de récupérer vos affaires et d'engager le combat dans la foulée ?",
+      "createdAt": "2026-08-15T12:59:29.552Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je décris ce que je perçois à Elyon à voix basse.",
+      "createdAt": "2026-08-15T12:59:29.556Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Tu te penches vers Elyon, ton souffle chaud venant effleurer son oreille. Avec une précision calme, tu lui exposes la situation : « Il y a un garde à dix mètres sur la droite, caché derrière la stalagmite. Il surveille notre entrée. L'homme à la console est occupé, mais il est près de nos affaires. Dans les cages... ce sont des villageois. Ils sont drogués. »\n\nTu marques une pause, scrutant la réaction d'Elyon, puis tu ajoutes à voix basse : « Si on bouge, le garde nous verra. Il faut qu'on choisisse : neutraliser la sentinelle d'abord, ou tenter de foncer sur nos affaires en espérant qu'ils ne soient pas trop réactifs. »\n\nElyon, tu reçois ces informations alors que la douleur dans ton bras se fait à nouveau sentir, une pulsation sourde. La perspective de récupérer votre matériel est tentante — sans lui, vous êtes vulnérables — mais l'idée de laisser ce garde dans votre dos alors que vous vous approchez de la console est un risque majeur.\n\nLe bourdonnement de la machine à vapeur semble monter d'un ton, comme si l'homme à la blouse s'apprêtait à valider une étape de son expérience.\n\n**Comment réagis-tu, Elyon ?** Kara attend ton signal pour agir.",
+      "createdAt": "2026-08-15T12:59:31.892Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "On continue notre exploration en restant groupés et attentifs.",
+      "createdAt": "2026-08-15T12:59:31.897Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Vous restez groupés, le cœur battant au rythme du bourdonnement de la machine. Kara, tu as parfaitement identifié le garde ; tu guides Elyon avec une lenteur calculée, évitant les zones les plus éclairées par les cristaux bleutés.\n\nVous vous déplacez dans une zone d'ombre, longeant la paroi opposée au garde. Chaque pas est un défi pour ne pas faire craquer le gravier sous vos bottes. Elyon, tu te concentres pour ignorer la douleur de ton bras et garder tes sens en alerte.\n\nSoudain, la machine à vapeur libère un jet de pression sifflant, remplissant la cavité d'une vapeur dense et blanchâtre qui masque temporairement la vue du garde. C'est votre opportunité. Vous glissez comme des spectres vers vos affaires, entassées près de la console.\n\nVous arrivez au pied du tas. Vos équipements sont là : vos armes, vos sacoches, tes bandages, Elyon. Mais le garde, alerté par le sifflement soudain de la machine, se tourne vers votre position. Il plisse les yeux, essayant de percer la vapeur qui se dissipe lentement.\n\n« Hé ! Qui va là ? » aboie-t-il en levant sa lance.\n\nL'homme à la blouse se fige, la main encore posée sur un levier de la console. Il se retourne, son masque de cuir grinçant dans le silence soudain alors que le bourdonnement faiblit.\n\n**La situation est critique :**\n- Vous avez récupéré votre équipement (vous êtes désormais armés).\n- Le garde est à moins de 6 mètres, prêt à charger.\n- L'homme à la console semble prêt à actionner un mécanisme de défense ou à appeler des renforts.\n\n**Que faites-vous ?**\n1. **Attaque immédiate :** Vous profitez de l'équipement récupéré pour engager le combat contre le garde tout en empêchant l'homme de toucher à la console.\n2. **Fuite vers les cages :** Vous foncez vers les prisonniers pour les libérer, espérant qu'ils créent un chaos qui vous aidera.\n3. **Autre :** Une approche différente ?",
+      "createdAt": "2026-08-15T12:59:35.366Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je vérifie l'état de mon équipement avant de poursuivre plus profondément.",
+      "createdAt": "2026-08-15T12:59:35.370Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Tout en restant en alerte, tu saisis rapidement ton équipement. Ton épée est là, lourde et rassurante dans son fourreau, et tes autres effets semblent intacts, miraculeusement épargnés par le pillage.\n\nMais le temps est un luxe que vous n'avez pas. Le garde, voyant que vous ne répondez pas, avance d'un pas hésitant, sa lance pointée vers l'avant. L'homme à la blouse, quant à lui, a le regard fixé sur vous — vous voyez ses yeux briller de folie derrière les oculaires de son masque. Il lâche soudainement la fiole qu'il tenait, qui se fracasse au sol en libérant une fumée verdâtre.\n\n« Intrus ! » hurle le garde en chargeant.\n\nElyon, tu es juste à côté. Avec ton équipement en main, tu te sens un peu plus en sécurité, mais ta blessure au bras est toujours là, invalidante. Le garde arrive sur vous.\n\n**C'est le moment de l'action.**\n\nKara, tu as ton arme en main. Elyon, tu peux également te préparer.\n\n*   **Jet d'initiative :** Puisque vous êtes en plein combat, je vais lancer l'initiative pour vous et vos adversaires.\n\nAvec un réflexe fulgurant (22 à l'initiative !), tu prends l'avantage sur la situation. Le garde, surpris par ta rapidité malgré l'obscurité, est encore en pleine course, sa lance mal positionnée pour une attaque immédiate.\n\nL'homme à la blouse recule précipitamment vers la console, cherchant à activer un levier qui semble relier la machine à une porte blindée située derrière les cages.\n\nKara, tu es la première à agir. Le garde est à portée de frappe, déséquilibré par son élan. Elyon, tu te tiens à tes côtés, prêt à intervenir.\n\n**Que faites-vous ?**\n- **Kara :** Tu attaques le garde pour l'empêcher d'atteindre Elyon ou toi ?\n- **Elyon :** Tu tentes d'intercepter l'homme à la blouse pour l'empêcher de verrouiller la porte ou d'appeler des renforts ?\n- **Autre action ?**\n\n*Note : Elyon, ton état est toujours de 9/24 PV. Tu peux agir, mais n'oublie pas ta blessure.*",
+      "createdAt": "2026-08-15T12:59:40.325Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Où en sommes-nous exactement de notre progression dans le donjon ?",
+      "createdAt": "2026-08-15T12:59:40.329Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Vous vous trouvez actuellement au cœur de la **Zone de Détention** (la cavité naturelle aux cristaux bleutés), située dans les souterrains profonds directement sous la mairie de Valjoyeux.\n\nPour situer votre progression dans le scénario :\n\n1.  **Zone traversée :** Vous avez quitté la mairie, passé le corridor de l'effondrement, et traversé l'antichambre d'expérimentation (où vous avez vu les instruments de chirurgie).\n2.  **Situation actuelle :** Vous êtes dans la salle des cages, face au garde et à l'homme à la blouse, à proximité immédiate de la console de contrôle et de la mystérieuse porte blindée.\n3.  **Progression globale :** Vous avez dépassé la phase d'enquête initiale. Vous êtes en plein dans le cœur des preuves concrètes du complot (les victimes, les machines, l'identité des ravisseurs). \n\nD'un point de vue narratif, vous avez **réussi à infiltrer le centre névralgique de l'opération**. La suite immédiate — une fois ce combat géré — sera soit l'exploration des profondeurs de la mine (où tout cela semble être connecté), soit la confrontation finale avec les responsables de cette organisation (le Maire et le Shérif, qui ne sont sans doute pas loin en surface).\n\nLa porte derrière le savant semble mener à la suite du complexe, probablement là où le véritable \"cœur\" de la machine ou les dirigeants se trouvent.\n\nLe garde est sur le point de vous atteindre. Que décidez-vous ?",
+      "createdAt": "2026-08-15T12:59:42.636Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "On fait une courte pause pour reprendre son souffle avant de continuer.",
+      "createdAt": "2026-08-15T12:59:42.644Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "Vous marquez une pause, dans l'espoir de reprendre votre souffle, mais le destin — et vos ennemis — en ont décidé autrement. \n\nAlors que vous tentez d'ignorer la tension du moment pour souffler quelques secondes, la vapeur verte libérée par la fiole de l'homme à la blouse commence à se répandre dangereusement. Ce n'est pas un simple fumigène : elle est corrosive, et vous sentez vos poumons brûler à chaque inspiration. Le garde, quant à lui, ne s'arrête pas. Profitant de votre hésitation, il porte un coup de lance brutal vers Elyon.\n\n*Le combat est inévitable et il est déjà en cours.*\n\nLe garde, trop confiant dans son élan, trébuche sur une pierre alors qu'il visait Elyon. Sa lance frappe violemment le sol rocheux, produisant une étincelle, mais manquant sa cible de plusieurs dizaines de centimètres. \n\nIl est maintenant à découvert, en équilibre précaire. C'est le moment idéal pour agir, mais la fumée devient plus dense. \n\nKara, tu es juste à côté. Elyon, tu peux encore te repositionner. \n\n**Que faites-vous ?**\n*   **Kara :** Tu profites de sa chute pour porter un coup décisif ?\n*   **Elyon :** Tu profites de cette ouverture pour te mettre en sécurité ou pour tenter de bloquer l'homme à la console ?\n*   **Les deux :** Vous essayez de sortir de ce nuage toxique avant que vos PV ne commencent à diminuer ?\n\n*(Rappel : La pause n'a pas été possible, le combat est actif.)*",
+      "createdAt": "2026-08-15T12:59:45.982Z"
+    }
+  ]
+}
