@@ -1,5 +1,5 @@
 import type { Server as SocketIOServer } from "socket.io";
-import { tool, streamText, stepCountIs, type ModelMessage } from "ai";
+import { tool, streamText, stepCountIs, APICallError, LoadAPIKeyError, type ModelMessage } from "ai";
 import { z } from "zod";
 import { prisma } from "@superdiscogm/db";
 import { getConfiguredModelInfo, buildGameTools, recordUsage, buildProviderOptions } from "@superdiscogm/llm";
@@ -30,6 +30,35 @@ async function emitAndPersistSystemMessage(io: SocketIOServer, partyId: string, 
     createdAt: message.createdAt,
   } satisfies ChatMessagePayload);
   return message;
+}
+
+// Remontée propre des erreurs côté front (demande explicite de Philippe) — jusqu'ici, tout échec
+// avant/pendant l'appel LLM (pas de fournisseur configuré, clé API manquante/invalide, modèle
+// inconnu chez le fournisseur, panne réseau) restait un `console.error` côté serveur : le joueur
+// ne voyait rien, le MJ ne répondait simplement jamais, sans explication. `mj:error` (distinct de
+// `chat:error` réservé aux erreurs de saisie type `/roll` invalide) porte un message clair et
+// actionnable plutôt qu'une trace brute.
+function classifyTurnError(err: unknown): string {
+  if (err instanceof LoadAPIKeyError) {
+    return "Clé API manquante ou invalide pour le fournisseur LLM configuré — un Admin doit la renseigner dans /admin.";
+  }
+  if (err instanceof APICallError) {
+    if (err.statusCode === 401 || err.statusCode === 403) {
+      return "Authentification refusée par le fournisseur LLM — vérifie la clé API dans /admin.";
+    }
+    if (err.statusCode === 404) {
+      return "Modèle introuvable chez le fournisseur configuré — vérifie le nom du modèle dans /admin.";
+    }
+    if (err.statusCode === 429) {
+      return "Le fournisseur LLM a limité la fréquence des appels (quota atteint) — réessaie dans un instant.";
+    }
+    return `Erreur de communication avec le fournisseur LLM${err.statusCode ? ` (${err.statusCode})` : ""}.`;
+  }
+  return "Le MJ n'a pas pu répondre, réessaie.";
+}
+
+function emitMjError(io: SocketIOServer, partyId: string, message: string): void {
+  io.to(partyRoom(partyId)).emit("mj:error", { partyId, message });
 }
 
 export async function persistPlayerMessage(params: {
@@ -169,59 +198,76 @@ export async function runMjTurn(
     content: m.authorName ? `[${m.authorName}] ${m.content}` : m.content,
   }));
 
-  const { model, provider, modelName } = await getConfiguredModelInfo();
+  let configured: Awaited<ReturnType<typeof getConfiguredModelInfo>>;
+  try {
+    configured = await getConfiguredModelInfo();
+  } catch {
+    // GlobalSettings absent (findUniqueOrThrow) — première installation où le seed n'a jamais
+    // tourné, ou ligne supprimée par erreur : cas le plus fréquent de silence total côté joueur.
+    emitMjError(io, partyId, "Aucun modèle LLM configuré pour cette instance — un Admin doit en choisir un dans /admin.");
+    return;
+  }
+  const { model, provider, modelName } = configured;
+
   const tools = {
     ...buildGameTools({ campaignId: party.campaignId, partyId }),
     reveal_huddle: createRevealHuddleTool(io, partyId),
   };
 
-  const result = streamText({
-    model,
-    system,
-    messages,
-    tools,
-    stopWhen: stepCountIs(5),
-    providerOptions: buildProviderOptions(provider),
-  });
-
   let fullText = "";
-  for await (const chunk of result.textStream) {
-    fullText += chunk;
-    io.to(partyRoom(partyId)).emit("chat:stream", { partyId, chunk });
-  }
-
   let lastMessageId = triggeringMessageId; // borne de fin pour l'extraction de mémoire ci-dessous
-  if (fullText.trim().length > 0) {
-    const mjMessage = await prisma.message.create({
-      data: { partyId, authorType: "MJ", content: fullText, visibleToUserIds },
-    });
-    lastMessageId = mjMessage.id;
+  let phaseOutput: { advanced: boolean; newPhase?: { id: string; title: string } } | undefined;
 
-    io.to(partyRoom(partyId)).emit("chat:message", {
-      partyId,
-      authorType: "MJ",
-      content: fullText,
-      visibleToUserIds,
-      id: mjMessage.id,
-      createdAt: mjMessage.createdAt,
+  try {
+    const result = streamText({
+      model,
+      system,
+      messages,
+      tools,
+      stopWhen: stepCountIs(5),
+      providerOptions: buildProviderOptions(provider),
     });
+
+    for await (const chunk of result.textStream) {
+      fullText += chunk;
+      io.to(partyRoom(partyId)).emit("chat:stream", { partyId, chunk });
+    }
+
+    if (fullText.trim().length > 0) {
+      const mjMessage = await prisma.message.create({
+        data: { partyId, authorType: "MJ", content: fullText, visibleToUserIds },
+      });
+      lastMessageId = mjMessage.id;
+
+      io.to(partyRoom(partyId)).emit("chat:message", {
+        partyId,
+        authorType: "MJ",
+        content: fullText,
+        visibleToUserIds,
+        id: mjMessage.id,
+        createdAt: mjMessage.createdAt,
+      });
+    }
+
+    // Suivi de budget/coût [Q03] (étape 48) — journalisé après consommation du stream, jamais
+    // bloquant pour la réponse déjà envoyée au joueur si l'écriture échoue.
+    const usage = await result.usage;
+    await recordUsage({ provider, model: modelName, usage, source: "turn_engine" }).catch((err) => {
+      console.error("[usage] échec de journalisation (turn_engine) :", err);
+    });
+
+    const toolResults = await result.toolResults;
+    const phaseTransition = toolResults.find((r) => r.toolName === "advance_phase");
+    phaseOutput = phaseTransition?.output as typeof phaseOutput;
+  } catch (err) {
+    console.error(`[turnEngine] échec de l'appel LLM pour la partie ${partyId} :`, err);
+    emitMjError(io, partyId, classifyTurnError(err));
+    return; // pas de contenu généré : rien à journaliser en mémoire/résumé pour ce tour
   }
-
-  // Suivi de budget/coût [Q03] (étape 48) — journalisé après consommation du stream, jamais
-  // bloquant pour la réponse déjà envoyée au joueur si l'écriture échoue.
-  const usage = await result.usage;
-  await recordUsage({ provider, model: modelName, usage, source: "turn_engine" }).catch((err) => {
-    console.error("[usage] échec de journalisation (turn_engine) :", err);
-  });
 
   // Transition de phase [Q17] : advance_phase (étape 34) mute déjà l'état, il ne manque que
   // l'annonce visible en chat (repère SYSTEM), seule chose que le tool lui-même ne peut pas faire
   // puisqu'il n'a pas accès à la room Socket.IO.
-  const toolResults = await result.toolResults;
-  const phaseTransition = toolResults.find((r) => r.toolName === "advance_phase");
-  const phaseOutput = phaseTransition?.output as
-    | { advanced: boolean; newPhase?: { id: string; title: string } }
-    | undefined;
   if (phaseOutput?.advanced) {
     await emitAndPersistSystemMessage(
       io,

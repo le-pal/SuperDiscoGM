@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import type { Role } from "@superdiscogm/db";
 import type { ChatMessagePayload } from "@/server/socket";
 import type { CharacterSheetView } from "@/lib/characterSheet";
 import type { Ambiance } from "@/lib/ambiance";
+import { hasRole } from "@/lib/roles";
 import { Avatar } from "@/components/Avatar";
 import { ThemeRoot } from "@/components/ThemeRoot";
 import { usePartyChannel } from "@/hooks/usePartyChannel";
@@ -37,7 +39,7 @@ export function PartyScreen({
   initialNotes,
 }: {
   partyId: string;
-  currentUser: { id: string; name: string; avatarColor: string };
+  currentUser: { id: string; name: string; avatarColor: string; role: Role };
   participantsById: Record<string, Participant>;
   campaignId: string;
   campaignName: string;
@@ -49,7 +51,10 @@ export function PartyScreen({
   ownSheet: CharacterSheetView | null;
   initialNotes: string;
 }) {
-  const { messages, streamingText, error, sendMessage, prependMessages } = usePartyChannel(partyId, initialMessages);
+  const { messages, streamingText, error, mjError, sendMessage, prependMessages, dismissMjError } = usePartyChannel(
+    partyId,
+    initialMessages
+  );
   const onlineUserIds = usePartyPresence(partyId);
   const [nextCursor, setNextCursor] = useState(initialNextCursor);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -101,6 +106,36 @@ export function PartyScreen({
           )}
         </div>
       </div>
+
+      {mjError && (
+        <div
+          className="flex center between"
+          style={{
+            padding: "10px 20px",
+            background: "var(--danger)",
+            color: "#fff",
+            fontSize: ".85rem",
+            fontWeight: 600,
+          }}
+        >
+          <span>⚠️ {mjError}</span>
+          <div className="flex center gap-8">
+            {hasRole(currentUser, "ADMIN") && mjError.includes("/admin") && (
+              <a href="/admin" className="btn small" style={{ background: "#fff", color: "var(--danger)", borderColor: "#fff" }}>
+                Aller à /admin
+              </a>
+            )}
+            <button
+              type="button"
+              onClick={dismissMjError}
+              aria-label="Fermer"
+              style={{ background: "transparent", border: "none", color: "#fff", cursor: "pointer", fontSize: "1rem", padding: "0 4px" }}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="partie-shell" data-ambiance={ambiance}>
         <div className="partie-main">

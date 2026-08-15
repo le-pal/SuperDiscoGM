@@ -51,7 +51,7 @@ export default async function PartyPage({ params }: { params: Promise<{ id: stri
   return (
     <PartyScreen
       partyId={party.id}
-      currentUser={{ id: user.id, name: user.name, avatarColor: user.avatarColor }}
+      currentUser={{ id: user.id, name: user.name, avatarColor: user.avatarColor, role: user.role }}
       participantsById={participantsById}
       campaignId={party.campaignId}
       campaignName={party.campaign.name}
