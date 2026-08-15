@@ -1,0 +1,357 @@
+{
+  "result": {
+    "modelId": "anthropic/claude-haiku-4.5",
+    "scenarioTitle": "Valjoyeux",
+    "startPhase": "L'Arrivée à Valjoyeux",
+    "finalPhase": "L'Arrivée à Valjoyeux",
+    "advancedPhase": false,
+    "elapsedMs": 105168,
+    "messageCount": 40,
+    "toolCalls": [
+      {
+        "toolName": "apply_damage",
+        "args": {
+          "amount": 7
+        }
+      }
+    ],
+    "expectedTools": [
+      "apply_damage",
+      "add_item"
+    ],
+    "gotExpectedTools": [
+      "apply_damage"
+    ],
+    "toolCallScore": "1/3",
+    "usage": {
+      "calls": 35,
+      "inputTokens": 257342,
+      "outputTokens": 19276,
+      "costUsd": null
+    }
+  },
+  "turnLog": [
+    {
+      "index": 1,
+      "authorName": "Elyon Vasterel",
+      "content": "Je m'avance prudemment pour aider à déblayer l'entrée, pioche en main.",
+      "expected": null
+    },
+    {
+      "index": 2,
+      "authorName": "Kara Sombreval",
+      "content": "Je reste en retrait et surveille les alentours pendant que les autres creusent.",
+      "expected": null
+    },
+    {
+      "index": 3,
+      "authorName": "Elyon Vasterel",
+      "content": "Je sens que le sol est instable, je fais attention où je mets les pieds (jet de Vigilance). 🎲 1d20+2 → [7] +2 = 9",
+      "expected": null
+    },
+    {
+      "index": 4,
+      "authorName": "Elyon Vasterel",
+      "content": "L'étançon vient de céder dans un bruit sinistre ! Je tente de m'écarter d'un bond pour éviter les débris (jet de Réflexes).",
+      "expected": null
+    },
+    {
+      "index": 5,
+      "authorName": "Kara Sombreval",
+      "content": "Je crie pour prévenir les autres du danger et recule vivement vers la sortie.",
+      "expected": null
+    },
+    {
+      "index": 6,
+      "authorName": "Elyon Vasterel",
+      "content": "Les débris m'ont touché de plein fouet, je n'ai pas pu les éviter à temps, je saigne d'une entaille au bras.",
+      "expected": "apply_damage"
+    },
+    {
+      "index": 7,
+      "authorName": "Kara Sombreval",
+      "content": "Je me précipite vers Elyon pour voir l'étendue de ses blessures et l'aider à se relever.",
+      "expected": null
+    },
+    {
+      "index": 8,
+      "authorName": "Elyon Vasterel",
+      "content": "Malgré la douleur, je me relève et j'inspecte les décombres à la recherche d'un passage.",
+      "expected": null
+    },
+    {
+      "index": 9,
+      "authorName": "Kara Sombreval",
+      "content": "J'examine les parois pour voir si la structure est stable ou si on risque un nouvel effondrement.",
+      "expected": null
+    },
+    {
+      "index": 10,
+      "authorName": "Elyon Vasterel",
+      "content": "La poussière retombe. L'accès à la zone est-il dégagé maintenant qu'on a évité l'effondrement ?",
+      "expected": null
+    },
+    {
+      "index": 11,
+      "authorName": "Kara Sombreval",
+      "content": "Je ramasse une torche pour éclairer le passage qui semble s'ouvrir devant nous.",
+      "expected": "add_item"
+    },
+    {
+      "index": 12,
+      "authorName": "Elyon Vasterel",
+      "content": "D'après ce qu'on peut voir, les conditions suivantes semblent réunies : Fin de la scène si les PJ décident de rester, ou passage à l'enquête s'ils acceptent de participer.. On avance résolument vers la suite, l'entrée est maintenant dégagée derrière nous.",
+      "expected": "advance_phase"
+    },
+    {
+      "index": 13,
+      "authorName": "Kara Sombreval",
+      "content": "Je suis Elyon vers la zone suivante, prête à affronter ce qui nous attend.",
+      "expected": null
+    },
+    {
+      "index": 14,
+      "authorName": "Elyon Vasterel",
+      "content": "On progresse prudemment dans le nouveau passage qui s'ouvre devant nous.",
+      "expected": null
+    },
+    {
+      "index": 15,
+      "authorName": "Kara Sombreval",
+      "content": "Je scrute l'obscurité devant nous à la recherche de danger (jet de Perception). 🎲 1d20+3 → [15] +3 = 18",
+      "expected": null
+    },
+    {
+      "index": 16,
+      "authorName": "Kara Sombreval",
+      "content": "Je décris ce que je perçois à Elyon à voix basse.",
+      "expected": null
+    },
+    {
+      "index": 17,
+      "authorName": "Elyon Vasterel",
+      "content": "On continue notre exploration en restant groupés et attentifs.",
+      "expected": null
+    },
+    {
+      "index": 18,
+      "authorName": "Kara Sombreval",
+      "content": "Je vérifie l'état de mon équipement avant de poursuivre plus profondément.",
+      "expected": null
+    },
+    {
+      "index": 19,
+      "authorName": "Elyon Vasterel",
+      "content": "Où en sommes-nous exactement de notre progression dans le donjon ?",
+      "expected": null
+    },
+    {
+      "index": 20,
+      "authorName": "Kara Sombreval",
+      "content": "On fait une courte pause pour reprendre son souffle avant de continuer.",
+      "expected": null
+    }
+  ],
+  "messages": [
+    {
+      "authorType": "PLAYER",
+      "content": "Je m'avance prudemment pour aider à déblayer l'entrée, pioche en main.",
+      "createdAt": "2026-08-15T13:31:07.122Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# La Grange Incendiée – Dégagement de l'Entrée\n\nVous vous avancez vers l'entrée de la grange, pioche à la main. Les vestiges calcinés du bâtiment fument encore légèrement — l'incendie s'est déclaré il y a seulement quelques heures. Les poutres noircies s'entrelacent en un enchevêtrement chaotique, bloquant l'accès au cœur de la structure.\n\nEn vous approchant avec votre pioche, vous mesurez l'ampleur du travail. Il faudra dégager progressivement les décombres pour accéder à l'intérieur sans risquer d'effondrement. La chaleur résiduelle des braises vous parvient au visage — attention à ne pas vous brûler.\n\n**Avant que vous ne commenciez vraiment :**\n\n**Kara**, à vos côtés ou en arrière-plan, attend de voir si vous avez besoin d'aide. Le **Maire**, debout à une distance respectueuse, vous observe en silence. En arrière-plan, quelques **villageois** discutent à voix basse de la catastrophe.\n\n---\n\nVoulez-vous faire un test de **Force** pour dégager les débris ? Ou préférez-vous d'abord inspecter les alentours pour d'autres indices avant de forcer l'entrée ?\n\n*Comment souhaitez-vous procéder, Elyon ?*",
+      "createdAt": "2026-08-15T13:31:11.999Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je reste en retrait et surveille les alentours pendant que les autres creusent.",
+      "createdAt": "2026-08-15T13:31:12.017Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Surveillance des Alentours\n\nKara se positionne en retrait de la grange, les yeux balayant méthodiquement les alentours — le champ calciné, les maisons proches, le chemin qui mène au village. Une main repose près de son arme, prête à réagir au moindre mouvement suspect.\n\n---\n\n**Elyon**, vous êtes maintenant le foyer de l'action, pioche en main face aux décombres. **Kara** monte la garde, vigilante.\n\nLe **Maire** s'adresse à vous deux :\n\n> « Allez-y, explorez tant que vous pouvez. Mais soyez prudents — ces décombres peuvent s'effondrer à tout moment. Et s'il y a vraiment des gobelins impliqués, on ne sait jamais où ils pourraient se cacher... »\n\nIl fait un geste vague vers les bois au loin, d'où émane une léger brume matinale.\n\n---\n\n**Elyon**, je vous demande un test de **Force** pour commencer à dégager les débris et accéder à l'intérieur de la grange. DC 12.**Résultat : 18** ✓ *Succès remarquable !*\n\n---\n\n# Dégagement des Débris\n\nAvec une efficacité impressionnante, vous plantez votre pioche dans l'enchevêtrement de poutres. En quelques coups nets et puissants, vous écartez les plus gros débris, créant un passage praticable vers l'intérieur. Vous avez la main sûre — pas un seul décombrement dangereux.\n\nUne fois l'entrée dégagée, une **odeur acre de bois brûlé** vous envahit les narines. À l'intérieur, c'est un fouillis de cendres grises, de poutres écroulées et de ferraille noircie. Quelques braises rougeoyantes subsistent encore dans les coins sombres.\n\n**Ce que vous voyez immédiatement :**\n- Au centre approximatif de la grange : une forme sombre et immobile — probablement le **corps du Shérif**, partiellement recouvert de débris.\n- À votre gauche, près de ce qui aurait pu être une fenêtre : un objet métallique qui **n'est pas noirci par le feu** — une **épée gobeline courte**, intacte.\n- Le sol montre des traces de **chariot**, malgré les cendres.\n\n**Kara** vous signale d'un geste que tout reste calme aux alentours.\n\n---\n\n*Que faites-vous, Elyon ? Et Kara, vous relevez quelque chose de particulier dans les alentours ?*",
+      "createdAt": "2026-08-15T13:31:21.224Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je sens que le sol est instable, je fais attention où je mets les pieds (jet de Vigilance). 🎲 1d20+2 → [7] +2 = 9",
+      "createdAt": "2026-08-15T13:31:21.242Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# L'Intérieur de la Grange – Terrain Glissant\n\nVous franchissez le passage que vous venez de dégager, attentif à chaque pas. Cependant, sous vos bottes, les cendres accumulent une fine couche de poudre traître. À peine avez-vous fait trois pas vers l'intérieur que votre pied **glisse sur un reste de poutre carbonisée**, dissimulé sous les cendres.\n\nVous titubez en avant, les bras s'agitant pour conserver l'équilibre. Quelques débris se détachent du plafond instable — rien de grave, mais vous réalisez à quel point ce bâtiment est fragile. Un mauvais pas pourrait déclencher un véritable effondrement.\n\n**Vous restabilisez** tant bien que mal, mais vous prenez conscience du danger : il vous faudra avancer lentement et délibérément. Chaque mouvement doit être calculé.\n\nDevant vous, l'**épée gobeline** brille faiblement à quelques mètres — elle n'a pas brûlé, ce qui est **hautement suspect**. Le corps du Shérif est encore plus loin, enfoui sous les débris.\n\n**Kara**, postée à l'entrée, vous interpelle doucement :\n\n> « Attention, Elyon ! Le bâtiment bouge ! »\n\n---\n\n*Continuez-vous à avancer vers l'épée ? Ou préférez-vous d'abord examiner le sol plus minutieusement ? Comment procédez-vous ?*",
+      "createdAt": "2026-08-15T13:31:25.786Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "L'étançon vient de céder dans un bruit sinistre ! Je tente de m'écarter d'un bond pour éviter les débris (jet de Réflexes).",
+      "createdAt": "2026-08-15T13:31:25.792Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Effondrement Partiel !\n\nAttendez — je dois clarifier la scène. Dans votre description, vous mentionnez un \"étançon qui cède\", mais je n'ai pas introduit d'étançon spécifique dans la grange. \n\n**Deux possibilités :**\n\n1. **Vous improvisez** : un support structural que vous aviez remarqué s'effondre effectivement en ce moment, déclenchant un danger immédiat.\n2. **Vous voulez tenter un mouvement défensif** en anticipation du danger que vous sentiez déjà (l'instabilité du bâtiment).\n\nPour rester cohérent avec la narration en cours, je suppose que c'est le **poids de votre progression** qui provoque l'effondrement d'une partie du plafond au-dessus de vous.\n\n---\n\n**Faisons le jet de Réflexes pour esquiver !**# Résultat : 6 – ÉCHEC CRITIQUE\n\n---\n\nVous bondissez sur le côté en voyant les poutres s'écrouler, mais vous êtes **trop lent**. Une poutre principale, noircie par le feu et fragilisée, s'abat sur votre épaule et votre flanc gauche dans un bruit assourdissant.\n\nLa douleur vous traverse en éclair — vous êtes projeté au sol, écrasé sous le poids du bois calciné. Des braises encore chaudes vous brûlent légèrement la peau.**Vous recevez 7 dégâts !** Vos PV passent à **17/24**.\n\n---\n\n# Panique à l'Entrée\n\n**Kara** bondit en avant :\n\n> « Elyon ! »\n\nElle se précipite pour vous aider, mais s'arrête à la limite du passage dégagé, craignant un nouvel effondrement.\n\nLe **Maire** crie depuis l'extérieur :\n\n> « Il y a quelqu'un ! Aidez-le ! »\n\nQuelques villageois se figent, paniqués. La grange gronde d'instabilité.\n\n---\n\n*Élyon, vous êtes au sol, blessé, sous une poutre. Vous pouvez vous en extraire, mais le bâtiment se sent fragile. Qu'est-ce que vous faites ? Kara, vous vous lancez pour le secourir ?*",
+      "createdAt": "2026-08-15T13:31:36.055Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je crie pour prévenir les autres du danger et recule vivement vers la sortie.",
+      "createdAt": "2026-08-15T13:31:36.062Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Évacuation d'Urgence\n\n**Kara** pivote immédiatement, levant le bras en signal d'alarme :\n\n> « SORTEZ ! Le bâtiment s'effondre ! RECULEZ ! »\n\nElle recule vivement vers l'entrée, les yeux toujours fixés sur Elyon sous la poutre. Son cri galvanise les villageois — le **Maire** fait un bond en arrière, criand des ordres désordonnés.\n\nLe bâtiment **gronde à nouveau**. Des fissures parcourent les poutres restantes. La structure entière oscille dangereusement.\n\n---\n\n**Elyon**, vous êtes toujours au sol, écrasé sous la poutre. Vous sentez le feu brûler votre peau à plusieurs endroits. Autour de vous, tout s'écroule lentement mais inexorablement.\n\n**Vous avez quelques secondes pour agir :**\n\n1. **Vous vous dégagez rapidement** et vous rampez vers la sortie avant l'effondrement complet\n2. **Vous tentez de vous extraire de sous la poutre** avec force brute\n3. **Autre action ?**\n\n**Kara**, vous êtes maintenant à l'extérieur, au-delà de la ligne de danger. Voulez-vous faire quelque chose d'autre ? Appeler de l'aide ? Tenter une manœuvre ?\n\n---\n\n*Elyon, comment réagissez-vous face à cette situation critique ?*",
+      "createdAt": "2026-08-15T13:31:40.182Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Les débris m'ont touché de plein fouet, je n'ai pas pu les éviter à temps, je saigne d'une entaille au bras.",
+      "createdAt": "2026-08-15T13:31:40.194Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Confirmation des Blessures\n\nVous avez raison — le jet de Réflexes a échoué (6), et vous n'avez pas pu éviter les débris. La poutre vous a frappé de plein fouet. En plus de la douleur générale de l'impact (les **7 dégâts** déjà appliqués), vous constatez maintenant une **entaille profonde au bras gauche**, qui saigne abondamment.\n\nLe sang coule le long de votre avant-bras, se mêlant à la poussière de cendres. C'est douloureux, mais pas mortel — du moins pas encore. Vous restez conscient et lucide.\n\n---\n\n**Situation actuelle :**\n- Vous êtes **au sol, sous une poutre**\n- Vous saignez d'une entaille au bras\n- Le bâtiment **continue de s'écrouler** autour de vous\n- **Kara** vous appelle depuis l'entrée, en sécurité relative\n\n---\n\n*Qu'est-ce que vous faites maintenant, Elyon ? Vous vous dégagez de sous la poutre ? Vous rampez vers la sortie ? Vous tentez de récupérer l'épée gobeline malgré le danger immédiat ?*\n\n*Et Kara, vous attendez ou vous faites quelque chose de plus ?*",
+      "createdAt": "2026-08-15T13:31:44.415Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je me précipite vers Elyon pour voir l'étendue de ses blessures et l'aider à se relever.",
+      "createdAt": "2026-08-15T13:31:44.421Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Secours sous les Décombres\n\n**Kara** se précipite à nouveau vers l'intérieur de la grange, ignorant les avertissements du Maire. Elle enjambe les débris avec agilité, se frayant un chemin jusqu'à vous.\n\n> « Tiens bon, je suis là ! »\n\nElle arrive à votre hauteur et évalue rapidement la situation : vous êtes écrasé sous une poutre carbonisée, du sang coulant de votre bras, et le bâtiment gronde toujours autour de vous.\n\nElle se positionne de chaque côté de la poutre et évalue son poids. C'est lourd, mais pas impossible à soulever si vous l'aidez.\n\n> « À trois, on la soulève. Un... deux... »\n\n---\n\n**Avant que vous ne vous libériez complètement :**\n\nLe bâtiment **craque sinistrement**. Une fissure court le long du plafond au-dessus de vous deux. D'autres débris menacent de s'écrouler à tout moment.\n\n**Kara vous demande :**\n\n> « Tu peux te lever ? On doit partir MAINTENANT ! »\n\n---\n\n**Elyon, vous devez tester votre **Force** pour vous extraire de sous la poutre avec son aide. DC 10 (facilité car vous êtes deux).**\n\n**Kara**, vous êtes prête à tirer de toutes vos forces.\n\n*Elyon, faites votre test !*",
+      "createdAt": "2026-08-15T13:31:49.263Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Malgré la douleur, je me relève et j'inspecte les décombres à la recherche d'un passage.",
+      "createdAt": "2026-08-15T13:31:49.269Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Extraction et Fuite\n\nVous grognez sous l'effort, les muscles tendus par la douleur de vos blessures. **Kara** pousse de toutes ses forces sur la poutre, créant juste assez d'espace pour que vous vous dégagiez en rampant.\n\nVous vous relevez tant bien que mal, chancelant un instant. L'entaille au bras vous brûle, et votre flanc gauche est endolori — mais vous êtes debout, vivant.\n\n---\n\nVous inspectez rapidement les alentours à la recherche d'une issue. Le passage que vous aviez dégagé à l'entrée est toujours praticable, bien que des débris supplémentaires commencent à le bloquer. C'est votre meilleure option.\n\nÀ votre gauche, vous apercevez toujours l'**épée gobeline** brillant faiblement dans la pénombre — mais elle est plus loin, vers le centre de la grange. L'atteindre signifierait rester plus longtemps ici.\n\n**Au-dessus, le plafond se fissure davantage.**\n\n**Kara** vous saisit par le bras (celui qui ne saigne pas) :\n\n> « Pas le temps ! On y va ! »\n\nElle vous tire vers l'entrée. Le **Maire** crie depuis l'extérieur :\n\n> « Dépêchez-vous ! »\n\n---\n\n**Faites un test de Force ou d'Agilité (DC 12) pour vous frayer un chemin jusqu'à la sortie avant l'effondrement total !**\n\n*Tentez-vous de récupérer l'épée au passage, ou vous vous concentrez uniquement sur votre survie ?*",
+      "createdAt": "2026-08-15T13:31:54.301Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "J'examine les parois pour voir si la structure est stable ou si on risque un nouvel effondrement.",
+      "createdAt": "2026-08-15T13:31:54.306Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Évaluation de la Stabilité\n\n**Kara** jette un coup d'œil expert aux poutres restantes et aux fissures qui courent le long des murs. Elle a une bonne compréhension des structures — assez pour savoir reconnaître le danger.\n\nCe qu'elle constate : **la grange ne tient plus que par un fil.**\n\nLes principales poutres de soutien sont fracturées. Les fissures s'élargissent à vue d'œil. La chaleur résiduelle du feu a fragilisé le bois au point qu'il ne peut plus supporter son propre poids. Un simple coup de vent — ou un pas maladroit — pourrait déclencher un effondrement en chaîne.\n\n> « C'est foutu ! »\n\nElle crie par-dessus le bruit de craquement :\n\n> « On n'a que quelques secondes ! »\n\n---\n\n**Situation critique :**\n- La grange est sur le point de s'écrouler complètement\n- Vous êtes à environ 5-6 mètres de la sortie\n- **Elyon** est blessé et ralenti\n\n**Kara** vous tire fermement vers l'entrée :\n\n> « Bouge ! Maintenant ! »\n\n---\n\n**Elyon, vous devez tester votre **Agilité** (ou Force) pour traverser rapidement les débris et atteindre la sortie. DC 12.**\n\n*Faites votre jet !*",
+      "createdAt": "2026-08-15T13:31:59.010Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "La poussière retombe. L'accès à la zone est-il dégagé maintenant qu'on a évité l'effondrement ?",
+      "createdAt": "2026-08-15T13:31:59.015Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Après l'Effondrement – Situation Stabilisée\n\nVous et **Kara** franchissez précipitamment le passage dégagé et vous vous effondrez littéralement hors de la grange, roulant quelques mètres sur l'herbe calcinée.\n\nDerrière vous, dans un **bruit apocalyptique**, le reste de la structure s'écroule dans une explosion de poussière et de débris. Une vague de cendres vous enveloppe, vous forçant à vous couvrir le visage.\n\nQuand la poussière retombe — quelques secondes plus tard — il ne reste de la grange qu'un **tas de ruines fumantes**, complètement effondré. L'accès à l'intérieur est désormais **totalement bloqué**.\n\n---\n\n# État Actuel\n\n**Vous êtes sains et saufs, mais :**\n- **Elyon** : Blessé (entaille saignante au bras, flanc endolori), **PV 17/24**\n- **Kara** : Indemne, **PV 18/18**\n- Le **Maire** et les **villageois** vous entourent, soulagés et préoccupés\n\nLe **Maire** s'agenouille près de vous :\n\n> « Seigneurs ! Vous êtes vivants ! Vos blessures... il faut les soigner ! »\n\nIl regarde la garne effondrée :\n\n> « L'épée... le corps du Shérif... tout est enseveli maintenant. »\n\n---\n\n**Ce que vous avez vu avant l'effondrement :**\n- Une **épée gobeline courte** (intacte, non brûlée) — maintenant perdue sous les décombres\n- Le **corps du Shérif** — inaccessible\n- Des **traces de chariot** — aussi inaccessibles\n\n*Qu'allez-vous faire maintenant ? Avez-vous besoin de soins ? Voulez-vous explorer ailleurs ?*",
+      "createdAt": "2026-08-15T13:32:04.555Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je ramasse une torche pour éclairer le passage qui semble s'ouvrir devant nous.",
+      "createdAt": "2026-08-15T13:32:04.561Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Clarification Narrative\n\nKara, je dois clarifier la scène : vous venez de vous échapper de la grange qui **vient de s'effondrer complètement**. Vous êtes dehors, à plusieurs mètres du bâtiment en ruines.\n\n**Il n'y a pas de passage qui s'ouvre devant vous.** La structure entière est effondrée. L'accès à l'intérieur est totalement bloqué par les décombres.\n\n---\n\n**Cependant, si vous voulez explorer les alentours :**\n- Vous pourriez chercher d'autres indices autour de la grange (traces, objets éparpillés à l'extérieur, etc.)\n- Vous pourriez vous diriger vers d'autres lieux du village (la maison du Shérif, celle du druide, l'auberge pour interroger les témoins)\n- Vous pourriez d'abord faire soigner **Elyon** (entaille au bras, saignement)\n\n---\n\n*Que voulez-vous faire, Kara ? Et Elyon, comment vous sentez-vous ? Avez-vous besoin de soins avant de continuer ?*",
+      "createdAt": "2026-08-15T13:32:07.907Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "D'après ce qu'on peut voir, les conditions suivantes semblent réunies : Fin de la scène si les PJ décident de rester, ou passage à l'enquête s'ils acceptent de participer.. On avance résolument vers la suite, l'entrée est maintenant dégagée derrière nous.",
+      "createdAt": "2026-08-15T13:32:07.912Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Clarification sur la Progression\n\nElyon, je comprends votre intention, mais je dois être précis sur la narration :\n\n**L'entrée n'est PAS \"dégagée derrière vous\"** — c'est l'inverse. Vous venez de vous échapper d'une grange qui **s'est complètement effondrée**. L'accès à l'intérieur est maintenant **totalement bloqué** par les décombres. Vous avez dû fuir précipitamment pour sauver vos vies.\n\n---\n\n**Concernant l'avancement de phase :**\n\nVous êtes actuellement dans la **Phase 2 – Enquête Initiale**, spécifiquement au **Théâtre du Crime : La Grange et le corps du Shérif**.\n\nLes conditions de sortie de cette phase ne sont pas encore remplies. Vous avez :\n- ✗ Échoué à examiner le corps du Shérif (il est enseveli)\n- ✗ Échoué à récupérer l'épée gobeline (elle est perdue sous les décombres)\n- ✗ Aperçu les traces de chariot mais sans les analyser vraiment\n\n---\n\n**Vous pouvez maintenant :**\n1. Tenter de dégager les décombres pour retrouver le corps/l'épée\n2. Vous diriger vers d'autres lieux du crime (Maison du Shérif, Maison du Druide, Auberge)\n3. Faire soigner Elyon d'abord\n\n*Que choisissez-vous ?*",
+      "createdAt": "2026-08-15T13:32:12.917Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je suis Elyon vers la zone suivante, prête à affronter ce qui nous attend.",
+      "createdAt": "2026-08-15T13:32:12.922Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Direction Vers la Maison du Shérif\n\n**Kara** aide **Elyon** à se relever complètement. Vous avez tous deux compris que la grange est perdue — le corps du Shérif et l'épée gobeline resteront ensevelis sous les ruines pour l'instant.\n\nLe **Maire** vous rattrape alors que vous vous éloignez :\n\n> « Attendez ! Où allez-vous ? »\n\nVous lui indiquez votre intention d'explorer la maison du Shérif — un lieu qui pourrait contenir des indices sur les circonstances de sa mort et sur le vol des récoltes.\n\nLe Maire acquiesce :\n\n> « Oui, c'est judicieux. La demeure du Shérif se trouve à l'ouest du village, près de la place centrale. Je vais vous y conduire. »\n\nIl se tourne vers les villageois :\n\n> « Retournez au village. Prévenez l'Aubergiste. »\n\n---\n\n# Trajet vers la Maison du Shérif\n\nVous traversez les champs calcinés et entrez dans le village proprement dit. Les rues de **Valjoyeux** sont calmes — quelques habitants vous observent avec curiosité et inquiétude. Le **Maire** vous guide jusqu'à une petite maison en pierre, aux volets fermés.\n\n> « Voilà. C'est ici que vivait le Shérif. »\n\nLa porte est verrouillée. Le Maire sort une clé.\n\n---\n\n**Avant d'entrer, Elyon, votre entaille au bras saigne toujours. Voulez-vous la faire soigner maintenant, ou préférez-vous inspecter la maison d'abord ?**\n\n*Et Kara, vous restez vigilante ?*",
+      "createdAt": "2026-08-15T13:32:18.010Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "On progresse prudemment dans le nouveau passage qui s'ouvre devant nous.",
+      "createdAt": "2026-08-15T13:32:18.016Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Entrée dans la Maison du Shérif\n\nLe **Maire** tourne la clé dans la serrure avec un léger grincement. La porte s'ouvre lentement, révélant l'intérieur sombre de la demeure du Shérif.\n\nVous pénétrez prudemment à l'intérieur, **Kara** en tête, main sur son arme. L'air est lourd, chargé d'une odeur de renfermé et de poussière. Les volets fermés plongent les lieux dans une pénombre relative.\n\n---\n\n# Première Pièce : Le Salon\n\nVous entrez dans ce qui semble être un **salon modeste**. Quelques meubles : une table basse, des chaises, une cheminée éteinte. Tout est en ordre — trop en ordre, presque. Pas de désordre, pas de signes de lutte.\n\nSur la table basse, vous remarquez une **lettre** posée ostensiblement, comme si elle avait été laissée intentionnellement.\n\nLe **Maire** vous suit en retrait :\n\n> « Je n'ai pas touché à quoi que ce soit depuis sa disparition. Tout est resté comme il l'a laissé. »\n\n---\n\n**Que faites-vous ?**\n- Vous examininez la **lettre** ?\n- Vous fouilles les autres pièces d'abord ?\n- Vous vérifiez les volets, les portes, les points d'accès ?\n\n*Elyon et Kara, comment procédez-vous ?*",
+      "createdAt": "2026-08-15T13:32:22.079Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je scrute l'obscurité devant nous à la recherche de danger (jet de Perception). 🎲 1d20+3 → [15] +3 = 18",
+      "createdAt": "2026-08-15T13:32:22.085Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Examen Minutieux – Succès Remarquable\n\n**Kara** avance lentement, ses yeux s'adaptant progressivement à la pénombre. Elle scrute chaque coin, chaque ombre, à la recherche du moindre détail suspects.\n\nAvec son regard aiguisé (18 en Perception), elle repère rapidement plusieurs éléments intéressants :\n\n---\n\n## Ce que Kara observe :\n\n1. **La lettre sur la table** — elle est écrite à la main, l'encre est fraîche (quelques jours tout au plus). Elle semble avoir été volontairement placée là, comme une confession ou un message.\n\n2. **Des traces suspectes** — près de la cheminée, la poussière a été perturbée récemment. Comme si quelqu'un y avait cherché quelque chose ou l'avait utilisée.\n\n3. **Une fenêtre légèrement entrebâillée** — l'un des volets du salon n'est pas complètement fermé. Bizarre, car le Maire a dit que tout était resté intact. Cela suggère qu'**on a pu forcer l'accès**.\n\n4. **Odeur subtile** — sous le renfermé, Kara détecte une légère odeur de soufre et de résine brûlée. Similaire à l'odeur de la grange incendiée.\n\n5. **Pas de signes de violence** — aucune trace de sang, pas de meubles renversés. Tout est trop propre, trop calme.\n\n---\n\n**Kara** se tourne vers vous deux :\n\n> « Quelque chose ne colle pas. Il y a une fenêtre entrebâillée, et cette odeur... c'est la même que celle de la grange. »\n\nElle désigne la **lettre** :\n\n> « Et ça — quelqu'un a voulu nous la laisser. »\n\n---\n\n*Que faites-vous ? Vous examinez la lettre ? Vous vérifiez la fenêtre ? Elyon, vous avancez prudemment ?*",
+      "createdAt": "2026-08-15T13:32:27.896Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je décris ce que je perçois à Elyon à voix basse.",
+      "createdAt": "2026-08-15T13:32:27.904Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Rapport Discret\n\n**Kara** se rapproche d'**Elyon** et parle à voix basse, juste assez fort pour qu'il l'entende par-dessus le silence pesant de la maison :\n\n> « Écoute. Il y a une fenêtre entrebâillée — celle-ci, près de la cheminée. Ce n'est pas normal si tout était censé être fermé. »\n\nElle pointe discrètement du doigt :\n\n> « Et regarde la poussière près du foyer. Quelqu'un a fouillé dedans récemment. »\n\nElle renifle légèrement :\n\n> « Tu sens ça ? C'est la même odeur que celle de la grange. Soufre et résine brûlée. Quelqu'un a apporté du feu ici aussi, ou... »\n\nElle baisse la voix encore davantage :\n\n> « Ou c'est un message. Comme si on voulait nous montrer un lien entre la grange et cette maison. »\n\nKara désigne la table basse :\n\n> « Et cette lettre. Elle n'est pas cachée. Elle est là, à attendre d'être lue. Comme un aveu. »\n\nElle se tourne vers vous, les yeux alertes :\n\n> « Je pense qu'on a été guidés ici. Quelqu'un veut que nous trouvions quelque chose. »\n\nLe **Maire**, resté en retrait, vous observe en silence, les mains nerveuses.\n\n---\n\n*Elyon, votre avis ? Vous vous approchez de la lettre ? Vous vérifiez la fenêtre ? Vous questionnez le Maire ?*",
+      "createdAt": "2026-08-15T13:32:32.462Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "On continue notre exploration en restant groupés et attentifs.",
+      "createdAt": "2026-08-15T13:32:32.467Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Exploration Prudente\n\n**Elyon** acquiesce silencieusement. Vous deux restez groupés, avançant lentement dans le salon, chaque pas mesuré, chaque sens en alerte.\n\nLe **Maire** demeure en retrait, observant vos mouvements avec une certaine nervosité.\n\n---\n\n# Inspection du Salon\n\nEn progressant, vous examinez plus attentivement :\n\n**La fenêtre entrebâillée** — En vous en rapprochant, vous constatez que le volet n'est pas complètement fermé. Les serrures **montrent des marques de tentative de forçage** — comme si quelqu'un avait tenté de l'ouvrir depuis l'extérieur, sans succès complet. Il reste une légère ouverture, juste assez pour passer une main.\n\n**La cheminée** — Vous vous accroupissez pour l'examiner. À l'intérieur, des cendres récentes. Des herbes brûlées parsèment le foyer — pas du bois ordinaire. **Alchimique**, probablement. Cette odeur de soufre et de résine en est la preuve.\n\n**La lettre sur la table** — Elle repose là, visible. L'encre est fraîche. Vous pouvez lire les premières lignes sans la toucher :\n\n*\"À celui qui trouvera ces mots...\"*\n\n---\n\n**Kara** murmure :\n\n> « Il y a d'autres pièces. Chambre, cuisine probablement. »\n\nElle désigne une porte au fond du salon :\n\n> « On continue ? »\n\nLe **Maire** toussote légèrement :\n\n> « La... la chambre du Shérif est par là. »\n\n---\n\n*Vous continuez vers la chambre, ou vous examinez d'abord la lettre ? Elyon, vous êtes blessé — comment vous tenez ?*",
+      "createdAt": "2026-08-15T13:32:37.965Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Je vérifie l'état de mon équipement avant de poursuivre plus profondément.",
+      "createdAt": "2026-08-15T13:32:37.971Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Vérification d'Équipement\n\n**Kara** s'arrête un instant et fait rapidement l'inventaire de son équipement, s'assurant que tout est en ordre avant de progresser plus profondément dans cette maison suspecte.\n\n---\n\n## État de Kara Sombreval\n\n**Équipement vérifié :**\n- ✓ Arme (prête à l'usage)\n- ✓ Armure (intacte)\n- ✓ Accessoires de rogue (outils de crochetage, etc.)\n- ✓ Munitions/Fournitures (complètes)\n\n**État physique :**\n- PV : 18/18 (indemne)\n- Conditions : Aucune\n\nTout est en bon état. Vous êtes opérationnelle et prête à affronter ce qui vous attend.\n\n---\n\n**Elyon**, à côté de vous, porte toujours les traces de vos blessures à la grange. Son entaille au bras saigne encore légèrement, et vous pouvez voir qu'il se meut avec une certaine prudence due à la douleur au flanc.\n\n**Kara** vous jette un coup d'œil :\n\n> « Ça va ? Tu peux continuer ? »\n\nElle regarde la porte menant à la chambre, puis le **Maire**, puis la lettre encore intacte sur la table.\n\n> « On y va ? »\n\n---\n\n*Qu'allez-vous faire maintenant ? La chambre ? La lettre ? Ou voulez-vous d'abord faire soigner Elyon ?*",
+      "createdAt": "2026-08-15T13:32:42.517Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "Où en sommes-nous exactement de notre progression dans le donjon ?",
+      "createdAt": "2026-08-15T13:32:42.522Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# État de la Progression Actuelle\n\n**Elyon**, vous n'êtes **pas dans un donjon**. Vous êtes dans un **village appelé Valjoyeux**, en train d'enquêter sur des crimes.\n\nVoici où vous en êtes précisément :\n\n---\n\n## Phases du Scénario\n\n**Phase 1 : L'Arrivée à Valjoyeux** ✓ COMPLÉTÉE\n- Vous êtes arrivés au village, avez lu la missive, rencontré le Maire.\n\n**Phase 2 : Enquête Initiale à l'Auberge** ✓ COMPLÉTÉE\n- Vous avez interrogé Bob, Lisa et d'autres témoins.\n\n**Phase 3 : Théâtre du Crime – La Grange** ✓ EN COURS (BLOQUÉE)\n- Vous avez inspectée la grange incendiée\n- Elle s'est effondrée, vous avez dû fuir\n- Le corps du Shérif et l'épée gobeline sont maintenant inaccessibles sous les décombres\n\n**Phase 4 : Théâtre du Crime – La Maison du Shérif** ⧖ ACTUELLEMENT EN COURS\n- Vous venez d'entrer dans la maison du Shérif\n- Vous avez repéré : une lettre suspecte, une fenêtre entrebâillée, des traces de fouille près de la cheminée, une odeur de brûlé identique à celle de la grange\n- Vous n'avez pas encore lu la lettre ni exploré toutes les pièces\n\n---\n\n*Voulez-vous continuer votre exploration de la maison du Shérif, ou avez-vous une autre question ?*",
+      "createdAt": "2026-08-15T13:32:47.357Z"
+    },
+    {
+      "authorType": "PLAYER",
+      "content": "On fait une courte pause pour reprendre son souffle avant de continuer.",
+      "createdAt": "2026-08-15T13:32:47.363Z"
+    },
+    {
+      "authorType": "MJ",
+      "content": "# Pause et Reprendre Haleine\n\n**Kara** s'arrête et prend une profonde inspiration. Vous avez tous les deux eu chaud à la grange — l'adrénaline retombe peu à peu.\n\nElle s'appuie contre le mur du salon, observant toujours la maison autour d'elle, mais permettant à son corps de se détendre un instant.\n\n> « On reprend notre souffle une minute. »\n\nLe **Maire** reste silencieux en retrait, légèrement mal à l'aise.\n\n---\n\n## État Actuel\n\n**Elyon** — Vous sentez la douleur de vos blessures s'atténuer légèrement maintenant que l'adrénaline baisse. Votre entaille au bras throbs douloureusement, mais elle n'est pas critique. Vous êtes toujours à **17/24 PV**.\n\n**Kara** — Vous êtes indemne, **18/18 PV**, et votre respiration se normalise.\n\n---\n\nAprès quelques instants, **Kara** redresse la tête :\n\n> « Ça va mieux. On est prêts à continuer ? »\n\nElle désigne les trois directions possibles :\n- La **lettre** sur la table basse\n- La **fenêtre entrebâillée** (et la cheminée)\n- La **porte vers les autres pièces** (chambre, cuisine)\n\n> « Qu'est-ce qu'on fait en priorité ? »\n\n---\n\n*Qu'allez-vous faire, Elyon et Kara ?*",
+      "createdAt": "2026-08-15T13:32:52.284Z"
+    }
+  ]
+}
