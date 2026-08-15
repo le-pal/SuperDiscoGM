@@ -1,16 +1,19 @@
 import { requireUser } from "@/server/authz";
 import { AppShell } from "@/components/AppShell";
 import { Avatar } from "@/components/Avatar";
+import { resolveInitials } from "@/lib/avatar";
 import { AvatarPicker } from "./avatar-picker";
+import { IdentityForm } from "./identity-form";
 
 // Portage de maquette/profil.html (étape 45 du PLAN.md) — gestion de l'avatar (couleur +
-// initiales déduites du nom [Q50]). Cette couleur est aussi celle du contour des messages dans
-// le chat (identification en un coup d'œil, cf doc/partie/spec.md) — d'où le rappel "où cet
-// avatar apparaît" en bas de page.
+// initiales déduites du nom par défaut [Q50], surchargeables ainsi que le nom affiché [Q54]).
+// Cette couleur est aussi celle du contour des messages dans le chat (identification en un coup
+// d'œil, cf doc/partie/spec.md) — d'où le rappel "où cet avatar apparaît" en bas de page.
 export const dynamic = "force-dynamic";
 
 export default async function ProfilePage() {
   const user = await requireUser();
+  const initials = resolveInitials(user.name, user.avatarInitials);
 
   return (
     <AppShell user={user}>
@@ -21,7 +24,7 @@ export default async function ProfilePage() {
         <div className="card">
           <h3>Avatar actuel</h3>
           <div className="flex center gap-16" style={{ margin: "14px 0" }}>
-            <Avatar name={user.name} color={user.avatarColor} size="lg" />
+            <Avatar name={user.name} color={user.avatarColor} initials={user.avatarInitials} size="lg" />
             <div>
               <div style={{ fontWeight: 700 }}>{user.name}</div>
               <div className="muted" style={{ fontSize: ".82rem" }}>{user.email}</div>
@@ -33,11 +36,19 @@ export default async function ProfilePage() {
         </div>
 
         <div className="card" style={{ gridColumn: "span 2" }}>
-          <h3>Choisir un avatar (V1 — bibliothèque prédéfinie)</h3>
+          <h3>Nom et initiales</h3>
           <p className="muted" style={{ fontSize: ".82rem", marginBottom: 14 }}>
-            Couleur + initiales, générées automatiquement à partir de votre nom. Cliquez une couleur pour la changer.
+            Les initiales sont déduites automatiquement de votre nom, sauf si vous les personnalisez ici.
           </p>
-          <AvatarPicker name={user.name} currentColor={user.avatarColor} />
+          <IdentityForm initialName={user.name} initialCustomInitials={user.avatarInitials ?? ""} />
+
+          <div className="hr" />
+
+          <h3>Choisir une couleur (V1 — bibliothèque prédéfinie)</h3>
+          <p className="muted" style={{ fontSize: ".82rem", marginBottom: 14 }}>
+            Cliquez une couleur pour la changer.
+          </p>
+          <AvatarPicker currentColor={user.avatarColor} initials={initials} />
 
           <div className="hr" />
 
@@ -58,15 +69,15 @@ export default async function ProfilePage() {
         </div>
         <div className="card flex gap-16 wrap">
           <div className="flex center gap-8">
-            <Avatar name={user.name} color={user.avatarColor} size="sm" />
+            <Avatar name={user.name} color={user.avatarColor} initials={user.avatarInitials} size="sm" />
             <span className="muted" style={{ fontSize: ".85rem" }}>Chat de partie (contour des messages)</span>
           </div>
           <div className="flex center gap-8">
-            <Avatar name={user.name} color={user.avatarColor} size="sm" />
+            <Avatar name={user.name} color={user.avatarColor} initials={user.avatarInitials} size="sm" />
             <span className="muted" style={{ fontSize: ".85rem" }}>Tableau de bord (participants)</span>
           </div>
           <div className="flex center gap-8">
-            <Avatar name={user.name} color={user.avatarColor} size="sm" />
+            <Avatar name={user.name} color={user.avatarColor} initials={user.avatarInitials} size="sm" />
             <span className="muted" style={{ fontSize: ".85rem" }}>Gestion des utilisateurs (Admin)</span>
           </div>
         </div>

@@ -2,22 +2,22 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { AVATAR_COLORS, initialsFromName } from "@/lib/avatar";
+import { AVATAR_COLORS } from "@/lib/avatar";
 
 interface AvatarPickerProps {
-  name: string;
   currentColor: string;
+  initials: string;
 }
 
 // Sélection dans la bibliothèque prédéfinie V1 [Q50] — pas d'upload d'image (réservé V2+, cf
 // maquette/profil.html §"Image personnalisée"). Enregistrement immédiat au clic, pas de bouton
-// "Enregistrer" séparé : une seule action, pas d'état de brouillon à gérer.
-export function AvatarPicker({ name, currentColor }: AvatarPickerProps) {
+// "Enregistrer" séparé : une seule action, pas d'état de brouillon à gérer. `initials` vient déjà
+// résolu du parent (surcharge [Q54] ou déduction auto) pour prévisualiser fidèlement les swatches.
+export function AvatarPicker({ currentColor, initials }: AvatarPickerProps) {
   const router = useRouter();
   const [color, setColor] = useState(currentColor);
   const [saving, setSaving] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const initials = initialsFromName(name);
 
   async function pick(next: string) {
     if (next === color || saving) return;

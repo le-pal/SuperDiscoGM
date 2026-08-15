@@ -9,7 +9,7 @@ interface PartyCardData {
   campaign: { id: string; name: string };
   scenario: { id: string; title: string };
   currentPhase: { id: string; title: string; order: number } | null;
-  participants: { id: string; name: string; avatarColor: string; role: string }[];
+  participants: { id: string; name: string; avatarColor: string; avatarInitials: string | null; role: string }[];
 }
 
 const STATUS_LABEL: Record<string, string> = { ACTIVE: "En direct", PAUSED: "En pause", ENDED: "Terminée" };
@@ -36,7 +36,7 @@ export function MyPartiesGrid({ parties }: { parties: PartyCardData[] }) {
             <p className="muted" style={{ fontSize: ".85rem" }}>{p.scenario.title}</p>
             <div className="flex gap-8" style={{ margin: "10px 0" }}>
               {p.participants.map((participant) => (
-                <Avatar key={participant.id} name={participant.name} color={participant.avatarColor} size="sm" />
+                <Avatar key={participant.id} name={participant.name} color={participant.avatarColor} initials={participant.avatarInitials} size="sm" />
               ))}
             </div>
             {p.currentPhase && (

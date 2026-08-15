@@ -24,7 +24,7 @@ export function AppShell({ user, wide = false, children }: AppShellProps) {
           <TopNav role={user.role} />
           <div className="flex center gap-8">
             <RoleBadge role={user.role} />
-            <Avatar name={user.name} color={user.avatarColor} size="sm" />
+            <Avatar name={user.name} color={user.avatarColor} initials={user.avatarInitials} size="sm" />
             <LogoutButton />
           </div>
         </div>

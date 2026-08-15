@@ -17,7 +17,7 @@ export async function getDashboardData(user: User) {
           campaign: { select: { id: true, name: true } },
           scenario: { select: { id: true, title: true } },
           currentPhase: { select: { id: true, title: true, order: true } },
-          participants: { include: { user: { select: { id: true, name: true, avatarColor: true } } } },
+          participants: { include: { user: { select: { id: true, name: true, avatarColor: true, avatarInitials: true } } } },
         },
       },
     },
@@ -34,6 +34,7 @@ export async function getDashboardData(user: User) {
       id: pp.user.id,
       name: pp.user.name,
       avatarColor: pp.user.avatarColor,
+      avatarInitials: pp.user.avatarInitials,
       role: pp.role,
     })),
   }));

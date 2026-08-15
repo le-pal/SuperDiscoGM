@@ -7,6 +7,17 @@ export function initialsFromName(name: string): string {
   return (parts[0][0] + parts[1][0]).toUpperCase();
 }
 
+const MAX_CUSTOM_INITIALS_LENGTH = 3;
+
+// Surcharge des initiales par l'utilisateur [Q54] — customInitials vide/absent = déduction
+// automatique inchangée. Tronqué/normalisé ici pour rester cohérent partout où c'est affiché,
+// même si la validation d'entrée côté API (route profile) applique déjà la même limite.
+export function resolveInitials(name: string, customInitials?: string | null): string {
+  const trimmed = customInitials?.trim();
+  if (trimmed) return trimmed.slice(0, MAX_CUSTOM_INITIALS_LENGTH).toUpperCase();
+  return initialsFromName(name);
+}
+
 // Bibliothèque de couleurs prédéfinie V1 [Q50] — mêmes valeurs que --p1..--p4 dans globals.css,
 // plus quelques teintes additionnelles pour le sélecteur de profil (cf maquette/profil.html).
 export const AVATAR_COLORS = [

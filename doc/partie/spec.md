@@ -22,7 +22,8 @@ Retour à [l'index](../index.md).
 
 ## Avatar
 
-- **V1 : bibliothèque prédéfinie** — l'utilisateur choisit une couleur, les initiales sont déduites automatiquement de son nom. `[Q50]`
+- **V1 : bibliothèque prédéfinie** — l'utilisateur choisit une couleur, les initiales sont déduites automatiquement de son nom par défaut. `[Q50]`
+- **L'utilisateur peut surcharger ses initiales et modifier son nom affiché** depuis la page profil. `[Q54]`
 - **Image personnalisée reportée à la V2**, cohérent avec l'absence d'images de contenu en V1 (`[Q28]`), même si l'avatar est une question d'identité distincte du contenu narratif.
 - L'avatar (couleur) est la même identité visuelle utilisée pour le contour des messages en partie, le tableau de bord et la gestion des utilisateurs (Admin).
 

@@ -26,7 +26,7 @@ export default async function PartyPage({ params }: { params: Promise<{ id: stri
         campaign: { select: { id: true, name: true } },
         scenario: { select: { id: true, title: true } },
         currentPhase: true,
-        participants: { include: { user: { select: { id: true, name: true, avatarColor: true } } } },
+        participants: { include: { user: { select: { id: true, name: true, avatarColor: true, avatarInitials: true } } } },
       },
     }),
     prisma.partyParticipant.findUnique({ where: { partyId_userId: { partyId, userId: user.id } } }),
@@ -42,7 +42,10 @@ export default async function PartyPage({ params }: { params: Promise<{ id: stri
   ]);
 
   const participantsById = Object.fromEntries(
-    party.participants.map((p) => [p.userId, { name: p.user.name, avatarColor: p.user.avatarColor, role: p.role }])
+    party.participants.map((p) => [
+      p.userId,
+      { name: p.user.name, avatarColor: p.user.avatarColor, avatarInitials: p.user.avatarInitials, role: p.role },
+    ])
   );
 
   return (

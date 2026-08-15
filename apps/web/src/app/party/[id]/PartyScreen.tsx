@@ -13,6 +13,7 @@ import { PartySidebar } from "./PartySidebar";
 interface Participant {
   name: string;
   avatarColor: string;
+  avatarInitials: string | null;
   role: "JOUEUR" | "SPECTATEUR";
 }
 
@@ -90,7 +91,7 @@ export function PartyScreen({
             }}
           />
           {participantAvatars.map(([userId, p]) => (
-            <Avatar key={userId} name={p.name} color={p.avatarColor} size="sm" />
+            <Avatar key={userId} name={p.name} color={p.avatarColor} initials={p.avatarInitials} size="sm" />
           ))}
           {spectatorCount > 0 && (
             <div className="avatar sm" style={{ background: "var(--role-spectateur)" }} title={`${spectatorCount} spectateur(s)`}>
@@ -157,7 +158,7 @@ function MessageBubble({ msg, participantsById }: { msg: ChatMessagePayload; par
 
   return (
     <div className={classes}>
-      <Avatar name={isMj ? "MJ" : author?.name ?? "?"} color={author?.avatarColor ?? "#888"} size="sm" isMj={isMj} />
+      <Avatar name={isMj ? "MJ" : author?.name ?? "?"} color={author?.avatarColor ?? "#888"} initials={author?.avatarInitials} size="sm" isMj={isMj} />
       <div>
         {isPrivate && <div className="private-flag">🔒 aparté — visible seulement des participants et du MJ</div>}
         <div className="bubble" style={nameColor ? { borderColor: nameColor } : undefined}>

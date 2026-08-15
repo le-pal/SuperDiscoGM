@@ -26,6 +26,7 @@ model User {
   name         String
   role         Role     @default(USER)
   avatarColor  String // couleur choisie en bibliothèque V1 [Q50] — identité du contour de message [Q25]
+  avatarInitials String? // surcharge des initiales déduites automatiquement du nom [Q54] ; null = déduction auto
   createdAt    DateTime @default(now())
 
   createdCampaigns  Campaign[]        @relation("CampaignCreator")
