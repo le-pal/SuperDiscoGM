@@ -18,6 +18,9 @@ docker/local-ca/*.crt
 # Prisma 7 generated client (regenerated at build time, not committed)
 packages/db/generated/
 
+# Données du Postgres embarqué local (scripts/local-test-db.mjs) — jetable, jamais commité
+.local-pgdata/
+
 # Future Node/Next.js app (stack decided in doc/technique/spec.md)
 node_modules/
 .env
