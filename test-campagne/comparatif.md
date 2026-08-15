@@ -20,8 +20,16 @@ dédiés : `apply_damage` (le personnage encaisse un coup), `add_item` (ramasse 
 | anthropic/claude-haiku-4.5 | 1/3 | 105s (~5s/tour) | 257 342 | 19 276 | ✅ (×1) | ❌ | ❌ |
 
 Aucun des 4 modèles n'a déclenché `add_item` malgré un tour dédié explicite ("Je ramasse une
-torche...") — à creuser séparément : formulation du tour insuffisamment univoque, ou description
-de l'outil à clarifier dans `packages/llm/src/tools/characterSheet.ts`.
+torche...") — **root cause identifiée après coup, pas un vrai signal de fiabilité** : la fiche de
+test possède déjà 3 torches dans son inventaire de départ (`scripts/compare-model.mts`, ligne 52),
+donc "ramasser une torche" est raisonnablement lu par les 4 modèles comme de la mise en scène
+(utiliser une torche déjà possédée) plutôt qu'une nouvelle acquisition méritant `add_item` — un
+comportement plausible, pas forcément une erreur. Ce test spécifique ne permet donc AUCUNE
+conclusion sur la fiabilité `add_item` des 4 modèles, ni dans un sens ni dans l'autre (à
+distinguer du test séparé effectué plus tôt cette session avec un objet réellement nouveau et
+narrativement significatif — "une amulette gravée abandonnée" trouvée dans des décombres — où
+`gpt-4o-mini` avait correctement déclenché `add_item`). À refaire avec un objet sans ambiguïté
+(inédit, absent de l'inventaire de départ) avant de tirer une vraie conclusion sur ce point précis.
 
 ## Verdict
 
