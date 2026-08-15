@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     const created = await tx.user.create({
       data: { email, name, passwordHash, role: invitation.role, avatarColor },
     });
-    await tx.invitation.update({ where: { id: invitation.id }, data: { usedAt: new Date() } });
+    await tx.invitation.update({ where: { id: invitation.id }, data: { usedAt: new Date(), usedById: created.id } });
     return created;
   });
 

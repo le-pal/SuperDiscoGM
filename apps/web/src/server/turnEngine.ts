@@ -246,3 +246,33 @@ export async function runMjTurn(
     partyId,
   });
 }
+
+// Sérialisation par partie [AUDIT.md, majeur] : socket.ts déclenchait runMjTurn en
+// fire-and-forget à chaque message, sans jamais vérifier qu'un tour était déjà en cours pour
+// cette partyId — deux joueurs qui parlent à quelques centaines de ms d'écart (cas normal dès
+// qu'il y a plus d'un joueur actif) déclenchaient deux tours MJ en parallèle sur le même
+// contexte : double application de tool-calls possible (dégâts comptés deux fois, deux
+// transitions de phase), texte de streaming entrelacé côté client. Mutex applicatif en mémoire
+// (suffisant à l'échelle visée — usage perso/petit groupe [Q40], un seul process web) : chaque
+// appel s'enchaîne après le précédent pour la même partie, jamais en parallèle.
+const mjTurnQueues = new Map<string, Promise<void>>();
+
+export function enqueueMjTurn(
+  io: SocketIOServer,
+  partyId: string,
+  triggeringMessageId: string,
+  visibleToUserIds: string[] = []
+): void {
+  const previous = mjTurnQueues.get(partyId) ?? Promise.resolve();
+  const next = previous
+    .catch(() => {}) // un échec précédent ne doit jamais bloquer la file pour la suite
+    .then(() => runMjTurn(io, partyId, triggeringMessageId, visibleToUserIds))
+    .catch((err) => {
+      console.error(`[turnEngine] échec du tour MJ pour la partie ${partyId} :`, err);
+    });
+
+  mjTurnQueues.set(partyId, next);
+  next.finally(() => {
+    if (mjTurnQueues.get(partyId) === next) mjTurnQueues.delete(partyId);
+  });
+}

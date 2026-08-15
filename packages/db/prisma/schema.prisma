@@ -36,6 +36,7 @@ model User {
   characterSheets   CharacterSheet[]
   playerNotes       PlayerNote[]
   sentInvitations   Invitation[]      @relation("InvitationSender")
+  redeemedInvitations Invitation[]    @relation("InvitationRedeemer")
   diceRolls         DiceRoll[]
   messages          Message[]
   sessions          Session[]
@@ -65,6 +66,8 @@ model Invitation {
   role        Role      @default(USER)
   expiresAt   DateTime
   usedAt      DateTime?
+  usedById    String? // qui a accepté cette invitation — fait le lien membership durable avec la campagne, au-delà de la création de compte (audit AUDIT.md : nécessaire pour vérifier qui a le droit de rejoindre une partie de cette campagne)
+  usedBy      User?     @relation("InvitationRedeemer", fields: [usedById], references: [id])
   createdAt   DateTime  @default(now())
 }
 

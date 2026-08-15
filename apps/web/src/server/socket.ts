@@ -3,7 +3,7 @@ import { Server as SocketIOServer, type Socket } from "socket.io";
 import { prisma } from "@superdiscogm/db";
 import { rollDice } from "@superdiscogm/llm";
 import { getUserByToken, SESSION_COOKIE } from "./session";
-import { persistPlayerMessage, runMjTurn, announcePartySplitIfNeeded } from "./turnEngine";
+import { persistPlayerMessage, enqueueMjTurn, announcePartySplitIfNeeded } from "./turnEngine";
 
 // Action structurée clé [Q27] : /roll <formule>, ex "/roll 1d20+3". Jet non sollicité par le
 // MJ — libre au MJ-IA de l'ignorer ou d'en tenir compte selon le contexte [Q32c]. Les autres
@@ -168,9 +168,7 @@ export function createSocketServer(httpServer: HttpServer): SocketIOServer {
         await announcePartySplitIfNeeded(io, partyId, visibleToUserIds);
       }
 
-      runMjTurn(io, partyId, saved.id, visibleToUserIds ?? []).catch((err) => {
-        console.error(`[turnEngine] échec du tour MJ pour la partie ${partyId} :`, err);
-      });
+      enqueueMjTurn(io, partyId, saved.id, visibleToUserIds ?? []);
     });
 
     socket.on("disconnect", () => {
