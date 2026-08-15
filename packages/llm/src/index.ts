@@ -2,6 +2,7 @@ import { createAnthropic } from "@ai-sdk/anthropic";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createOllama } from "ollama-ai-provider-v2";
 import type { LanguageModel } from "ai";
+import type { ProviderOptions } from "@ai-sdk/provider-utils";
 import { prisma } from "@superdiscogm/db";
 
 // Abstraction multi-fournisseurs [Q37] : sélection du modèle actif = droit Admin, lu depuis
@@ -21,6 +22,21 @@ export function resolveModel(provider: string, model: string): LanguageModel {
     default:
       throw new Error(`Fournisseur LLM inconnu : "${provider}". Voir doc/technique/spec.md [Q37].`);
   }
+}
+
+// Ollama plafonne la fenêtre de contexte à 4096 tokens par défaut (num_ctx), quelle que soit la
+// fenêtre max annoncée par le modèle (ex: qwen3.5:9b annonce 262144) — DÉCOUVERT en testant
+// l'ingestion de scénario en conditions réelles (session du 2026-08-15) : le JSON structuré était
+// tronqué en plein milieu (finishReason "length") dès qu'un scénario dépassait quelques milliers
+// de tokens en entrée, avant même de laisser de la place pour la sortie. Sans ce réglage, TOUT
+// appel LLM via Ollama (ingestion, tour de jeu, mémoire, résumés) était silencieusement susceptible
+// de tronquer sa réponse. 16384 = compromis pragmatique (au-delà, le CPU de dev devient très lent) ;
+// à revoir si un scénario/contexte de tour dépasse cette taille en usage réel.
+const OLLAMA_NUM_CTX = 16384;
+
+export function buildProviderOptions(provider: string): ProviderOptions | undefined {
+  if (provider !== "ollama") return undefined;
+  return { ollama: { options: { num_ctx: OLLAMA_NUM_CTX } } };
 }
 
 export async function getConfiguredModel(): Promise<LanguageModel> {

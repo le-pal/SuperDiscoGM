@@ -1,7 +1,7 @@
 import type { Job } from "bullmq";
 import { generateText } from "ai";
 import { prisma } from "@superdiscogm/db";
-import { getConfiguredModelInfo, recordUsage } from "@superdiscogm/llm";
+import { getConfiguredModelInfo, recordUsage, buildProviderOptions } from "@superdiscogm/llm";
 import type { SummaryConsolidationJob } from "@superdiscogm/jobs";
 
 // Hiérarchie de résumés à 3 niveaux [Q22] : session -> arc/scénario -> campagne.
@@ -48,6 +48,7 @@ export async function processSummaryConsolidation(job: Job<SummaryConsolidationJ
       "en un résumé fidèle et concis, qui garde les décisions et événements importants pour qu'un " +
       "Maître du Jeu puisse reprendre la partie sans relire le détail brut.\n\n" +
       `Niveau : ${level}\n\n${sourceText}`,
+    providerOptions: buildProviderOptions(provider),
   });
 
   await recordUsage({ provider, model: modelName, usage, source: "summary_consolidation" }).catch((err) => {

@@ -2,7 +2,7 @@ import type { Job } from "bullmq";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { prisma } from "@superdiscogm/db";
-import { getConfiguredModelInfo, recordUsage } from "@superdiscogm/llm";
+import { getConfiguredModelInfo, recordUsage, buildProviderOptions } from "@superdiscogm/llm";
 import type { EntityMemoryExtractionJob } from "@superdiscogm/jobs";
 
 // Mémoire indexée par entité [Q41][Q42][Q43] : extraction automatique déclenchée après un
@@ -55,6 +55,7 @@ export async function processEntityMemoryExtraction(job: Job<EntityMemoryExtract
       "explicitement dans l'échange.\n\n" +
       `Entités déjà connues :\n${existingContext}\n\n` +
       `Échange à analyser :\n${transcript}`,
+    providerOptions: buildProviderOptions(provider),
   });
 
   await recordUsage({ provider, model: modelName, usage, source: "entity_memory" }).catch((err) => {

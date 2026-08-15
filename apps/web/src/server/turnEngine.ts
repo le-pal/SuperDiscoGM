@@ -2,7 +2,7 @@ import type { Server as SocketIOServer } from "socket.io";
 import { tool, streamText, stepCountIs, type ModelMessage } from "ai";
 import { z } from "zod";
 import { prisma } from "@superdiscogm/db";
-import { getConfiguredModelInfo, buildGameTools, recordUsage } from "@superdiscogm/llm";
+import { getConfiguredModelInfo, buildGameTools, recordUsage, buildProviderOptions } from "@superdiscogm/llm";
 import { assembleTurnContext } from "./turnContext";
 import { entityMemoryQueue, summaryConsolidationQueue } from "./queue";
 import type { ChatMessagePayload } from "./socket";
@@ -175,7 +175,14 @@ export async function runMjTurn(
     reveal_huddle: createRevealHuddleTool(io, partyId),
   };
 
-  const result = streamText({ model, system, messages, tools, stopWhen: stepCountIs(5) });
+  const result = streamText({
+    model,
+    system,
+    messages,
+    tools,
+    stopWhen: stepCountIs(5),
+    providerOptions: buildProviderOptions(provider),
+  });
 
   let fullText = "";
   for await (const chunk of result.textStream) {

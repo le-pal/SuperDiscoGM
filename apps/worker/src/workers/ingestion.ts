@@ -2,7 +2,7 @@ import type { Job } from "bullmq";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { prisma } from "@superdiscogm/db";
-import { getConfiguredModelInfo, recordUsage } from "@superdiscogm/llm";
+import { getConfiguredModelInfo, recordUsage, buildProviderOptions } from "@superdiscogm/llm";
 import type { ScenarioIngestionJob } from "@superdiscogm/jobs";
 import { publishNotification } from "../publisher";
 
@@ -51,6 +51,7 @@ export async function processScenarioIngestion(job: Job<ScenarioIngestionJob>) {
         "un résumé, le lieu si identifiable, les PNJ présents, les conditions d'entrée/sortie, et les " +
         "secrets à ne pas révéler d'emblée. Ne laisse aucune scène sans résumé.\n\n" +
         `Scénario :\n${content}`,
+      providerOptions: buildProviderOptions(provider),
     });
     phases = object.phases;
 
