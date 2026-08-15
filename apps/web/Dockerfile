@@ -18,6 +18,10 @@ RUN apt-get update \
   && update-ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 ENV NODE_OPTIONS=--use-system-ca
+# redis-memory-server (devDependency racine, tests locaux uniquement) tente de compiler Redis
+# depuis les sources à l'install (`make build redis`) — absent de cette image slim et inutile
+# ici (jamais exécuté en conteneur). On saute le téléchargement/compilation à l'install.
+ENV REDISMS_DISABLE_POSTINSTALL=1
 COPY package.json package-lock.json ./
 COPY apps/web/package.json apps/web/package.json
 COPY apps/worker/package.json apps/worker/package.json
