@@ -11,6 +11,7 @@ Ce dossier est le point d'entrée de la spécification fonctionnelle. Elle est r
 | **Partie** | Écran de jeu, temps réel, fiche de personnage, dés & règles | [partie/spec.md](partie/spec.md) | [partie/questions.md](partie/questions.md) |
 | **Technique** | Stack, fournisseurs LLM, authentification, RGPD, hébergement — [architecture.md](technique/architecture.md) | [technique/spec.md](technique/spec.md) | [technique/questions.md](technique/questions.md) |
 | **Roadmap** | V1 → V4 | [roadmap.md](roadmap.md) | (questions V2-V4 réparties par lot concerné) |
+| **Idées** | Vivier brut de fonctionnalités (pas encore décidé), inspiré de retours réels de JDR | [idees-fonctionnalites.md](idees-fonctionnalites.md) | — |
 
 **Convention** : chaque question a un identifiant global unique (`Q01`, `Q02`, ...) même réparti sur plusieurs fichiers, pour ne jamais avoir de collision. Statut `[ ]` ouverte · `[x]` tranchée. Chaque décision tranchée est reportée dans le `spec.md` du lot correspondant, référencée `[Qxx]`.
 
