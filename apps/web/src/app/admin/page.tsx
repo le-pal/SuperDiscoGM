@@ -20,7 +20,7 @@ export default async function AdminPage() {
   startOfMonth.setDate(1);
   startOfMonth.setHours(0, 0, 0, 0);
 
-  const [users, settings, promptHistory, personas, campaigns, usageAgg] = await Promise.all([
+  const [users, settings, promptHistory, personas, campaigns, usageAgg, credentials] = await Promise.all([
     prisma.user.findMany({
       select: { id: true, name: true, email: true, role: true },
       orderBy: { createdAt: "asc" },
@@ -46,7 +46,9 @@ export default async function AdminPage() {
       where: { createdAt: { gte: startOfMonth } },
       _sum: { costUsd: true, inputTokens: true, outputTokens: true },
     }),
+    prisma.providerCredential.findMany(),
   ]);
+  const credentialsByProvider = Object.fromEntries(credentials.map((c) => [c.provider, c]));
 
   return (
     <AppShell user={admin} wide>
@@ -85,6 +87,12 @@ export default async function AdminPage() {
             inputTokens: usageAgg._sum.inputTokens ?? 0,
             outputTokens: usageAgg._sum.outputTokens ?? 0,
           }}
+          credentials={Object.fromEntries(
+            Object.entries(credentialsByProvider).map(([provider, c]) => [
+              provider,
+              { hasApiKey: !!c.apiKey, apiKeyLast4: c.apiKey ? c.apiKey.slice(-4) : null, baseUrl: c.baseUrl },
+            ])
+          )}
         />
       </div>
 

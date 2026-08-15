@@ -179,10 +179,24 @@ model Persona {
 model GlobalSettings {
   id              Int      @id @default(1)
   systemPrompt    String
-  activeProvider  String // "anthropic" | "openai" | "ollama" — multi-fournisseurs [Q37]
+  activeProvider  String // "anthropic" | "openai" | "ollama" | "openrouter" — multi-fournisseurs [Q37]
   activeModel     String
   monthlyBudget   Decimal? @db.Decimal(10, 2)
   updatedAt       DateTime @updatedAt
+}
+
+// Accès (clé API + endpoint optionnel) par fournisseur, configurable par l'Admin depuis l'UI
+// [Q37] — jusqu'ici seule une variable d'env au déploiement pouvait le faire, ce qui empêchait
+// par exemple de configurer OpenRouter sans redéployer. apiKey en clair en V1 (pas de KMS/coffre
+// à secrets dans l'infra actuelle, cohérent avec l'échelle visée [Q40]) — jamais renvoyée en
+// clair par l'API une fois enregistrée (uniquement un indicateur "configuré" + les 4 derniers
+// caractères), seulement lue côté serveur pour résoudre le modèle.
+model ProviderCredential {
+  id        String   @id @default(cuid())
+  provider  String   @unique
+  apiKey    String?
+  baseUrl   String?
+  updatedAt DateTime @updatedAt
 }
 
 // Prompts éditables versionnés avec retour arrière (Admin, demande explicite de Philippe) —
